@@ -3,7 +3,7 @@ FROM node:16
 WORKDIR /usr/src/app
 
 ARG _MONGO_DSN
-ENV MONGO_DSN ${_MONGO_DSN}
+ENV MONGO_DSN $_MONGO_DSN
 
 COPY package*.json ./
 
