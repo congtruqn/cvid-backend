@@ -10,6 +10,6 @@ steps:
   args: ['run', 'deploy', '$BRANCH_NAME-cvid-api', '--image', 'gcr.io/$PROJECT_ID/cvid-api:$BRANCH_NAME', '--region', 'asia-northeast1', '--allow-unauthenticated']
   env:
   - 'PORT=8080'
-  - 'MONGO_DSN=${_MONGO_DSN}'
+  - 'MONGO_DSN=$_MONGO_DSN'
 images:
 - gcr.io/$PROJECT_ID/cvid-api:$BRANCH_NAME
