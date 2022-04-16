@@ -11,4 +11,4 @@ steps:
   env:
   - 'PORT=8080'
 images:
-- gcr.io/$PROJECT_ID/cvid-api
+- gcr.io/$PROJECT_ID/cvid-api:$BRANCH_NAME
