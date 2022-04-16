@@ -85,7 +85,7 @@ router.post('/adduserres', function(req, res){
 			type:type,
 			status:1
 		});
-		User.createUser(newUser, function(err, companys){
+		User.x(newUser, function(err, companys){
 			if(err) throw err;
 			res.send('ok');
 		});
@@ -101,6 +101,8 @@ router.post('/edituserres', function(req, res){
 	var password = req.body.password;
 	var type = req.body.type;
 	var status = req.body.status;
+	var gender = req.body.gender;
+	
 	if(password==''){
 	
 		var editUser = {
@@ -110,6 +112,7 @@ router.post('/edituserres', function(req, res){
 			address:address,
 			type:type,
 			status:status,
+			gender:genders
 		};
 		if(req.user.type==1){
 			User.editUserNotPass(id,editUser,function(err, companys) {

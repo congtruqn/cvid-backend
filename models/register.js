@@ -26,7 +26,10 @@ var UserSchema = mongoose.Schema({
 	},
 	status: {
 		type: Number
-	}
+	},
+	gender: {
+		type: String
+	},
 });
 
 var User = module.exports = mongoose.model('users', UserSchema);
