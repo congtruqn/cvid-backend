@@ -2,8 +2,8 @@ FROM node:16
 
 WORKDIR /usr/src/app
 
-ARG _MONGO_DSN
-ENV MONGO_DSN ${_MONGO_DSN}
+ENV PORT 8080
+ENV HOST 0.0.0.0
 
 COPY package*.json ./
 
