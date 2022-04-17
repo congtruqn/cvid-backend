@@ -1,7 +1,7 @@
 var bcrypt = require('bcryptjs');
 var mongoose = require("mongoose")
 const jwt = require('jsonwebtoken');
-const accesskey = 'IUHGDGYSAsdsiuhf76sdfhdsJKH'
+const accesskey = process.env.CVID_SECRET
 // User Schema
 var UserSchema = mongoose.Schema({
 	username: {
@@ -94,10 +94,10 @@ module.exports.comparePassword = function(candidatePassword, hash, callback){
     	callback(null, isMatch);
 	});
 }
-module.exports.checkLogin = async function(token){
-	jwt.verify(secret,token, function(err, decoded) {
+module.exports.checkLogin = function(token){
+	jwt.verify(accesskey,token, function(err, decoded) {
 		if(err){
-			return  false;
+			return false;
 		}
 		else{
 			return true
