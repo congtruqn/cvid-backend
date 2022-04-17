@@ -8,7 +8,7 @@ steps:
 - name: 'gcr.io/cloud-builders/gcloud'
   args: ['run', 'deploy', '$BRANCH_NAME-cvid-api', '--image', 'gcr.io/$PROJECT_ID/cvid-api:$BRANCH_NAME', '--region', 'asia-northeast1', '--allow-unauthenticated'
   ,'--set-env-vars'
-  ,'_MONGO_DSN=${_MONGO_DSN}']
+  ,'MONGO_DSN=${_MONGO_DSN}']
   env:
   - 'PORT=8080'
 images:
