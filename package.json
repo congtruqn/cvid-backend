@@ -20,6 +20,7 @@
     "express-session": "*",
     "express-validator": "*",
     "fs": "0.0.1-security",
+    "jsonwebtoken": "^8.5.1",
     "moment": "^2.20.1",
     "mongodb": "*",
     "mongoose": "*",

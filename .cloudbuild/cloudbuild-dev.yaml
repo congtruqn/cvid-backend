@@ -5,11 +5,15 @@ steps:
   # push the container image to Container Registry
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'gcr.io/$PROJECT_ID/cvid-api:$BRANCH_NAME']
-  # deploy container image to Cloud Run
 - name: 'gcr.io/cloud-builders/gcloud'
-  args: ['run', 'deploy', '$BRANCH_NAME-cvid-api', '--image', 'gcr.io/$PROJECT_ID/cvid-api:$BRANCH_NAME', '--region', 'asia-northeast1', '--allow-unauthenticated']
+  args: ['run', 'deploy', '$BRANCH_NAME-cvid-api', '--image', 'gcr.io/$PROJECT_ID/cvid-api:$BRANCH_NAME', '--region', 'asia-northeast1', '--allow-unauthenticated'
+  ,'--set-env-vars'
+  ,'CVID_MONGO_DSN=${_CVID_MONGO_DSN}'
+  ,'CVID_MONGO_USER=${_CVID_MONGO_USER}'
+  ,'CVID_MONGO_PASS=${_CVID_MONGO_PASS}'
+  ,'CVID_SECRET=${_CVID_SECRET}'
+  ]
   env:
   - 'PORT=8080'
-  - 'MONGO_DSN=$_MONGO_DSN'
 images:
 - gcr.io/$PROJECT_ID/cvid-api:$BRANCH_NAME

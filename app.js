@@ -25,6 +25,7 @@ app.use(function(req, res, next) {
 var index = require('./routes/index');
 var users = require('./routes/users');
 var register = require('./routes/register');
+var registermodel = require('./models/register');
 global.__basedir = __dirname;
 app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs({defaultLayout:'layout'}));
@@ -87,9 +88,9 @@ const options = {
   keepAliveInitialDelay: 300000,
   useNewUrlParser: true
 };
-var db = mongoose.connect("mongodb://14.225.192.200/redcoin",options);
+var db = mongoose.connect(process.env.CVID_MONGO_DSN,options);
 app.use(function (req, res, next) {
-    if (!req.user) {
+    if (!registermodel.checkLogin('1')) {
       res.render('user/login', { title: 'Login', layout: 'login' });
     } else {
         next();
