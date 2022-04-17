@@ -31,7 +31,6 @@ passport.deserializeUser(function(id, done) {
   });
 });
 router.post('/login', function(req, res, next) {
-	console.log(req.body);
 	User.getUserByUsername(req.body.username, function(err, users) {
 		if(users){
 			passport.authenticate('local', function(err, user, info) {
