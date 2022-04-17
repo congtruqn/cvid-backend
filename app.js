@@ -16,9 +16,9 @@ const fileUpload = require('express-fileupload');
 var cors = require('cors')
 
 var app = express();
-// var port = process.env.PORT || 3000;
-// app.set('port', port);
-// app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+var port = process.env.PORT || 3000;
+app.set('port', port);
+app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 app.use(cors())
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -79,12 +79,13 @@ app.use(function (req, res, next) {
 });
 app.use('/', index);
 app.use('/user', users);
-app.use(function (req, res, next) {
+app.use(async function (req, res, next) {
   if (!req.headers.authorization ||!req.headers.authorization.split(" ")[0] === "Bearer"){
     res.status(401).json({ auth: false, message: 'No token found.' });
   }
   else{
-    if (!registermodel.checkLogin(req.headers.authorization.split(" ")[1])) {
+    console.log(await registermodel.checkLogin(req.headers.authorization.split(" ")[1]))
+    if (!await registermodel.checkLogin(req.headers.authorization.split(" ")[1])) {
       res.status(401).json({ auth: false, message: 'Failed to authenticate token.' });
     } else {
       next();
