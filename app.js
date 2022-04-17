@@ -91,7 +91,7 @@ const options = {
 var db = mongoose.connect(process.env.CVID_MONGO_DSN,options);
 app.use(function (req, res, next) {
     if (!registermodel.checkLogin('1')) {
-      res.render('user/login', { title: 'Login', layout: 'login' });
+      res.status(401).send({ auth: false, message: 'Failed to authenticate token.' });
     } else {
         next();
     }
