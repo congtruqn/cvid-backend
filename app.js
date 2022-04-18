@@ -16,9 +16,11 @@ const fileUpload = require('express-fileupload');
 var cors = require('cors')
 
 var app = express();
-// var port = process.env.PORT || 3000;
-// app.set('port', port);
-// app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+if(process.env.ENV==='local'){
+  var port = process.env.PORT || 3000;
+  app.set('port', port);
+  app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+}
 app.use(cors())
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
