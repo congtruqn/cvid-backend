@@ -16,9 +16,9 @@ const fileUpload = require('express-fileupload');
 var cors = require('cors')
 
 var app = express();
-// var port = process.env.PORT || 3000;
-// app.set('port', port);
-// app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+var port = process.env.PORT || 3000;
+app.set('port', port);
+app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 app.use(cors())
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -28,6 +28,7 @@ app.use(function(req, res, next) {
 var index = require('./routes/index');
 var users = require('./routes/users');
 var register = require('./routes/register');
+var employee = require('./routes/employee');
 var registermodel = require('./models/register');
 global.__basedir = __dirname;
 app.set('views', path.join(__dirname, 'views'));
@@ -105,6 +106,8 @@ const options = {
 };
 var db = mongoose.connect(process.env.CVID_MONGO_DSN,options);
 app.use('/register', register);
+app.use('/employee', employee);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
