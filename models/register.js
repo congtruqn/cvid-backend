@@ -1,5 +1,7 @@
 var bcrypt = require('bcryptjs');
 var mongoose = require("mongoose")
+const jwt = require('jsonwebtoken');
+const accesskey = process.env.CVID_SECRET
 // User Schema
 var UserSchema = mongoose.Schema({
 	username: {
@@ -94,4 +96,17 @@ module.exports.comparePassword = function(candidatePassword, hash, callback){
     	if(err) throw err;
     	callback(null, isMatch);
 	});
+}
+module.exports.checkLogin = function(token){
+	return new Promise((resolve,reject) =>{
+		jwt.verify(token,accesskey, function(err, decoded) {
+			console.log(err)
+			if(err){
+				resolve(false);
+			}
+			else{
+				resolve(true);
+			}
+		})
+	})
 }

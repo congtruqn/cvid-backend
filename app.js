@@ -16,6 +16,9 @@ const fileUpload = require('express-fileupload');
 var cors = require('cors')
 
 var app = express();
+// var port = process.env.PORT || 3000;
+// app.set('port', port);
+// app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 app.use(cors())
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -25,6 +28,7 @@ app.use(function(req, res, next) {
 var index = require('./routes/index');
 var users = require('./routes/users');
 var register = require('./routes/register');
+var registermodel = require('./models/register');
 global.__basedir = __dirname;
 app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs({defaultLayout:'layout'}));
@@ -75,26 +79,31 @@ app.use(function (req, res, next) {
 });
 app.use('/', index);
 app.use('/user', users);
+app.use(async function (req, res, next) {
+  if (!req.headers.authorization ||!req.headers.authorization.split(" ")[0] === "Bearer"){
+    res.status(401).json({ auth: false, message: 'No token found.' });
+  }
+  else{
+    if (!await registermodel.checkLogin(req.headers.authorization.split(" ")[1])) {
+      res.status(401).json({ auth: false, message: 'Failed to authenticate token.' });
+    } else {
+      next();
+    }
+  }
+});
 var mongoose = require("mongoose");
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 const options = {
-  user:"redcoin",
-  pass:"Tru205649601@",
+  user:process.env.CVID_MONGO_USER,
+  pass:process.env.CVID_MONGO_PASS,
   keepAlive: true,
   keepAliveInitialDelay: 300000,
   useNewUrlParser: true
 };
-var db = mongoose.connect("mongodb://14.225.192.200/redcoin",options);
-app.use(function (req, res, next) {
-    if (!req.user) {
-      res.render('user/login', { title: 'Login', layout: 'login' });
-    } else {
-        next();
-    }
-});
+var db = mongoose.connect(process.env.CVID_MONGO_DSN,options);
 app.use('/register', register);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

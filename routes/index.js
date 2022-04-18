@@ -4,7 +4,7 @@ var router = express.Router();
 var cors = require('cors')
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  let url = process.env.HOST
+  const url = process.env.CVID_SECRET
   res.json({
     data:url
   });
