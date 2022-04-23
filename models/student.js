@@ -17,10 +17,10 @@ var studentSchema = mongoose.Schema({
         type: String
     },
     address: {   
-        type: Date
+        type: String
     },
     birthday: {
-        type: String
+        type: Date
     }
 });
 

@@ -31,14 +31,16 @@ router.post('/createstudent', function(req, res){
         username: req.body.username,
         fullname: req.body.fullname,
          phone: req.body.phone,
-         email: reg.body.email,
-        address: req.body.address
-    
+         email: req.body.email,
+        address: req.body.address,
+        birthday: req.body.birthday
     });
+    console.log(newStudent)
     Student.createStudent(newStudent, function(err, student){
         if(err) throw err;
         res.send('Student successfully created!')
     });
+
 });
 
 router.post('/updatestudent', function(req, res){
