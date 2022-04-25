@@ -7,7 +7,6 @@ var employee = require('../models/employee');
 router.post('/register', function(req, res){
     var email = req.body.email;
     var password = req.body.password;
-    var password2 = req.body.password2;
     var firstname = req.body.firstname;
     var lastname = req.body.lastname;
 
@@ -21,16 +20,12 @@ router.post('/register', function(req, res){
 
     var errors = req.validationErrors();
     if (errors) {
-        res.render('register', {
-            errors: errors
-        });
+        res.send(errors);
     } else {
         employee.checkEmail(email, function(err, user){
 			if(err) throw err;
 			if(user){
-				res.render('register', {
-					errors: [{msg: 'Email is already registered'}]
-				});
+				res.send([{param: 'email', msg: 'Email is already registered'}]);
 			} else{
                 var newEmployee = new employee({
                     email: email,
