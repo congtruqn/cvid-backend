@@ -30,6 +30,7 @@ app.use(function(req, res, next) {
 var index = require('./routes/index');
 var users = require('./routes/users');
 var register = require('./routes/register');
+var province = require('./routes/province');
 var registermodel = require('./models/register');
 var employee = require('./routes/employee');
 global.__basedir = __dirname;
@@ -109,6 +110,8 @@ const options = {
 var db = mongoose.connect(process.env.CVID_MONGO_DSN,options);
 app.use('/register', register);
 app.use('/employee', employee);
+app.use('/province', province);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
