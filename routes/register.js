@@ -6,6 +6,100 @@ var per_page = 15;
 var User = require('../models/register');
 
 // Register
+router.post('/createuser', function(req, res){
+	var email = req.body.email;
+	var password = req.body.password;
+
+	var fullname = req.body.fullname;
+	var dateofbirth = req.body.dateofbirth;
+	var citizenid = req.body.citizenid;
+
+	var hometown = {
+		province: req.body.hometown_province,
+		district: req.body.hometown_district,
+		commune: req.body.hometown_commune
+	};
+	var address = {
+		province: req.body.address_province,
+		district: req.body.address_district,
+		commune: req.body.address_commune,
+		street: req.body.address_street
+	}
+	var literacy = req.body.literacy;
+	var technique = req.body.technique;
+	var experience = {
+		start_month: req.body.experience_start_month,
+		start_year: req.body.experience_start_year,
+		end_month: req.body.experience_end_month,
+		end_year: req.body.experience_end_year
+	};
+
+	// Validation
+	req.checkBody('citizenid', 'Citizen ID is required').notEmpty();
+	req.checkBody('fullname', 'Full name is required').notEmpty();
+	req.checkBody('dateofbirth', 'Date of birth is required').notEmpty();
+	req.checkBody('email', 'Email is required').notEmpty();
+	req.checkBody('email', 'Email is not valid').isEmail();
+	req.checkBody('hometown_province', 'Hometown is required').notEmpty();
+	req.checkBody('hometown_district', 'Hometown is required').notEmpty();
+	req.checkBody('hometown_commune', 'Hometown is required').notEmpty();
+	req.checkBody('address_province', 'Address is required').notEmpty();
+	req.checkBody('address_district', 'Address is required').notEmpty();
+	req.checkBody('address_commune', 'Address is required').notEmpty();
+	req.checkBody('address_street', 'Address is required').notEmpty();
+	req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
+	req.checkBody('literacy', 'Literacy is required').notEmpty();
+	req.checkBody('technique', 'Technique is required').notEmpty();
+	req.checkBody('experience_start_month', 'Experience is required').notEmpty();
+	req.checkBody('experience_start_year', 'Experience is required').notEmpty();
+	req.checkBody('experience_end_month', 'Experience is required').notEmpty();
+	req.checkBody('experience_end_year', 'Experience is required').notEmpty();
+
+	var errors = req.validationErrors();
+	
+	if (errors) {
+		res.render('register', {
+			errors: errors
+		});
+	} else {
+		User.checkRegister('email', email, function(err, user){
+			if(err) throw err;
+			if(user){
+				res.render('register', {
+					errors: [{msg: 'Email is already registered'}]
+				});
+			}
+			else{
+
+				var newUser = new User({
+					email: email,
+					password: password,
+					fullname: fullname,
+					dateofbirth: dateofbirth,
+					citizenid: citizenid,
+					hometown: hometown,
+					address: address,
+					literacy: literacy,
+					technique: technique,
+					experience: experience,
+					type: 0,
+					status: 0
+				});
+
+				User.createUser(newUser, function(err, user){
+					if (err) throw err;
+					res.json(user);
+				});
+
+				req.flash('success_msg', 'You are registered and can now login');
+				// res.redirect('/users/login');
+			}
+		});
+	}
+
+
+
+});
 router.get('/listuser', function(req, res){
 	res.render('user/listuser',{layout: false});
 });

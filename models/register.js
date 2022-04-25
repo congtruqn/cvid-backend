@@ -4,24 +4,65 @@ const jwt = require('jsonwebtoken');
 const accesskey = process.env.CVID_SECRET
 // User Schema
 var UserSchema = mongoose.Schema({
-	username: {
+	email: {
 		type: String,
-		index:true
 	},
 	password: {
 		type: String
 	},
-	email: {
+	fullname: {
 		type: String
 	},
-	name: {
-		type: String
+	dateofbirth: {
+		type: Date
 	},
-	phone: {
-		type: String
+	citizenid: {
+		type: String,
+	},
+	hometown: {
+		province: {
+			type: String
+		},
+		district: {
+			type: String
+		},
+		commune: {
+			type: String
+		}
 	},
 	address: {
+		province: {
+			type: String
+		},
+		district: {
+			type: String
+		},
+		commune: {
+			type: String
+		},
+		street: {
+			type: String
+		}
+	},
+	literacy: {
 		type: String
+	},
+	technique: {
+		type: String
+	},
+	experience: {
+		start_month: {
+			type: Number,
+		},
+		start_year: {
+			type: Number,
+		},
+		end_month: {
+			type: Number,
+		},
+		end_year: {
+			type: Number,
+		},
 	},
 	type: {
 		type: Number
@@ -42,6 +83,14 @@ module.exports.createUser = function(newUser, callback){
 	});
 }
 
+module.exports.checkRegister = function(name, value, callback){
+	if (name == "email"){
+		User.findOne({email: value}, callback);
+	}
+	else if (name == "citizenid"){
+		User.findOne({citizenid: value}, callback);
+	}
+}
 module.exports.editUser = function(id,newUser, callback){
 	bcrypt.genSalt(10, function(err, salt) {
 	    bcrypt.hash(newUser.password, salt, function(err, hash) {
