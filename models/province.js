@@ -23,7 +23,10 @@ var DistrictSchema = mongoose.Schema({
 });
 
 var District = module.exports = mongoose.model('provinces', DistrictSchema);
+
+
 module.exports.getallDistrict = function(callback){
 	var query = {};
 	District.find(query, callback);
 }
+
