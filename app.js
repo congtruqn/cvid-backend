@@ -82,6 +82,7 @@ app.use(function (req, res, next) {
 });
 app.use('/', index);
 app.use('/user', users);
+app.use('/employee', employee);
 app.use(async function (req, res, next) {
   if (!req.headers.authorization ||!req.headers.authorization.split(" ")[0] === "Bearer"){
     res.status(401).json({ auth: false, message: 'No token found.' });
