@@ -18,4 +18,13 @@ router.get('/list', function(req, res){
         res.json(majors);
     });
 });
+
+router.put('/:id/edit', function(req, res){
+    var id = req.params.id;
+    var newMajor = req.body;
+    Major.editMajor(id, newMajor, function(err, major){
+        if(err) throw err;
+        res.send('success');
+    });
+});
 module.exports = router;
