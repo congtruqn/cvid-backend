@@ -11,13 +11,12 @@ router.post('/register', function(req, res){
     var lastname = req.body.lastname;
 
     // Validation
+    req.checkBody('firstname', 'Firstname is required').notEmpty();
+    req.checkBody('lastname', 'Lastname is required').notEmpty();
     req.checkBody('email', 'Email is required').notEmpty();
     req.checkBody('email', 'Email is not valid').isEmail();
     req.checkBody('password', 'Password is required').notEmpty();
     req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
-    req.checkBody('firstname', 'Firstname is required').notEmpty();
-    req.checkBody('lastname', 'Lastname is required').notEmpty();
-
     var errors = req.validationErrors();
     if (errors) {
         res.send(errors);
@@ -25,7 +24,7 @@ router.post('/register', function(req, res){
         employee.checkEmail(email, function(err, user){
 			if(err) throw err;
 			if(user){
-				res.send([{param: 'email', msg: 'Email is already registered'}]);
+                res.send([{param: 'email', msg: 'Email is already registered', value: email}]);
 			} else{
                 var newEmployee = new employee({
                     email: email,
