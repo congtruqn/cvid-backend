@@ -1,0 +1,33 @@
+# This is a issue-0 workflow that is triggered
+
+name: issue-0 workflow
+
+# Controls when the action will run. Workflow runs when triggered using the UI
+# or API.
+on:
+  push:
+    branches:
+    - staging
+
+jobs:
+  # This workflow contains a single job called "auto-merge"
+  auto-merge:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Runs a single command using the runners shell
+    - name: run git preparing
+      run: git init
+    - name: issue-0 checkout
+      uses: actions/checkout@v2
+      with:
+        ref: issue-0
+    - name: Merge staging ->issue-0
+      uses: devmasx/merge-branch@v1.3.1
+      with:
+        type: now
+        from_branch: staging
+        target_branch: issue-0
+        github_token: ${{ github.token }}

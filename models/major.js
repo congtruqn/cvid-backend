@@ -17,3 +17,6 @@ module.exports.getallMajor = function(callback){
     var query = {};
     Major.find(query, callback);
 }
+module.exports.editMajor = function(id,newMajor, callback){
+    Major.findByIdAndUpdate(id, newMajor, callback);
+}
