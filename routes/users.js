@@ -5,6 +5,8 @@ var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/register');
 const jwt = require('jsonwebtoken');
 const accesskey = process.env.CVID_SECRET
+
+
 passport.use(new LocalStrategy(
   function(username, password, done) {
    User.getUserByUsername(username, function(err, users){
