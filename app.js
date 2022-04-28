@@ -34,6 +34,7 @@ var province = require('./routes/province');
 var registermodel = require('./models/register');
 var employee = require('./routes/employee');
 var major = require('./routes/major');
+var skill = require('./routes/skill');
 global.__basedir = __dirname;
 app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs({defaultLayout:'layout'}));
@@ -113,6 +114,7 @@ var db = mongoose.connect(process.env.CVID_MONGO_DSN,options);
 app.use('/register', register);
 app.use('/province', province);
 app.use('/major', major);
+app.use('/skills', skill);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
