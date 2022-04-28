@@ -5,7 +5,8 @@ var Major = require('../models/major');
 router.post('/new', function(req, res){
     var name = req.body.name;
     var newMajor = new Major({
-        name: name
+        name: name,
+        skills: []
     });
     Major.createMajor(newMajor, function(err, major) {
         if (err) throw err;
