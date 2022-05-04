@@ -27,7 +27,7 @@ router.post('/register', function(req, res){
             address: address,
             username: username,
             password: password,
-            type: 3,
+            type: 5,
             status: 0
         });
         User.createUser(newBusiness, function(err, companys) {
