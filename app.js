@@ -35,6 +35,7 @@ var registermodel = require('./models/register');
 var employee = require('./routes/employee');
 var major = require('./routes/major');
 var skill = require('./routes/skill');
+var business = require('./routes/business');
 global.__basedir = __dirname;
 app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs({defaultLayout:'layout'}));
@@ -86,6 +87,7 @@ app.use(function (req, res, next) {
 app.use('/', index);
 app.use('/user', users);
 app.use('/employee', employee);
+app.use('/business', business);
 app.use(async function (req, res, next) {
   if (!req.headers.authorization ||!req.headers.authorization.split(" ")[0] === "Bearer"){
     res.status(401).json({ auth: false, message: 'No token found.' });
