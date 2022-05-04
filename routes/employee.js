@@ -1,8 +1,7 @@
 var express = require('express');
-var app = express();
 var router = express.Router();
 var cors = require('cors')
-var employee = require('../models/employee');
+var User = require('../models/register');
 
 router.post('/register', function(req, res){
     var email = req.body.email;
@@ -21,12 +20,12 @@ router.post('/register', function(req, res){
     if (errors) {
         res.send(errors);
     } else {
-        employee.checkEmail(email, function(err, user){
+        User.getUserByEmail(email, function(err, user){
 			if(err) throw err;
 			if(user){
                 res.send([{param: 'email', msg: 'Email is already registered', value: email}]);
 			} else{
-                var newEmployee = new employee({
+                var newEmployee = new User({
                     email: email,
                     password: password,
                     firstname: firstname,
@@ -34,7 +33,7 @@ router.post('/register', function(req, res){
                     type: 4,
                     status: 0
                 });
-                employee.createEmployee(newEmployee, function(err, companys) {
+                User.createUser(newEmployee, function(err, companys) {
                     if (err) throw err;
                     res.send('ok');
                 });
