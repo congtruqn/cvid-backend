@@ -88,6 +88,8 @@ app.use('/', index);
 app.use('/user', users);
 app.use('/employee', employee);
 app.use('/business', business);
+app.use('/province', province);
+app.use('/major', major);
 app.use(async function (req, res, next) {
   if (!req.headers.authorization ||!req.headers.authorization.split(" ")[0] === "Bearer"){
     res.status(401).json({ auth: false, message: 'No token found.' });
@@ -114,8 +116,7 @@ const options = {
 };
 var db = mongoose.connect(process.env.CVID_MONGO_DSN,options);
 app.use('/register', register);
-app.use('/province', province);
-app.use('/major', major);
+
 app.use('/skills', skill);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

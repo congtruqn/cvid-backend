@@ -27,8 +27,33 @@ var UserSchema = mongoose.Schema({
 		type: String
 	},
 	address: {
-		type: String
+		province_id: {
+			type: String
+		},
+		province: {
+			type: String
+		},
+		district_id: {
+			type: String
+		},
+		district: {
+			type: String
+		}
 	},
+	majors: [
+		{
+			name: {
+				type: String
+			},
+			skills: [
+				{
+					name: {
+						type: String
+					}
+				}
+			]
+		}
+	],	
 	type: {
 		type: Number
 	},
