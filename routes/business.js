@@ -49,6 +49,7 @@ router.post('/register', function(req, res){
     if (errors) {
         res.send(errors);
     } else {
+
         User.getUserByEmail(email, function(err, user){
 			if(err) throw err;
 			if(user){
