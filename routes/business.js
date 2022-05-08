@@ -17,21 +17,33 @@ router.post('/register', function(req, res){
     }
     var majors = [];
     for (var i = 0; i < req.body.majors.length; i++) {
-        majors.push({name: req.body.majors[i], skills: []});
+        var major = req.body.majors[i][0];
+        var skill = req.body.majors[i][1];
+        var found = majors.find(function(element){
+            return element.name == major;
+        })
+        if (found) {
+            found.skills.push({name:skill});
+        } else {
+            majors.push({
+                name: major,
+                skills: [{name: skill}]
+            })
+        }
     }
 
-    console.log(address);
     // Validation
-    req.checkBody('name', 'Name is required').notEmpty();
-    req.checkBody('MST', 'MST is required').notEmpty();
-    req.checkBody('MST', 'MST phải có độ dài ít nhất 10 kí tự').isLength({min: 10});
-    req.checkBody('email', 'Email is required').notEmpty();
-    req.checkBody('email', 'Email is not valid').isEmail();
-    req.checkBody('password', 'Password is required').notEmpty();
-    req.checkBody('province', 'City is required').notEmpty();
-    req.checkBody('district', 'District is required').notEmpty();
-    req.checkBody('majors', 'Major is required').notEmpty();
-    req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
+    req.checkBody('email', 'Chưa nhập email').notEmpty();
+    req.checkBody('email', 'Email không hợp lệ').isEmail();
+    req.checkBody('password', 'Chưa nhập mật khẩu').notEmpty();
+    req.checkBody('password2', 'Các mật khẩu đã nhập không khớp').equals(req.body.password);
+    req.checkBody('name', 'Chưa nhập tên doanh nghiệp').notEmpty();
+    req.checkBody('MST', 'Chưa nhập mã số thuế').notEmpty();
+    req.checkBody('MST', 'Mã số thuế có ít nhất 10 kí tự').isLength({min: 10});
+    req.checkBody('province', 'Chưa chọn Tỉnh/Thành Phố').notEmpty();
+    req.checkBody('district', 'Chưa chọn Quận/Huyện').notEmpty();
+    req.checkBody('majors', 'Chưa chọn nghành nghề kinh doanh').notEmpty();
+    
 
     var errors = req.validationErrors();
     if (errors) {
@@ -41,7 +53,7 @@ router.post('/register', function(req, res){
         User.getUserByEmail(email, function(err, user){
 			if(err) throw err;
 			if(user){
-                res.send([{param: 'email', msg: 'Email is already registered', value: email}]);
+                res.send([{param: 'email', msg: 'Email đã được đăng kí', value: email}]);
 			} else{
                 var newBusiness = new User({
                     name: name,
