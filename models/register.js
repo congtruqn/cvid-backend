@@ -23,7 +23,7 @@ var UserSchema = mongoose.Schema({
 	name: {
 		type: String,
 	},
-	phone: {
+	MST: {
 		type: String
 	},
 	address: {
