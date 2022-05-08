@@ -36,6 +36,7 @@ router.post('/register', function(req, res){
     req.checkBody('email', 'Chưa nhập email').notEmpty();
     req.checkBody('email', 'Email không hợp lệ').isEmail();
     req.checkBody('password', 'Chưa nhập mật khẩu').notEmpty();
+    req.checkBody('password', 'Mật khẩu phải có ít nhất 6 ký tự').isLength({min: 6});
     req.checkBody('password2', 'Các mật khẩu đã nhập không khớp').equals(req.body.password);
     req.checkBody('name', 'Chưa nhập tên doanh nghiệp').notEmpty();
     req.checkBody('MST', 'Chưa nhập mã số thuế').notEmpty();
