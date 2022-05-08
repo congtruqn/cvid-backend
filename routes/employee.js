@@ -10,12 +10,12 @@ router.post('/register', function(req, res){
     var lastname = req.body.lastname;
 
     // Validation
-    req.checkBody('firstname', 'Firstname is required').notEmpty();
-    req.checkBody('lastname', 'Lastname is required').notEmpty();
-    req.checkBody('email', 'Email is required').notEmpty();
-    req.checkBody('email', 'Email is not valid').isEmail();
-    req.checkBody('password', 'Password is required').notEmpty();
-    req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
+    req.checkBody('firstname', 'Chưa nhập Họ và Tên').notEmpty();
+    req.checkBody('lastname', 'Chưa nhập Họ và Tên').notEmpty();
+    req.checkBody('email', 'Chưa nhập email').notEmpty();
+    req.checkBody('email', 'Email không hợp lệ').isEmail();
+    req.checkBody('password', 'Chưa nhập mật khẩu').notEmpty();
+    req.checkBody('password2', 'Các mật khẩu đã nhập không khớp').equals(req.body.password);
     var errors = req.validationErrors();
     if (errors) {
         res.send(errors);
@@ -23,7 +23,7 @@ router.post('/register', function(req, res){
         User.getUserByEmail(email, function(err, user){
 			if(err) throw err;
 			if(user){
-                res.send([{param: 'email', msg: 'Email is already registered', value: email}]);
+                res.send([{param: 'email', msg: 'Email đã được đăng kí', value: email}]);
 			} else{
                 var newEmployee = new User({
                     email: email,
