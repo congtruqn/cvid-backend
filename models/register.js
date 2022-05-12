@@ -14,31 +14,31 @@ var UserSchema = mongoose.Schema({
 	email: {
 		type: String
 	},
-	firstname: {
-        type: String,
-    },
-    lastname: {
-        type: String,
-    },
+	birthdate: {
+		type: Date
+	},
 	name: {
 		type: String,
 	},
-	MST: {
-		type: String
-	},
-	address: {
-		province_id: {
+	province:{
+		Id: {
 			type: String
 		},
-		province: {
-			type: String
-		},
-		district_id: {
-			type: String
-		},
-		district: {
+		Name: {
 			type: String
 		}
+	},
+	district: {
+		Id: {
+			type: String
+		},
+		Name: {
+			type: String
+		}
+	},
+
+	address: {
+		type: String
 	},
 	majors: [
 		{
@@ -54,6 +54,20 @@ var UserSchema = mongoose.Schema({
 			]
 		}
 	],	
+	level: {
+		type: String
+	},
+	specialty: {
+		type: String
+	},
+	experience: {
+		start: {
+			type: Date
+		},
+		end: {
+			type: Date
+		}
+	},
 	type: {
 		type: Number
 	},
