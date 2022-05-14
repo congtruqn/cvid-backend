@@ -6,8 +6,8 @@ var User = require('../models/register');
 const jwt = require('jsonwebtoken');
 const accesskey = process.env.CVID_SECRET
 passport.use(new LocalStrategy(
-  function(username, password, done) {
-   User.getUserByUsername(username, function(err, users){
+  function(email, password, done) {
+   User.getUserByEmail(email, function(err, users){
    	if(err) throw err;
    	if(!users){
    		return done(null, false, {message: 'Unknown User'});
@@ -30,12 +30,37 @@ passport.deserializeUser(function(id, done) {
     done(err, users);
   });
 });
+// router.post('/login', function(req, res, next) {
+// 	User.getUserByUsername(req.body.username, function(err, users) {
+// 		if(users){
+// 			passport.authenticate('local', function(err, user, info) {
+// 				if (err ||!user) { return res.status(401).json({"code": 401,"massage":"Username or password incorrect"}) }
+// 				var tokenss = jwt.sign({id:user._id,username:req.body.username,status:user.status,type:user.type},accesskey,{
+// 					algorithm: 'HS256',
+// 					expiresIn: 7760000
+// 				});
+// 				user.password = '';
+// 				res.status(200).json({
+// 					"token":tokenss,userinfo:user
+// 				})
+// 			})(req, res, next);
+				
+// 		}
+// 		else{
+// 			res.status(404).json({
+// 				"code": 404,
+// 				"massage":"User not found"
+// 			})
+// 		}
+// 	});
+// });
+
 router.post('/login', function(req, res, next) {
-	User.getUserByUsername(req.body.username, function(err, users) {
+	User.getUserByEmail(req.body.username, function(err, users) {
 		if(users){
 			passport.authenticate('local', function(err, user, info) {
 				if (err ||!user) { return res.status(401).json({"code": 401,"massage":"Username or password incorrect"}) }
-				var tokenss = jwt.sign({id:user._id,username:req.body.username,status:user.status,type:user.type},accesskey,{
+				var tokenss = jwt.sign({id:user._id,email:req.body.username,status:user.status,type:user.type},accesskey,{
 					algorithm: 'HS256',
 					expiresIn: 7760000
 				});
@@ -54,6 +79,5 @@ router.post('/login', function(req, res, next) {
 		}
 	});
 });
-
 
 module.exports = router;
