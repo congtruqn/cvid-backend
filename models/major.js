@@ -13,7 +13,6 @@ var MajorSchema = mongoose.Schema({
 
 var Major = module.exports = mongoose.model('major', MajorSchema);
 
-
 module.exports.createMajor = function(newMajor, callback){
     newMajor.save(callback);
 }
