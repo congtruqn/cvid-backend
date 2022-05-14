@@ -89,7 +89,7 @@ module.exports.createUser = function(newUser, callback){
 	});
 }
 const sendVerificationEmail = ({ _id, email }, res) => {
-	const currentUrl = 'https://issue-0-cvid-api-ggczm4ik6q-an.a.run.app/register'
+	const currentUrl = 'https://staging-cvid-api-ggczm4ik6q-an.a.run.app/register'
 	const uniqueString = uuidv4() + _id;
 	const mailOptions = {
 		from: 'plvhoang@gmail.com',
