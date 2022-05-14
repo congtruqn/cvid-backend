@@ -4,6 +4,8 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/register');
 const jwt = require('jsonwebtoken');
+const UserVerification = require('../models/UserVerification')
+var bcrypt = require('bcryptjs');
 const accesskey = process.env.CVID_SECRET
 passport.use(new LocalStrategy(
   function(username, password, done) {
@@ -54,7 +56,49 @@ router.post('/login', function(req, res, next) {
 		}
 	});
 });
-
+router.get("/verify/:userId/:uniqueString",(req,res)=>{
+	let { userId, uniqueString } = req.params;
+	UserVerification
+		.find({userId})
+		.then((result) =>{
+			console.log(result)
+			if(result.length>0){
+				var  hashedUniqueString = result[0].uniqueString;
+				console.log(hashedUniqueString)
+				bcrypt
+					.compare(uniqueString,hashedUniqueString)
+					.then(result=>{
+						if(result){
+							User
+								.findOneAndUpdate({_id: userId},{status:1})
+								.then(()=>{
+									UserVerification
+										.deleteOne({userId})
+										.catch((error)=>{
+											console.log(error)
+										})
+								})
+								.catch(error=>{
+									console.log(error)
+								})
+							res.send("Verify successful")
+						}
+						else{
+							res.send("Verify fail!!!")
+						}
+					})
+					.catch(error=>{
+						console.log(error)
+					})
+			}
+			else{
+				let message
+			}
+		})
+		.catch((error)=>{
+			console.log(error)
+		})
+})
 
 
 module.exports = router;
