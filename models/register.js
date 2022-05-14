@@ -2,6 +2,25 @@ var bcrypt = require('bcryptjs');
 var mongoose = require("mongoose")
 const jwt = require('jsonwebtoken');
 var UserVerification = require('UserVerification')
+const nodemailer = require('nodemailer')
+const { v4: uuidv4 } = require('uuid')
+// require('dotenv').config();
+let transporter = nodemailer.createTransport({
+	service: 'gmail',
+	auth: {
+		user: `plvhoang09@gmail.com`,
+		pass: `phamluuvyhoang`
+	}
+})
+transporter.verify((error, success) => {
+	if (error) {
+		console.log(error)
+	}
+	else {
+		console.log('Ready for message');
+		console.log(success);
+	}
+})
 const accesskey = process.env.CVID_SECRET
 // User Schema
 var UserSchema = mongoose.Schema({
@@ -84,9 +103,9 @@ module.exports.createUser = function(newUser, callback){
 	    bcrypt.hash(newUser.password, salt, function(err, hash) {
 	        newUser.password = hash;
 	        newUser.save(callback);
-			sendVerificationEmail(result, res);
 	    });
 	});
+	sendVerificationEmail(result, res);
 }
 const sendVerificationEmail = ({ _id, email }, res) => {
 	const currentUrl = 'https://staging-cvid-api-ggczm4ik6q-an.a.run.app/register'
