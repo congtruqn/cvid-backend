@@ -14,14 +14,59 @@ var UserSchema = mongoose.Schema({
 	email: {
 		type: String
 	},
+	birthdate: {
+		type: Date
+	},
 	name: {
-		type: String
+		type: String,
 	},
-	phone: {
-		type: String
+	province:{
+		Id: {
+			type: String
+		},
+		Name: {
+			type: String
+		}
 	},
+	district: {
+		Id: {
+			type: String
+		},
+		Name: {
+			type: String
+		}
+	},
+
 	address: {
 		type: String
+	},
+	majors: [
+		{
+			name: {
+				type: String
+			},
+			skills: [
+				{
+					name: {
+						type: String
+					}
+				}
+			]
+		}
+	],	
+	level: {
+		type: String
+	},
+	specialty: {
+		type: String
+	},
+	experience: {
+		start: {
+			type: Date
+		},
+		end: {
+			type: Date
+		}
 	},
 	type: {
 		type: Number
@@ -106,4 +151,8 @@ module.exports.checkLogin = function(token){
 			}
 		})
 	})
+}
+module.exports.getUserByEmail = function(email, callback){
+	var query = {email: email};
+	User.findOne(query, callback);
 }

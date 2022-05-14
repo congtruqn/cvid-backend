@@ -30,7 +30,12 @@ app.use(function(req, res, next) {
 var index = require('./routes/index');
 var users = require('./routes/users');
 var register = require('./routes/register');
+var province = require('./routes/province');
 var registermodel = require('./models/register');
+var employee = require('./routes/employee');
+var major = require('./routes/major');
+var skill = require('./routes/skill');
+var business = require('./routes/business');
 global.__basedir = __dirname;
 app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs({defaultLayout:'layout'}));
@@ -81,7 +86,14 @@ app.use(function (req, res, next) {
 });
 app.use('/', index);
 app.use('/user', users);
+<<<<<<< HEAD
 app.use('/register', register);
+=======
+app.use('/employee', employee);
+app.use('/business', business);
+app.use('/province', province);
+app.use('/major', major);
+>>>>>>> 30b51b08029b930e8b4e86d92656b303973f8d69
 app.use(async function (req, res, next) {
   if (!req.headers.authorization ||!req.headers.authorization.split(" ")[0] === "Bearer"){
     res.status(401).json({ auth: false, message: 'No token found.' });
@@ -108,6 +120,8 @@ const options = {
 };
 var db = mongoose.connect(process.env.CVID_MONGO_DSN,options);
 app.use('/register', register);
+
+app.use('/skills', skill);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
