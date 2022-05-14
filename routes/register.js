@@ -5,6 +5,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var per_page = 15;
 var User = require('../models/register');
 
+
 // Register
 router.get('/listuser', function(req, res){
 	res.render('user/listuser',{layout: false});
@@ -154,4 +155,6 @@ router.post('/deluserres', function(req, res){
   	
   	res.send('ok');
 });
+//verify email
+
 module.exports = router;
