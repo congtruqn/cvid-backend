@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var cors = require('cors')
 var User = require('../models/register');
-var resume = require('../models/resume');
 
 router.post('/register', function(req, res){
     var name = req.body.name;
@@ -74,14 +73,6 @@ router.post('/register', function(req, res){
             }
         });
     }
-});
-
-router.post('/get-resume', function(req, res){
-    var user_id = req.body.id;
-    User.getResumeByUserId(user_id, function(err, resume){
-        if(err) throw err;
-        res.send(resume);
-    });
 });
 
 module.exports = router;
