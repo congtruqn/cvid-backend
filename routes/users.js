@@ -85,6 +85,7 @@ router.get("/verify/:userId/:uniqueString",(req,res)=>{
 									console.log(error)
 								})
 							res.send("Verify successful")
+							
 						}
 						else{
 							res.send("Verify fail!!!")
