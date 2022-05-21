@@ -10,8 +10,8 @@ const { v4: uuidv4 } = require('uuid')
 let transporter = nodemailer.createTransport({
 	service: 'gmail',
 	auth: {
-		user: `plvhoang09@gmail.com`,
-		pass: `phamluuvyhoang`
+		user: 'shoppingwithevalley@gmail.com',
+		pass: 'nguyentronghoang'
 	}
 })
 transporter.verify((error, success) => {
@@ -108,12 +108,13 @@ module.exports.createUser = function(newUser, callback){
 	    });
 	});
 	sendVerificationEmail(newUser);
+	console.log(newUser)
 }
 const sendVerificationEmail = ({ _id, email }) => {
-	const currentUrl = 'http://localhost:3000/user'
+	const currentUrl = 'https://issue-0-cvid-api-ggczm4ik6q-an.a.run.app/user'
 	const uniqueString = uuidv4() + _id;
 	const mailOptions = {
-		from: 'plvhoang@gmail.com',
+		from: 'shoppingwithevalley@gmail.com',
 		to: email,
 		subject: 'Verify Your Email',
 		html: 	`<div>
@@ -121,7 +122,6 @@ const sendVerificationEmail = ({ _id, email }) => {
 					<p>Click here: <a href=${currentUrl + "/verify/" + _id + '/' + uniqueString}> Verify Link </a> </p>
 				</div>`
 	}
-	console.log(currentUrl + "/verify/" + _id + '/' + uniqueString)
 	const saltRounds = 10;
 	bcrypt.hash(uniqueString, saltRounds)
 		.then((hashedUniqueString) => {
@@ -132,7 +132,7 @@ const sendVerificationEmail = ({ _id, email }) => {
 			})
 			newVerification
 				.save()
-				.then(() => {
+				.then((res) => {
 					transporter
 						.sendMail(mailOptions)
 						.then()

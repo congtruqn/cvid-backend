@@ -36,7 +36,9 @@ router.post('/login', function(req, res, next) {
 	User.getUserByUsername(req.body.username, function(err, users) {
 		if(users){
 			passport.authenticate('local', function(err, user, info) {
-				if (err ||!user) { return res.status(401).json({"code": 401,"massage":"Username or password incorrect"}) }
+				if (err ||!user) { return res.status(401).json({"code": 401,"massage":"Sai mật khẩu"}) }
+				if (user.status == 0) { return res.status(401).json({"code": 401,"massage":"Tài khoản của bạn chưa được xác thực"}) }
+				
 				var tokenss = jwt.sign({id:user._id,username:req.body.username,status:user.status,type:user.type},accesskey,{
 					algorithm: 'HS256',
 					expiresIn: 7760000
@@ -45,13 +47,14 @@ router.post('/login', function(req, res, next) {
 				res.status(200).json({
 					"token":tokenss,userinfo:user
 				})
+				
 			})(req, res, next);
 				
 		}
 		else{
 			res.status(404).json({
 				"code": 404,
-				"massage":"User not found"
+				"massage":"Tài khoản không tồn tại"
 			})
 		}
 	});
