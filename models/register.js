@@ -62,33 +62,14 @@ var UserSchema = mongoose.Schema({
 	address: {
 		type: String
 	},
-	majors: [
-		{
-			name: {
-				type: String
-			},
-			skills: [
-				{
-					name: {
-						type: String
-					}
-				}
-			]
-		}
-	],	
+	major: {
+		type: String
+	},
+	skill: {
+		type: String
+	},
 	level: {
 		type: String
-	},
-	specialty: {
-		type: String
-	},
-	experience: {
-		start: {
-			type: Date
-		},
-		end: {
-			type: Date
-		}
 	},
 	type: {
 		type: Number

@@ -18,17 +18,14 @@ router.post('/register', function(req, res){
     }
     var address = req.body.address;
     var level = req.body.level;
-    var specialty = req.body.specialty;
-    var experience = {
-        start : req.body.experience[0],
-        end : req.body.experience[1]
-    }
+    var major = req.body.major;
+    var skill = req.body.skill;
     var password = req.body.password;
-
+    console.log(req.body);
     // Validation
     req.checkBody('name', 'Chưa nhập Họ và tên').notEmpty();
-    req.checkBody('username', 'Chưa nhập số CMND/CCCD').notEmpty();
-    req.checkBody('username', 'Số CMND/CCCD không hợp lệ').matches(/^\d{9}$|^\d{12}$/, "i");
+    req.checkBody('username', 'Chưa nhập số CCCD/Hộ chiếu').notEmpty();
+    req.checkBody('username', 'Số CCCD/Hộ chiếu không hợp lệ').isLength({min: 9});
     req.checkBody('birthdate', 'Chưa nhập ngày sinh').notEmpty();
     req.checkBody('email', 'Chưa nhập email').notEmpty();
     req.checkBody('email', 'Email không hợp lệ').isEmail();
@@ -36,9 +33,8 @@ router.post('/register', function(req, res){
     req.checkBody('district', 'Chưa chọn Quận/Huyện').notEmpty();
     req.checkBody('address', 'Chưa nhập địa chỉ').notEmpty();
     req.checkBody('level', 'Chưa chọn cấp bậc').notEmpty();
-    req.checkBody('specialty', 'Chưa nhập chuyên môn').notEmpty();
-    req.checkBody('experience[0]', 'Chưa chọn thời gian bắt đầu').notEmpty();
-    req.checkBody('experience[1]', 'Chưa chọn thời gian kết thúc').notEmpty();
+    req.checkBody('major', 'Chưa chọn ngành nghề').notEmpty();
+    req.checkBody('skill', 'Chưa chọn chuyên nghành').notEmpty();
     req.checkBody('password', 'Chưa nhập mật khẩu').notEmpty();
     req.checkBody('password', 'Mật khẩu phải có ít nhất 6 ký tự').isLength({min: 6});
     req.checkBody('password2', 'Các mật khẩu đã nhập không khớp').equals(req.body.password);
@@ -60,8 +56,8 @@ router.post('/register', function(req, res){
                     district: district,
                     address: address,
                     level: level,
-                    specialty: specialty,
-                    experience: experience,
+                    major: major,
+                    skill: skill,
                     password: password,
                     type: 4,
                     status: 0
@@ -73,6 +69,17 @@ router.post('/register', function(req, res){
             }
         });
     }
+});
+
+router.post('/getinfo', function(req, res){
+    User.getUserById(req.body.id, function(err, user){
+        if(err) throw err;
+        if(user){
+            res.send(user);
+        } else{
+            res.send('error');
+        }
+    });
 });
 
 module.exports = router;
