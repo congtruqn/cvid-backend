@@ -34,6 +34,7 @@ var province = require('./routes/province');
 var registermodel = require('./models/register');
 var employee = require('./routes/employee');
 var major = require('./routes/major');
+var criteria = require('./routes/criteria');
 var skill = require('./routes/skill');
 var business = require('./routes/business');
 global.__basedir = __dirname;
@@ -90,6 +91,7 @@ app.use('/employee', employee);
 app.use('/business', business);
 app.use('/province', province);
 app.use('/major', major);
+app.use('/criteria', criteria);
 app.use(async function (req, res, next) {
   if (!req.headers.authorization ||!req.headers.authorization.split(" ")[0] === "Bearer"){
     res.status(401).json({ auth: false, message: 'No token found.' });
