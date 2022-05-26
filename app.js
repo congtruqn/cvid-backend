@@ -116,7 +116,6 @@ const options = {
 };
 var db = mongoose.connect(process.env.CVID_MONGO_DSN,options);
 app.use('/register', register);
-
 app.use('/skills', skill);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
