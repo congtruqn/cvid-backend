@@ -9,28 +9,16 @@ router.post('/register', function(req, res){
     var MST = req.body.MST;
     var email = req.body.email;
     var password = req.body.password;
-    var address = {
-        province_id: req.body.province[0],
-        province: req.body.province[1],
-        district_id: req.body.district[0],
-        district: req.body.district[1]
+    var province = {
+        Id : req.body.province[0],
+        Name : req.body.province[1]
     }
-    var majors = [];
-    for (var i = 0; i < req.body.majors.length; i++) {
-        var major = req.body.majors[i][0];
-        var skill = req.body.majors[i][1];
-        var found = majors.find(function(element){
-            return element.name == major;
-        })
-        if (found) {
-            found.skills.push({name:skill});
-        } else {
-            majors.push({
-                name: major,
-                skills: [{name: skill}]
-            })
-        }
+    var district = {
+        Id : req.body.district[0],
+        Name : req.body.district[1]
     }
+    var major = req.body.major;
+    var address = req.body.address;
 
     // Validation
     req.checkBody('email', 'Chưa nhập email').notEmpty();
@@ -43,7 +31,8 @@ router.post('/register', function(req, res){
     req.checkBody('MST', 'Mã số thuế có ít nhất 10 kí tự').isLength({min: 10});
     req.checkBody('province', 'Chưa chọn Tỉnh/Thành Phố').notEmpty();
     req.checkBody('district', 'Chưa chọn Quận/Huyện').notEmpty();
-    req.checkBody('majors', 'Chưa chọn nghành nghề kinh doanh').notEmpty();
+    req.checkBody('major', 'Chưa chọn nghành nghề kinh doanh').notEmpty();
+    req.checkBody('address', 'Chưa nhập địa chỉ').notEmpty();
     
 
     var errors = req.validationErrors();
@@ -58,11 +47,13 @@ router.post('/register', function(req, res){
 			} else{
                 var newBusiness = new User({
                     name: name,
-                    MST: MST,
+                    username: MST,
                     email: email,
                     password: password,
                     address: address,
-                    majors: majors,
+                    province: province,
+                    district: district,
+                    major: major,
                     type: 5,
                     status: 0
                 });
