@@ -13,17 +13,14 @@ var MajorSchema = mongoose.Schema({
             },
             code: {
                 type: String,
-                required: true
             },
             skills: [
                 {
                     name: {
                         type: String,
-                        required: true
                     },
                     code: {
                         type: String,
-                        required: true
                     }
                 }
             ]
@@ -33,10 +30,13 @@ var MajorSchema = mongoose.Schema({
 
 var Major = module.exports = mongoose.model('major', MajorSchema);
 
-// module.exports.createMajor = function(newMajor, callback){
-//     newMajor.save(callback);
-// }
+module.exports.addMajorForLevel = function(level, major, callback){
+    Major.findOneAndUpdate({level: level}, {$push: {majors: major}}, callback);
+}
 
+module.exports.addSkillForMajor = function(level, major, skill, callback){
+    Major.findOneAndUpdate({level: level, "majors.name": major}, {$push: {majors: {name: major, skills: skill}}})
+}
 // module.exports.getMajorByName = function(name, callback){
 //     var query = {name: name};
 //     Major.findOne(query, callback);

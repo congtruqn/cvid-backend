@@ -19,6 +19,27 @@ router.get('/list', function(req, res){
         res.json(majors);
     });
 });
+router.post('/addmajor', function(req, res){
+    var level = req.body.level;
+
+    var major = {
+        name: req.body.major,
+    }
+    Major.addMajorForLevel(level, major, function(err, major){
+        if(err) throw err;
+        res.json(major);
+    });
+});
+
+router.post('/addskill', function(req, res){
+    var level = req.body.level;
+    var major = req.body.major;
+    var skill = req.body.skill;
+    Major.addSkillForMajor(level, major, skill, function(err, major){
+        if(err) throw err;
+        res.json(major);
+    });
+});
 
 // router.put('/:id/edit', function(req, res){
 //     var id = req.params.id;

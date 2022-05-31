@@ -35,7 +35,6 @@ var registermodel = require('./models/register');
 var employee = require('./routes/employee');
 var major = require('./routes/major');
 var criteria = require('./routes/criteria');
-var skill = require('./routes/skill');
 var business = require('./routes/business');
 global.__basedir = __dirname;
 app.set('views', path.join(__dirname, 'views'));
@@ -118,7 +117,6 @@ const options = {
 };
 var db = mongoose.connect(process.env.CVID_MONGO_DSN,options);
 app.use('/register', register);
-app.use('/skills', skill);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
