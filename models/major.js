@@ -1,29 +1,15 @@
 var mongoose = require("mongoose")
 // User Schema
 var MajorSchema = mongoose.Schema({
-	level: {
+	name: {
         type: String,
-        required: true
     },
-    majors: [
+    level: {
+        type: String,
+    },
+    skills: [
         {
-            name: {
-                type: String,
-                required: true
-            },
-            code: {
-                type: String,
-            },
-            skills: [
-                {
-                    name: {
-                        type: String,
-                    },
-                    code: {
-                        type: String,
-                    }
-                }
-            ]
+            name: String,
         }
     ]
 });
@@ -31,16 +17,13 @@ var MajorSchema = mongoose.Schema({
 var Major = module.exports = mongoose.model('major', MajorSchema);
 
 module.exports.addMajorForLevel = function(level, major, callback){
-    Major.findOneAndUpdate({level: level}, {$push: {majors: major}}, callback);
+    
 }
 
 module.exports.addSkillForMajor = function(level, major, skill, callback){
-    Major.findOneAndUpdate({level: level, "majors.name": major}, {$push: {majors: {name: major, skills: skill}}})
+    Major.findOneAndUpdate({level: level, name: major}, {$push: {skills: skill}}, callback);
 }
-// module.exports.getMajorByName = function(name, callback){
-//     var query = {name: name};
-//     Major.findOne(query, callback);
-// }
+
 module.exports.getallMajor = function(callback){
     var query = {};
     Major.find(query, callback);
