@@ -34,7 +34,9 @@ router.post('/addmajor', function(req, res){
 router.post('/addskill', function(req, res){
     var level = req.body.level;
     var major = req.body.major;
-    var skill = req.body.skill;
+    var skill = {
+        name: req.body.skill
+    }
     Major.addSkillForMajor(level, major, skill, function(err, major){
         if(err) throw err;
         res.json(major);
