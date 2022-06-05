@@ -1,30 +1,19 @@
 var express = require('express');
 var router = express.Router();
-var resume = require('../models/resume');
+var Resume = require('../models/resume');
 
 /* GET home page. */
-router.get('/create', function(req, res, next) {
-    var data = {
-        name: 'Nguyễn Văn A',
-        email: '',
-        phone: '',
-        address: '',
-        province: '',
-        district: '',
-        level: '',
-        major: '',
-        skill: '',
-        experience: '',
-        education: '',
-        language: '',
-        certificate: '',
-        project: '',
-        status: '',
-        type: '',
-        created_at: '',
-        updated_at: ''
-    }
-    resume.createResume(data, function(err, resume) {
+router.post('/create', function(req, res, next) {
+    var newResume = new Resume({
+        cvid : req.body.cvid,
+        degrees : req.body.degrees,
+        skills : req.body.skills,
+        companies : req.body.companies,
+        point : req.body.point,
+        KPI : req.body.KPI,
+    });
+
+    Resume.createResume(newResume, function(err, resume) {
         if (err) {
             res.json(err);
         } else {

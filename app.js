@@ -36,6 +36,7 @@ var employee = require('./routes/employee');
 var major = require('./routes/major');
 var criteria = require('./routes/criteria');
 var business = require('./routes/business');
+var resume = require('./routes/resume');
 global.__basedir = __dirname;
 app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs({defaultLayout:'layout'}));
@@ -91,6 +92,10 @@ app.use('/business', business);
 app.use('/province', province);
 app.use('/major', major);
 app.use('/criteria', criteria);
+
+
+
+app.use('/resume', resume);
 app.use(async function (req, res, next) {
   if (!req.headers.authorization ||!req.headers.authorization.split(" ")[0] === "Bearer"){
     res.status(401).json({ auth: false, message: 'No token found.' });
@@ -117,6 +122,7 @@ const options = {
 };
 var db = mongoose.connect(process.env.CVID_MONGO_DSN,options);
 app.use('/register', register);
+app.use('/resume', resume);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
