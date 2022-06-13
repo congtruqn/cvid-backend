@@ -16,9 +16,7 @@ var MajorSchema = mongoose.Schema({
 
 var Major = module.exports = mongoose.model('major', MajorSchema);
 
-module.exports.addMajorForLevel = function(level, major, callback){
-    
-}
+
 
 module.exports.addSkillForMajor = function(level, major, skill, callback){
     Major.findOneAndUpdate({level: level, name: major}, {$push: {skills: skill}}, callback);

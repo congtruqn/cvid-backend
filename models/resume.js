@@ -24,6 +24,8 @@ var ResumeSchema = mongoose.Schema({
             year: String,
             from: String,
             to: String,
+            work: String,
+            address: String
         }]
     }]
 });
