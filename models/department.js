@@ -54,3 +54,6 @@ module.exports.addPositionForDepartment = function(id, position, callback){
 module.exports.editPositionForDepartment = function(department_id, position_id, position, callback){
     Department.findOneAndUpdate({_id: department_id, "position._id": position_id}, {$set: {"position.$": position}}, callback);
 }
+module.exports.deletePositionForDepartment = function(department_id, position_id, callback){
+    Department.findOneAndUpdate({_id: department_id}, {$pull: {position: {_id: position_id}}}, callback);
+}
