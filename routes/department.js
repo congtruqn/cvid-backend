@@ -57,4 +57,13 @@ router.post('/position/edit', function(req, res){
     });
 });
 
+router.post('/position/delete', function(req, res){
+    var department_id = req.body.department_id;
+    var position_id = req.body.position_id;
+    console.log(department_id, position_id);
+    Department.deletePositionForDepartment(department_id, position_id, function(err, department){
+        if(err) throw err;
+        res.json(department);
+    });
+});
 module.exports = router;
