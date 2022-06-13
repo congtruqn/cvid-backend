@@ -20,7 +20,7 @@ var DepartmentSchema = mongoose.Schema({
         amount: Number,
         description: String,
         enddate: Date,
-        startdate: new Date(),
+        startdate: Date,
         work_location: String,
         min_salary: Number,
         max_salary: Number,
