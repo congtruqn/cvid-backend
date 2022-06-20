@@ -8,10 +8,11 @@ const nodemailer = require('nodemailer')
 const { v4: uuidv4 } = require('uuid')
 // require('dotenv').config();
 let transporter = nodemailer.createTransport({
-	service: 'gmail',
+	host: 'mail.glowpacific.com',
+	port: 25,
 	auth: {
-		user: 'shoppingwithevalley@gmail.com',
-		pass: 'nguyentronghoang'
+		user: 'hoang.nguyen@glowpacific.com',
+		pass: 'Hoang@123'
 	}
 })
 transporter.verify((error, success) => {
@@ -43,22 +44,14 @@ var UserSchema = mongoose.Schema({
 		type: String,
 	},
 	province:{
-		Id: {
-			type: String
-		},
-		Name: {
-			type: String
-		}
+		type: String,
 	},
 	district: {
-		Id: {
-			type: String
-		},
-		Name: {
-			type: String
-		}
+		type: String,
 	},
-
+	ward: {
+		type: String,
+	},
 	address: {
 		type: String
 	},
@@ -71,6 +64,32 @@ var UserSchema = mongoose.Schema({
 	level: {
 		type: String
 	},
+	degrees: [{
+        name: String,
+        year: String,
+        school: String,
+        major: String,
+        code: String,
+    }],
+    skills: [{
+            name: String,
+            school: String,
+            year: String
+    }],
+    companies: [{
+        name: String,
+        position: [{
+            name: String,
+            year: String,
+            from: String,
+            to: String,
+            work: String,
+            address: String
+        }]
+    }],
+	assessment: [],
+	pointKPI: [],
+	point: 0,
 	type: {
 		type: Number
 	},
@@ -119,10 +138,6 @@ const sendVerificationEmail = ({ _id, email }) => {
 						.then()
 						.catch((error) => {
 							console.log(error)
-							res.json({
-								status: 'PENDING',
-								message: "Verification email sent"
-							})
 						})
 				})
 				.catch((error) => {
@@ -208,4 +223,11 @@ module.exports.checkLogin = function(token){
 module.exports.getUserByEmail = function(email, callback){
 	var query = {email: email};
 	User.findOne(query, callback);
+}
+
+module.exports.createCV = function(id,newCV, callback){
+	User.findByIdAndUpdate(id, newCV, function(err) {
+	  	if (err) throw err;
+		console.log('CV successfully updated!');
+	});
 }
