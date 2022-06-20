@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Department = require('../models/department');
+var User = require('../models/register');
 
 
 router.post('/new', function(req, res){
@@ -44,11 +45,6 @@ router.post('/position/edit', function(req, res){
     const department_id = department.id;
     var position = department.position;
     const position_id = position._id;
-    majors = [];
-    for (var i = 0; i < position.majors.length; i++) {
-        majors.push({name: position.majors[i]});
-    }
-    position.majors = majors;
     console.log(department_id, position_id);
 
     Department.editPositionForDepartment(department_id, position_id, position, function(err, department){
@@ -64,6 +60,25 @@ router.post('/position/delete', function(req, res){
     Department.deletePositionForDepartment(department_id, position_id, function(err, department){
         if(err) throw err;
         res.json(department);
+    });
+});
+
+router.get('/findCV/:department_id/:position_id', function(req, res){
+    var department_id = req.params.department_id;
+    var position_id = req.params.position_id;
+    Department.getDepartmentById(department_id, function(err, department){
+        if(err) throw err;
+        department.position.forEach(function(position){
+            if(position._id == position_id){
+                var query = {
+                    major: {$in: position.majors}
+                };
+                User.find(query, function(err, users){
+                    if(err) throw err;
+                    res.json(users);
+                });
+            }
+        });
     });
 });
 module.exports = router;

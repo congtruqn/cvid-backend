@@ -8,14 +8,9 @@ router.post('/register', function(req, res){
     var username = req.body.username;
     var birthdate = req.body.birthdate;
     var email = req.body.email;
-    var province = {
-        Id : req.body.province[0],
-        Name : req.body.province[1]
-    }
-    var district = {
-        Id : req.body.district[0],
-        Name : req.body.district[1]
-    }
+    var province = req.body.province;
+    var district = req.body.district;
+    var ward = req.body.ward;
     var address = req.body.address;
     var level = req.body.level;
     var major = req.body.major;
@@ -31,6 +26,7 @@ router.post('/register', function(req, res){
     req.checkBody('email', 'Email không hợp lệ').isEmail();
     req.checkBody('province', 'Chưa chọn Tỉnh/Thành Phố').notEmpty();
     req.checkBody('district', 'Chưa chọn Quận/Huyện').notEmpty();
+    req.checkBody('ward', 'Chưa chọn Phường/Xã').notEmpty();
     req.checkBody('address', 'Chưa nhập địa chỉ').notEmpty();
     req.checkBody('level', 'Chưa chọn cấp bậc').notEmpty();
     req.checkBody('major', 'Chưa chọn ngành nghề').notEmpty();
@@ -54,6 +50,7 @@ router.post('/register', function(req, res){
                     email: email,
                     province: province,
                     district: district,
+                    ward: ward,
                     address: address,
                     level: level,
                     major: major,
@@ -82,6 +79,36 @@ router.post('/getinfo', function(req, res){
     });
 });
 
+router.post('/createCV', function(req, res){
+    var id = req.body.id;
+    var degrees = req.body.degrees;
+    var skills = req.body.skills
+    var companies = req.body.companies
+    var assessment = req.body.assessment
+    var pointKPI = req.body.pointKPI
+    var sumAssessment = assessment.reduce(function(a, b) { return parseInt(a) + parseInt(b); }, 0);
+    var sumPointKPI = pointKPI.reduce(function(a, b) { return parseInt(a) + parseInt(b); }, 0);
+    var point = Math.round((sumAssessment + sumPointKPI) * 10 / 21 ) / 10 
+
+    assessment
+    var newResume = {
+        degrees : degrees,
+        skills : skills,
+        companies : companies,
+        assessment : assessment,
+        pointKPI : pointKPI,
+        point : point
+    };
+    User.createCV(id, newResume, function(err, resume) {
+        if (err) {
+            res.json(err);
+        } else {
+            res.json(resume);
+        }
+    });
+});
+
+    
 module.exports = router;
 
 
