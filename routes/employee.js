@@ -16,7 +16,6 @@ router.post('/register', function(req, res){
     var major = req.body.major;
     var skill = req.body.skill;
     var password = req.body.password;
-    console.log(req.body);
     // Validation
     req.checkBody('name', 'Chưa nhập Họ và tên').notEmpty();
     req.checkBody('username', 'Chưa nhập số CCCD/Hộ chiếu').notEmpty();
@@ -80,32 +79,80 @@ router.post('/getinfo', function(req, res){
 });
 
 router.post('/createCV', function(req, res){
+    var errors = []
     var id = req.body.id;
     var degrees = req.body.degrees;
+    degrees = degrees.filter(function(item){
+        if (item.name != ''){
+            if (item.major == '' | item.school == '' | item.year == '' | item.code == ''){
+                errors.push({
+                    mes: "Điền đầy đủ thông tin của bằng cấp"
+                })
+            }
+            return true
+        }
+    });
     var skills = req.body.skills
+    skills = skills.filter(function(item){
+        if (item.name != ''){
+            if (item.school == '' | item.year == ''){
+                errors.push({
+                    mes: "Điền đầy đủ thông tin của kĩ năng"
+                })
+            }
+            return true
+        }
+    });
     var companies = req.body.companies
+    companies = companies.filter(function(companie){
+        if (companie.name != ''){
+            companie.position = companie.position.filter(function(item){
+                if (item.work != ''){
+                    if (item.from == '' | item.to == '' | item.name == '' | item.address == ''){
+                        errors.push({
+                            mes: "Điền đầy đủ thông tin quá trình công tác"
+                        })
+                    }
+                    return true
+                }
+            });
+            if (!companie.position.length){
+                errors.push({
+                    mes: "Điền đầy đủ thông tin quá trình công tác"
+                })
+            } 
+            return true
+        }
+    });
     var assessment = req.body.assessment
-    var pointKPI = req.body.pointKPI
     var sumAssessment = assessment.reduce(function(a, b) { return parseInt(a) + parseInt(b); }, 0);
-    var sumPointKPI = pointKPI.reduce(function(a, b) { return parseInt(a) + parseInt(b); }, 0);
-    var point = Math.round((sumAssessment + sumPointKPI) * 10 / 21 ) / 10 
+    var point = Math.round(sumAssessment * 10 / 21 ) / 10 
 
-    assessment
     var newResume = {
         degrees : degrees,
         skills : skills,
         companies : companies,
         assessment : assessment,
-        pointKPI : pointKPI,
         point : point
     };
-    User.createCV(id, newResume, function(err, resume) {
-        if (err) {
-            res.json(err);
-        } else {
-            res.json(resume);
-        }
-    });
+    if (errors.length){
+        res.json({
+            success: false,
+            message: errors[0]?errors[0].mes:''
+        })
+    } else {
+        User.createCV(id, newResume, function(err, resume) {
+            if (err) {
+                res.json(err);
+            } else {
+                res.json({
+                    success: true,
+                    message: "ok"
+                });
+            }
+        });
+    }
+    
 });
 
     

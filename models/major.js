@@ -7,11 +7,7 @@ var MajorSchema = mongoose.Schema({
     level: {
         type: String,
     },
-    skills: [
-        {
-            name: String,
-        }
-    ]
+    skills: []
 });
 
 var Major = module.exports = mongoose.model('major', MajorSchema);

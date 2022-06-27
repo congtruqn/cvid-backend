@@ -8,12 +8,16 @@ const nodemailer = require('nodemailer')
 const { v4: uuidv4 } = require('uuid')
 // require('dotenv').config();
 let transporter = nodemailer.createTransport({
-	host: 'mail.glowpacific.com',
-	port: 25,
-	auth: {
-		user: 'hoang.nguyen@glowpacific.com',
-		pass: 'Hoang@123'
-	}
+	host: 'mail.glowpacific.com',   // hostname
+    port: 465, 
+    secure: true,   
+    auth: {
+        user: 'hoang.nguyen@glowpacific.com',
+        pass: 'Hoang@123'
+    },
+    tls: {
+        rejectUnauthorized: false
+    }
 })
 transporter.verify((error, success) => {
 	if (error) {
@@ -88,7 +92,6 @@ var UserSchema = mongoose.Schema({
         }]
     }],
 	assessment: [],
-	pointKPI: [],
 	point: 0,
 	type: {
 		type: Number
@@ -114,7 +117,7 @@ const sendVerificationEmail = ({ _id, email }) => {
 	const currentUrl = 'https://issue-0-cvid-api-ggczm4ik6q-an.a.run.app/user'
 	const uniqueString = uuidv4() + _id;
 	const mailOptions = {
-		from: 'shoppingwithevalley@gmail.com',
+		from: 'hoang.nguyen@glowpacific.com',
 		to: email,
 		subject: 'Verify Your Email',
 		html: 	`<div>
@@ -226,8 +229,5 @@ module.exports.getUserByEmail = function(email, callback){
 }
 
 module.exports.createCV = function(id,newCV, callback){
-	User.findByIdAndUpdate(id, newCV, function(err) {
-	  	if (err) throw err;
-		console.log('CV successfully updated!');
-	});
+	User.findByIdAndUpdate(id, newCV, callback);
 }
