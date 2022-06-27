@@ -124,7 +124,7 @@ router.post('/createCV', function (req, res) {
     if (companie.name != '') {
       companie.position = companie.position.filter(function (item) {
         if (item.work != '') {
-          if (item.from == '' | item.to == '' | item.name == '' | item.address == '') {
+          if (item.from == '' | item.to == '' | item.năm == '' | item.address == '') {
             errors.push({
               mes: "Điền đầy đủ thông tin quá trình công tác"
             });
