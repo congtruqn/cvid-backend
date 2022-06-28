@@ -37,33 +37,41 @@ router.post('/register', function(req, res){
     if (errors) {
         res.send(errors);
     } else {
-        User.getUserByEmail(email, function(err, user){
-			if(err) throw err;
+        User.getUserByUsername(username, function(err, user){
+            if(err) throw err;
 			if(user){
-                res.send([{param: 'email', msg: 'Email đã được đăng kí', value: email}]);
-			} else{
-                var newEmployee = new User({
-                    name: name,
-                    username: username,
-                    birthdate: birthdate,
-                    email: email,
-                    province: province,
-                    district: district,
-                    ward: ward,
-                    address: address,
-                    level: level,
-                    major: major,
-                    skill: skill,
-                    password: password,
-                    type: 4,
-                    status: 0
-                });
-                User.createUser(newEmployee, function(err, companys) {
-                    if (err) throw err;
-                    res.send('ok');
+                res.send([{param: 'username', msg: 'CVID đã được sử dụng', value: username}]);
+            } else {
+                User.getUserByEmail(email, function(err, user){
+                    if(err) throw err;
+                    if(user){
+                        res.send([{param: 'email', msg: 'Email đã được đăng kí', value: email}]);
+                    } else{
+                        var newEmployee = new User({
+                            name: name,
+                            username: username,
+                            birthdate: birthdate,
+                            email: email,
+                            province: province,
+                            district: district,
+                            ward: ward,
+                            address: address,
+                            level: level,
+                            major: major,
+                            skill: skill,
+                            password: password,
+                            type: 4,
+                            status: 0
+                        });
+                        User.createUser(newEmployee, function(err, companys) {
+                            if (err) throw err;
+                            res.send('ok');
+                        });
+                    }
                 });
             }
-        });
+        })
+        
     }
 });
 

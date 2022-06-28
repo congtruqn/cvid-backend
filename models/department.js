@@ -8,12 +8,6 @@ var DepartmentSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    username: {
-        type: String,
-    },
-    password: {
-        type: String
-    },
     position: [{
         name: String,
         majors: Array,
@@ -45,6 +39,7 @@ module.exports.getDepartment = function(id, callback){
     var query = {id: id};
     Department.find(query, callback);
 }
+
 module.exports.createDepartment = function(newDepartment, callback){
     newDepartment.save(callback);
 }

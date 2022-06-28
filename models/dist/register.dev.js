@@ -53,9 +53,10 @@ var UserSchema = mongoose.Schema({
   birthdate: {
     type: Date
   },
-  name: {
-    type: String
-  },
+  name: String,
+  nameforeign: String,
+  nameacronym: String,
+  country: String,
   province: {
     type: String
   },
@@ -100,7 +101,7 @@ var UserSchema = mongoose.Schema({
       address: String
     }]
   }],
-  assessment: [],
+  assessment: Array,
   point: 0,
   type: {
     type: Number
