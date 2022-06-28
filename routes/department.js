@@ -13,8 +13,21 @@ router.post('/new', function(req, res){
     });
     Department.createDepartment(newDepartment, function(err, department) {
         if (err) throw err;
-        res.json(department);
     });
+    if (req.body.username && req.body.password){
+        var newUser = new User({
+            username: req.body.username,
+            password: req.body.password,
+            status: 1,
+            name: newDepartment._id,
+            type: 7
+        });
+        User.createUser(newUser, function(err, user) {
+            if (err) throw err;
+            
+        });
+    }
+    res.send('ok');
 });
 
 router.get('/list/:id', function(req, res){
@@ -24,7 +37,13 @@ router.get('/list/:id', function(req, res){
         res.json(department);
     });
 });
-
+router.get('/detail/:id', function(req, res){
+    var id = req.params.id;
+    Department.getDepartmentById(id, function(err, department){
+        if(err) throw err;
+        res.json(department);
+    });
+});
 router.post('/position/new', function(req, res){
     var department = req.body.department;
     var id = department.id;
