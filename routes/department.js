@@ -29,12 +29,24 @@ router.post('/new', function(req, res){
     }
     res.send('ok');
 });
-
 router.get('/list/:id', function(req, res){
     var id = req.params.id;
     Department.getDepartment(id, function(err, department){
         if(err) throw err;
         res.json(department);
+    });
+});
+router.get('/position/:id', function(req, res){
+    var id = req.params.id;
+    Department.getPositionById(id, function(err, department){
+        if(err) throw err;
+        if (department){
+            department.position.forEach(function(position){
+                if(position._id == id){
+                    res.json(position);
+                }
+            });
+        }
     });
 });
 router.get('/detail/:id', function(req, res){
