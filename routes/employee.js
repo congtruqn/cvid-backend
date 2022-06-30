@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 var cors = require('cors')
 var User = require('../models/register');
-
+const jwt = require('jsonwebtoken');
+const accesskey = process.env.CVID_SECRET
 router.post('/register', function(req, res){
     var name = req.body.name;
     var username = req.body.username;
@@ -75,15 +76,29 @@ router.post('/register', function(req, res){
     }
 });
 
-router.post('/getinfo', function(req, res){
-    User.getUserById(req.body.id, function(err, user){
-        if(err) throw err;
-        if(user){
-            res.send(user);
-        } else{
-            res.send('error');
-        }
-    });
+router.post('/me', function(req, res){
+    var token = req.body.token;
+    if (token) {
+        jwt.verify(token, accesskey, function (err, decoded) {
+            if (err) {
+                res.json({code: 401, massage: 'Token error'});
+            }
+            else {
+                id = decoded.id;
+                User.getUserById(id, function (err, user) {
+                    if (err) {
+                        res.json({code: 500, massage: 'Internal Server Error'})
+                    } else if (!user) {
+                        res.json({code: 404, message: 'No user found.'});
+                    } else {
+                        res.json({code: 200, user: user});
+                    } 
+                });
+            }
+        });
+    } else {
+        res.json({code: 404, message: 'No token found'});
+    }
 });
 
 router.post('/createCV', function(req, res){
