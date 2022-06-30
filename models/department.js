@@ -39,7 +39,18 @@ module.exports.getDepartment = function(id, callback){
     var query = {id: id};
     Department.find(query, callback);
 }
+module.exports.getPosition = function(condition, callback){
+    var query = {"position.majors": condition.major,
+                "position.status": 1,
+                "position.amount": { $gte: 1}
+            };
+    Department.find(query, callback);
+}
 
+module.exports.getPositionById = function(id, callback){
+    var query = {"position._id": id};
+    Department.findOne(query, callback);
+}
 module.exports.createDepartment = function(newDepartment, callback){
     newDepartment.save(callback);
 }

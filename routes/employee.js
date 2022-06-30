@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var cors = require('cors')
 var User = require('../models/register');
+var Department = require('../models/department');
 const jwt = require('jsonwebtoken');
 const accesskey = process.env.CVID_SECRET
 router.post('/register', function(req, res){
@@ -178,7 +179,15 @@ router.post('/createCV', function(req, res){
     
 });
 
-    
+router.post('/findPosition', function(req, res){
+    var condition = {
+        major: req.body.major,
+        skill: req.body.skill
+    }
+    Department.getPosition(condition, function(err, position) {
+        res.json(position)
+    });
+})
 module.exports = router;
 
 
