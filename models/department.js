@@ -11,6 +11,7 @@ var DepartmentSchema = mongoose.Schema({
     position: [{
         name: String,
         majors: Array,
+        skills: Array,
         amount: Number,
         description: String,
         enddate: Date,
