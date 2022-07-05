@@ -1,85 +1,126 @@
+"use strict";
+
 var express = require('express');
+
 var path = require('path');
+
 var favicon = require('serve-favicon');
+
 var logger = require('morgan');
+
 var cookieParser = require('cookie-parser');
+
 var bodyParser = require('body-parser');
+
 var exphbs = require('express-handlebars');
+
 var expressValidator = require('express-validator');
+
 var flash = require('connect-flash');
+
 var session = require('express-session');
+
 var passport = require('passport');
+
 var LocalStrategy = require('passport-local').Strategy;
+
 var mongo = require('mongodb');
+
 var mongoose = require('mongoose');
-const fileUpload = require('express-fileupload');
-var cors = require('cors')
+
+var fileUpload = require('express-fileupload');
+
+var cors = require('cors');
 
 var app = express();
-if(process.env.ENV==='local'){
+
+if (process.env.ENV === 'local') {
   var port = process.env.PORT || 3000;
   app.set('port', port);
-  app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+  app.listen(port, function () {
+    return console.log("Example app listening on port ".concat(port, "!"));
+  });
 }
-app.use(cors())
-app.use(function(req, res, next) {
+
+app.use(cors());
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
+
 var index = require('./routes/index');
+
 var users = require('./routes/users');
+
 var register = require('./routes/register');
+
 var province = require('./routes/province');
+
 var school = require('./routes/school');
+
 var registermodel = require('./models/register');
+
 var employee = require('./routes/employee');
+
 var major = require('./routes/major');
+
 var criteria = require('./routes/criteria');
+
 var business = require('./routes/business');
+
 var resume = require('./routes/resume');
+
 var department = require('./routes/department');
+
 global.__basedir = __dirname;
 app.set('views', path.join(__dirname, 'views'));
-app.engine('handlebars', exphbs({defaultLayout:'layout'}));
+app.engine('handlebars', exphbs({
+  defaultLayout: 'layout'
+}));
 app.set('view engine', 'handlebars');
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, '/public')));
-app.use(fileUpload())
-// Express Session
-app.use(session({
-    secret: 'secret',
-    saveUninitialized: true,
-    resave: true
+app.use(bodyParser.urlencoded({
+  extended: false
 }));
-// Passport init
-app.use(passport.initialize());
-app.use(passport.session());
-// Express Validator
-app.use(expressValidator({
-  errorFormatter: function(param, msg, value) {
-      var namespace = param.split('.')
-      , root    = namespace.shift()
-      , formParam = root;
+app.use(cookieParser());
+app.use(express["static"](path.join(__dirname, '/public')));
+app.use(fileUpload()); // Express Session
 
-    while(namespace.length) {
+app.use(session({
+  secret: 'secret',
+  saveUninitialized: true,
+  resave: true
+})); // Passport init
+
+app.use(passport.initialize());
+app.use(passport.session()); // Express Validator
+
+app.use(expressValidator({
+  errorFormatter: function errorFormatter(param, msg, value) {
+    var namespace = param.split('.'),
+        root = namespace.shift(),
+        formParam = root;
+
+    while (namespace.length) {
       formParam += '[' + namespace.shift() + ']';
     }
+
     return {
-      param : formParam,
-      msg   : msg,
-      value : value
+      param: formParam,
+      msg: msg,
+      value: value
     };
   }
 }));
-app.use(require('request-param')({ order: ["body","params","query"] } ) );
-// Connect Flash
-app.use(flash());
-// Global Vars
+app.use(require('request-param')({
+  order: ["body", "params", "query"]
+})); // Connect Flash
+
+app.use(flash()); // Global Vars
+
 app.use(function (req, res, next) {
   res.locals.success_msg = req.flash('success_msg');
   res.locals.error_msg = req.flash('error_msg');
@@ -96,48 +137,80 @@ app.use('/school', school);
 app.use('/major', major);
 app.use('/criteria', criteria);
 app.use('/department', department);
-
 app.use('/resume', resume);
-app.use(async function (req, res, next) {
-  if (!req.headers.authorization ||!req.headers.authorization.split(" ")[0] === "Bearer"){
-    res.status(401).json({ auth: false, message: 'No token found.' });
-  }
-  else{
-    if (!await registermodel.checkLogin(req.headers.authorization.split(" ")[1])) {
-      res.status(401).json({ auth: false, message: 'Failed to authenticate token.' });
-    } else {
-      next();
+app.use(function _callee(req, res, next) {
+  return regeneratorRuntime.async(function _callee$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
+          if (!(!req.headers.authorization || !req.headers.authorization.split(" ")[0] === "Bearer")) {
+            _context.next = 4;
+            break;
+          }
+
+          res.status(401).json({
+            auth: false,
+            message: 'No token found.'
+          });
+          _context.next = 11;
+          break;
+
+        case 4:
+          _context.next = 6;
+          return regeneratorRuntime.awrap(registermodel.checkLogin(req.headers.authorization.split(" ")[1]));
+
+        case 6:
+          if (_context.sent) {
+            _context.next = 10;
+            break;
+          }
+
+          res.status(401).json({
+            auth: false,
+            message: 'Failed to authenticate token.'
+          });
+          _context.next = 11;
+          break;
+
+        case 10:
+          next();
+
+        case 11:
+        case "end":
+          return _context.stop();
+      }
     }
-  }
+  });
 });
+
 var mongoose = require("mongoose");
+
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
-const options = {
-  user:process.env.CVID_MONGO_USER,
-  pass:process.env.CVID_MONGO_PASS,
+var options = {
+  user: process.env.CVID_MONGO_USER,
+  pass: process.env.CVID_MONGO_PASS,
   keepAlive: true,
   keepAliveInitialDelay: 300000,
   useNewUrlParser: true
 };
-var db = mongoose.connect(process.env.CVID_MONGO_DSN,options);
-app.use('/register', register);
+var db = mongoose.connect(process.env.CVID_MONGO_DSN, options);
+app.use('/register', register); // catch 404 and forward to error handler
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
-});
-// error handler
-app.use(function(err, req, res, next) {
+}); // error handler
+
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-  console.log(err);
-  // render the error page
+  console.log(err); // render the error page
+
   res.status(err.status || 500);
   res.render('error');
 });
