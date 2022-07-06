@@ -179,6 +179,17 @@ router.post('/createCV', function(req, res){
     
 });
 
+router.get('/cvid/:id', function(req, res){
+    User.getUserById(req.params.id, function(err, cv) {
+        if (err) {
+            res.json(err);
+        } else {
+            cv.password = undefined;
+            res.json(cv)
+        } 
+    });
+})
+
 router.post('/findPosition', function(req, res){
     var condition = {
         major: req.body.major,
