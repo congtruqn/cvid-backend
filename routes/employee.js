@@ -3,6 +3,7 @@ var router = express.Router();
 var cors = require('cors')
 var User = require('../models/register');
 var Department = require('../models/department');
+var Major = require('../models/major');
 const jwt = require('jsonwebtoken');
 const accesskey = process.env.CVID_SECRET
 router.post('/register', function(req, res){
@@ -10,28 +11,34 @@ router.post('/register', function(req, res){
     var username = req.body.username;
     var birthdate = req.body.birthdate;
     var email = req.body.email;
+    var country = req.body.country;
     var province = req.body.province;
     var district = req.body.district;
     var ward = req.body.ward;
     var address = req.body.address;
     var level = req.body.level;
+    var school = req.body.school;
     var major = req.body.major;
     var skill = req.body.skill;
+    var position = req.body.position;
     var password = req.body.password;
     // Validation
     req.checkBody('name', 'Chưa nhập Họ và tên').notEmpty();
-    req.checkBody('username', 'Chưa nhập số CCCD/Hộ chiếu').notEmpty();
-    req.checkBody('username', 'Số CCCD/Hộ chiếu không hợp lệ').isLength({min: 9});
+    req.checkBody('username', 'Chưa nhập số điện thoại').notEmpty();
+    req.checkBody('username', 'Số điện thoại không hợp lệ').isLength({min: 9});
     req.checkBody('birthdate', 'Chưa nhập ngày sinh').notEmpty();
     req.checkBody('email', 'Chưa nhập email').notEmpty();
     req.checkBody('email', 'Email không hợp lệ').isEmail();
+    req.checkBody('level', 'Chưa chọn cấp bậc').notEmpty();
+    req.checkBody('school', 'Chưa chọn trường').notEmpty();
+    req.checkBody('major', 'Chưa chọn ngành nghề').notEmpty();
+    req.checkBody('skill', 'Chưa chọn chuyên nghành').notEmpty();
+    req.checkBody('position', 'Chưa chọn chức danh').notEmpty();
+    req.checkBody('country', 'Chưa chọn Quốc gia').notEmpty();
     req.checkBody('province', 'Chưa chọn Tỉnh/Thành Phố').notEmpty();
     req.checkBody('district', 'Chưa chọn Quận/Huyện').notEmpty();
     req.checkBody('ward', 'Chưa chọn Phường/Xã').notEmpty();
     req.checkBody('address', 'Chưa nhập địa chỉ').notEmpty();
-    req.checkBody('level', 'Chưa chọn cấp bậc').notEmpty();
-    req.checkBody('major', 'Chưa chọn ngành nghề').notEmpty();
-    req.checkBody('skill', 'Chưa chọn chuyên nghành').notEmpty();
     req.checkBody('password', 'Chưa nhập mật khẩu').notEmpty();
     req.checkBody('password', 'Mật khẩu phải có ít nhất 6 ký tự').isLength({min: 6});
     req.checkBody('password2', 'Các mật khẩu đã nhập không khớp').equals(req.body.password);
@@ -54,21 +61,29 @@ router.post('/register', function(req, res){
                             username: username,
                             birthdate: birthdate,
                             email: email,
+                            country: country,
                             province: province,
                             district: district,
                             ward: ward,
                             address: address,
                             level: level,
+                            school: school,
                             major: major,
                             skill: skill,
+                            position: position,
                             password: password,
                             type: 4,
                             status: 0
                         });
+                        
                         User.createUser(newEmployee, function(err, companys) {
                             if (err) throw err;
-                            res.send('ok');
+                            Major.addPosition(major, position, function(err, result){
+                                res.send('ok');
+                            })
                         });
+                        
+
                     }
                 });
             }
