@@ -48,27 +48,15 @@ var UserSchema = mongoose.Schema({
 	nameforeign: String,
 	nameacronym: String,
 	country: String,
-	province:{
-		type: String,
-	},
-	district: {
-		type: String,
-	},
-	ward: {
-		type: String,
-	},
-	address: {
-		type: String
-	},
-	major: {
-		type: String
-	},
-	skill: {
-		type: String
-	},
-	level: {
-		type: String
-	},
+	province: String,
+	district: String,
+	ward: String,
+	address: String,
+	level: String,
+	school: String,
+	major: String,
+	skill: String,
+	position: String,
 	degrees: [{
         name: String,
         year: String,
