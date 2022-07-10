@@ -95,9 +95,15 @@ router.get('/findCV/:position_id', function (req, res) {
     department.position.forEach(function (position) {
       if (position._id == id) {
         var query = {
-          major: {
-            $in: position.majors
-          }
+          $or: [{
+            major: {
+              $in: position.majors
+            }
+          }, {
+            skill: {
+              $in: position.skills
+            }
+          }]
         };
         User.find(query, function (err, users) {
           if (err) throw err;
