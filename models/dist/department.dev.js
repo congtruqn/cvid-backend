@@ -50,7 +50,7 @@ module.exports.getPosition = function (condition, callback) {
     $or: [{
       "position.majors": condition.major
     }, {
-      "position.skills": condition.major
+      "position.skills": condition.skill
     }],
     "position.status": 1,
     "position.amount": {
