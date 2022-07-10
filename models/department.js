@@ -55,14 +55,14 @@ module.exports.getPositionById = function(id, callback){
 module.exports.createDepartment = function(newDepartment, callback){
     newDepartment.save(callback);
 }
-module.exports.addPositionForDepartment = function(id, position, callback){
+module.exports.addPosition = function(id, position, callback){
     Department.findOneAndUpdate({_id: id}, {$push: {position: position}}, callback);
 }
 module.exports.editPosition = function(id, position, callback){
     Department.findOneAndUpdate({"position._id": id}, {$set: {"position.$": position}}, callback);
 }
-module.exports.deletePositionForDepartment = function(department_id, position_id, callback){
-    Department.findOneAndUpdate({_id: department_id}, {$pull: {position: {_id: position_id}}}, callback);
+module.exports.deletePosition = function( id, callback){
+    Department.findOneAndUpdate({"position._id": id}, {$pull: {position: {_id: id}}}, callback);
 }
 module.exports.getDepartmentById = function(id, callback){
     Department.findById(id, callback);

@@ -58,9 +58,10 @@ router.get('/detail/:id', function(req, res){
 });
 router.post('/position/new', function(req, res){
     var department = req.body.department;
-    var id = department.id;
+    var id = department._id;
     var position = department.position;
-    Department.addPositionForDepartment(id, position, function(err, department){
+    position._id = undefined;
+    Department.addPosition(id, position, function(err, department){
         if(err) throw err;
         res.json(department);
     });
@@ -77,10 +78,8 @@ router.post('/position/edit', function(req, res){
 });
 
 router.post('/position/delete', function(req, res){
-    var department_id = req.body.department_id;
-    var position_id = req.body.position_id;
-    console.log(department_id, position_id);
-    Department.deletePositionForDepartment(department_id, position_id, function(err, department){
+    var id = req.body.position_id;
+    Department.deletePosition(id, function(err, department){
         if(err) throw err;
         res.json(department);
     });
