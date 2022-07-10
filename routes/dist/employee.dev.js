@@ -97,7 +97,7 @@ router.post('/register', function (req, res) {
               position: position,
               password: password,
               type: 4,
-              status: 0
+              status: 1
             });
             User.createUser(newEmployee, function (err, companys) {
               if (err) throw err;
