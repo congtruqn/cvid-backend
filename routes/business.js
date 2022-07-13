@@ -55,7 +55,7 @@ router.post('/register', function(req, res){
                         ward: ward,
                         major: major,
                         type: 5,
-                        status: 0
+                        status: 1
                     });
                 }
                 else {
