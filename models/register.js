@@ -54,14 +54,18 @@ var UserSchema = mongoose.Schema({
 	address: String,
 	level: String,
 	school: String,
+	startyear: Number,
+	endyear: Number,
 	major: String,
 	skill: String,
 	position: String,
 	degrees: [{
         name: String,
+		level: String,
         year: String,
         school: String,
         major: String,
+		skill: String,
         code: String,
     }],
     skills: [{

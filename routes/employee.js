@@ -20,6 +20,8 @@ router.post('/register', function(req, res){
     var school = req.body.school;
     var major = req.body.major;
     var skill = req.body.skill;
+    var startyear = req.body.startyear;
+    var endyear = req.body.endyear;
     var position = req.body.position;
     var password = req.body.password;
     // Validation
@@ -68,6 +70,8 @@ router.post('/register', function(req, res){
                             address: address,
                             level: level,
                             school: school,
+                            startyear: startyear,
+                            endyear: endyear,
                             major: major,
                             skill: skill,
                             position: position,
