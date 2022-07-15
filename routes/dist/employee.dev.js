@@ -6,7 +6,7 @@ var router = express.Router();
 
 var cors = require('cors');
 
-var User = require('../models/register');
+var Employee = require('../models/employee');
 
 var Department = require('../models/department');
 
@@ -15,6 +15,83 @@ var Major = require('../models/major');
 var jwt = require('jsonwebtoken');
 
 var accesskey = process.env.CVID_SECRET;
+
+var passport = require('passport');
+
+var LocalStrategy = require('passport-local').Strategy;
+
+passport.use(new LocalStrategy(function (username, password, done) {
+  Employee.getEmployeeByUsername(username, function (err, users) {
+    if (err) throw err;
+
+    if (!users) {
+      return done(null, false, {
+        message: 'Unknown User'
+      });
+    }
+
+    Employee.comparePassword(password, users.password, function (err, isMatch) {
+      if (err) throw err;
+
+      if (isMatch) {
+        return done(null, users);
+      } else {
+        return done(null, false, {
+          message: 'Invalid password'
+        });
+      }
+    });
+  });
+}));
+passport.serializeUser(function (users, done) {
+  done(null, users.id);
+});
+passport.deserializeUser(function (id, done) {
+  Employee.getUserById(id, function (err, users) {
+    done(err, users);
+  });
+});
+router.post('/login', function (req, res, next) {
+  Employee.getEmployeeByUsername(req.body.username, function (err, users) {
+    if (users) {
+      passport.authenticate('local', function (err, user, info) {
+        if (err || !user) {
+          return res.status(401).json({
+            "code": 401,
+            "massage": "Sai mật khẩu"
+          });
+        }
+
+        if (user.status == 0) {
+          return res.status(401).json({
+            "code": 401,
+            "massage": "Tài khoản của bạn chưa được xác thực"
+          });
+        }
+
+        var tokenss = jwt.sign({
+          id: user._id,
+          username: req.body.username,
+          status: user.status,
+          type: user.type
+        }, accesskey, {
+          algorithm: 'HS256',
+          expiresIn: 7760000
+        });
+        user.password = '';
+        res.status(200).json({
+          "token": tokenss,
+          userinfo: user
+        });
+      })(req, res, next);
+    } else {
+      res.status(404).json({
+        "code": 404,
+        "massage": "Tài khoản không tồn tại"
+      });
+    }
+  });
+});
 router.post('/register', function (req, res) {
   var name = req.body.name;
   var username = req.body.username;
@@ -62,7 +139,7 @@ router.post('/register', function (req, res) {
   if (errors) {
     res.send(errors);
   } else {
-    User.getUserByUsername(username, function (err, user) {
+    Employee.getEmployeeByUsername(username, function (err, user) {
       if (err) throw err;
 
       if (user) {
@@ -72,7 +149,7 @@ router.post('/register', function (req, res) {
           value: username
         }]);
       } else {
-        User.getUserByEmail(email, function (err, user) {
+        Employee.getEmployeeByEmail(email, function (err, user) {
           if (err) throw err;
 
           if (user) {
@@ -82,7 +159,7 @@ router.post('/register', function (req, res) {
               value: email
             }]);
           } else {
-            var newEmployee = new User({
+            var newEmployee = new Employee({
               name: name,
               username: username,
               birthdate: birthdate,
@@ -100,10 +177,9 @@ router.post('/register', function (req, res) {
               skill: skill,
               position: position,
               password: password,
-              type: 4,
               status: 1
             });
-            User.createUser(newEmployee, function (err, companys) {
+            Employee.createEmployee(newEmployee, function (err, companys) {
               if (err) throw err;
               Major.addPosition(major, position, function (err, result) {
                 res.send('ok');
@@ -127,7 +203,7 @@ router.post('/me', function (req, res) {
         });
       } else {
         id = decoded.id;
-        User.getUserById(id, function (err, user) {
+        Employee.getEmployeeById(id, function (err, user) {
           if (err) {
             res.json({
               code: 500,
@@ -224,7 +300,7 @@ router.post('/createCV', function (req, res) {
       message: errors[0] ? errors[0].mes : ''
     });
   } else {
-    User.createCV(id, newResume, function (err, resume) {
+    Employee.createCV(id, newResume, function (err, resume) {
       if (err) {
         res.json(err);
       } else {
@@ -237,7 +313,7 @@ router.post('/createCV', function (req, res) {
   }
 });
 router.get('/cvid/:id', function (req, res) {
-  User.getUserById(req.params.id, function (err, cv) {
+  Employee.getEmployeeById(req.params.id, function (err, cv) {
     if (err) {
       res.json(err);
     } else {

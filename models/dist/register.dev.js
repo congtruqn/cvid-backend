@@ -6,37 +6,12 @@ var mongoose = require("mongoose");
 
 var jwt = require('jsonwebtoken');
 
-var bcrypt = require('bcryptjs');
-
-var UserVerification = require('./UserVerification');
-
 var nodemailer = require('nodemailer');
 
 var _require = require('uuid'),
     uuidv4 = _require.v4; // require('dotenv').config();
 
 
-var transporter = nodemailer.createTransport({
-  host: 'mail.glowpacific.com',
-  // hostname
-  port: 465,
-  secure: true,
-  auth: {
-    user: 'hoang.nguyen@glowpacific.com',
-    pass: 'Hoang@123'
-  },
-  tls: {
-    rejectUnauthorized: false
-  }
-});
-transporter.verify(function (error, success) {
-  if (error) {
-    console.log(error);
-  } else {
-    console.log('Ready for message');
-    console.log(success);
-  }
-});
 var accesskey = process.env.CVID_SECRET; // User Schema
 
 var UserSchema = mongoose.Schema({
@@ -113,45 +88,6 @@ module.exports.createUser = function (newUser, callback) {
   });
   sendVerificationEmail(newUser);
   console.log(newUser);
-};
-
-var sendVerificationEmail = function sendVerificationEmail(_ref) {
-  var _id = _ref._id,
-      email = _ref.email;
-  var currentUrl = 'https://issue-0-cvid-api-ggczm4ik6q-an.a.run.app/user';
-
-  var uniqueString = uuidv4() + _id;
-
-  var mailOptions = {
-    from: 'hoang.nguyen@glowpacific.com',
-    to: email,
-    subject: 'Verify Your Email',
-    html: "<div>\n\t\t\t\t\t<p>Verify your email to complete sign up.</p>\n\t\t\t\t\t<p>Click here: <a href=".concat(currentUrl + "/verify/" + _id + '/' + uniqueString, "> Verify Link </a> </p>\n\t\t\t\t</div>")
-  };
-  var saltRounds = 10;
-  bcrypt.hash(uniqueString, saltRounds).then(function (hashedUniqueString) {
-    var newVerification = new UserVerification({
-      userId: _id,
-      uniqueString: hashedUniqueString,
-      createdAt: Date.now()
-    });
-    newVerification.save().then(function (res) {
-      transporter.sendMail(mailOptions).then()["catch"](function (error) {
-        console.log(error);
-      });
-    })["catch"](function (error) {
-      console.log(error);
-      res.json({
-        status: 'FAILED',
-        message: "Couldn't save verification email data"
-      });
-    });
-  })["catch"](function () {
-    res.json({
-      status: 'FAILED',
-      message: 'An error occurred while hashing email!'
-    });
-  });
 };
 
 module.exports.editUser = function (id, newUser, callback) {
