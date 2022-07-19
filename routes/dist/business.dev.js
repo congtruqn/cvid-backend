@@ -50,36 +50,38 @@ passport.deserializeUser(function (id, done) {
 router.post('/login', function (req, res, next) {
   Business.getBusinessByUsername(req.body.username, function (err, users) {
     if (users) {
-      passport.authenticate('local', function (err, user, info) {
-        if (err || !user) {
+      Business.comparePassword(req.body.password, users.password, function (err, isMatch) {
+        if (err) throw err;
+
+        if (isMatch) {
+          if (users.status == 0) {
+            return res.status(401).json({
+              "code": 401,
+              "massage": "Tài khoản của bạn chưa được xác thực"
+            });
+          }
+
+          var tokenss = jwt.sign({
+            id: users._id,
+            username: req.body.username,
+            status: users.status,
+            type: users.type
+          }, accesskey, {
+            algorithm: 'HS256',
+            expiresIn: 7760000
+          });
+          users.password = '';
+          res.status(200).json({
+            "token": tokenss,
+            userinfo: users
+          });
+        } else {
           return res.status(401).json({
             "code": 401,
             "massage": "Sai mật khẩu"
           });
         }
-
-        if (user.status == 0) {
-          return res.status(401).json({
-            "code": 401,
-            "massage": "Tài khoản của bạn chưa được xác thực"
-          });
-        }
-
-        var tokenss = jwt.sign({
-          id: user._id,
-          username: req.body.username,
-          status: user.status,
-          type: user.type
-        }, accesskey, {
-          algorithm: 'HS256',
-          expiresIn: 7760000
-        });
-        user.password = '';
-        res.status(200).json({
-          "token": tokenss,
-          userinfo: user
-        });
-      })(req, res, next);
+      });
     } else {
       res.status(404).json({
         "code": 404,
