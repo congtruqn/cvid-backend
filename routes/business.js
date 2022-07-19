@@ -32,7 +32,7 @@ passport.serializeUser(function(users, done) {
   done(null, users.id);
 });
 passport.deserializeUser(function(id, done) {
-    Business.getUserById(id, function(err, users) {
+    Business.getBusinessById(id, function(err, users) {
     done(err, users);
   });
 });
