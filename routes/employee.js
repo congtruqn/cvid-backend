@@ -31,7 +31,7 @@ passport.use(new LocalStrategy(
 }));
 
 passport.serializeUser(function(users, done) {
-  done(null, users.id);
+  done(null, users._id);
 });
 passport.deserializeUser(function(id, done) {
     Employee.getEmployeeById(id, function(err, users) {
