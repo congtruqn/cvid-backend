@@ -77,7 +77,6 @@ app.use(expressValidator({
   }
 }));
 app.use(require('request-param')({ order: ["body","params","query"] } ) );
-// Connect Flash
 app.use(flash());
 // Global Vars
 app.use(function (req, res, next) {
