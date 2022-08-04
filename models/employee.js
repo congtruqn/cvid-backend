@@ -61,7 +61,12 @@ var EmployeeSchema = mongoose.Schema({
 	point: 0,
 	status: {
 		type: Number
-	}
+	},
+	jobs: [{
+		id: String,
+		type: Number,
+		status: Number
+	}]
 });
 
 var Employee = module.exports = mongoose.model('employee', EmployeeSchema);
