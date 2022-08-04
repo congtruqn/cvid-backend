@@ -39,6 +39,7 @@ var criteria = require('./routes/criteria');
 var business = require('./routes/business');
 var resume = require('./routes/resume');
 var department = require('./routes/department');
+var job = require('./routes/job');
 global.__basedir = __dirname;
 app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs({defaultLayout:'layout'}));
@@ -95,7 +96,7 @@ app.use('/school', school);
 app.use('/major', major);
 app.use('/criteria', criteria);
 app.use('/department', department);
-
+app.use('/job', job);
 app.use('/resume', resume);
 app.use(async function (req, res, next) {
   if (!req.headers.authorization ||!req.headers.authorization.split(" ")[0] === "Bearer"){

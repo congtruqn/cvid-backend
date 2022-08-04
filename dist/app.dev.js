@@ -73,6 +73,8 @@ var resume = require('./routes/resume');
 
 var department = require('./routes/department');
 
+var job = require('./routes/job');
+
 global.__basedir = __dirname;
 app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs({
@@ -117,8 +119,7 @@ app.use(expressValidator({
 }));
 app.use(require('request-param')({
   order: ["body", "params", "query"]
-})); // Connect Flash
-
+}));
 app.use(flash()); // Global Vars
 
 app.use(function (req, res, next) {
@@ -137,6 +138,7 @@ app.use('/school', school);
 app.use('/major', major);
 app.use('/criteria', criteria);
 app.use('/department', department);
+app.use('/job', job);
 app.use('/resume', resume);
 app.use(function _callee(req, res, next) {
   return regeneratorRuntime.async(function _callee$(_context) {
