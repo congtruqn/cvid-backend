@@ -103,4 +103,21 @@ router.get('/findCV/:position_id', function(req, res){
         });
     });
 });
+
+router.post('/position/list', function(req, res){
+    var selected = req.body.selected;
+    Department.getPositionList(selected, function(err, departments){
+        if(err) throw err;
+        var position_list = []
+        departments.forEach(function(department){
+            department.position.forEach(function(position){
+                if (selected.includes(position._id.toString())){
+                    console.log(1)
+                    position_list.push(position)
+                }
+            });
+        })
+        res.json(position_list);
+    });
+});
 module.exports = router;

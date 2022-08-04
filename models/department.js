@@ -70,3 +70,7 @@ module.exports.deletePosition = function( id, callback){
 module.exports.getDepartmentById = function(id, callback){
     Department.findById(id, callback);
 }
+module.exports.getPositionList = function(selected, callback){
+    var query = {"position._id": { $in: selected }};
+    Department.find(query, callback);
+}
