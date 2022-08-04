@@ -324,6 +324,16 @@ router.get('/cvid/:id', function (req, res) {
     }
   });
 });
+router.post('/list/cvid', function (req, res) {
+  var selected = req.body.selected;
+  Employee.getEmployeeByListId(selected, function (err, list_cvid) {
+    if (err) {
+      res.json(err);
+    } else {
+      res.json(list_cvid);
+    }
+  });
+});
 router.post('/findPosition', function (req, res) {
   var condition = {
     major: req.body.major,
