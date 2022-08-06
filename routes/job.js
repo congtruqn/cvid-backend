@@ -6,9 +6,11 @@ var Job = require('../models/job');
 router.post('/create', function(req, res, next) {
     var employee = req.body.employee
     var position = req.body.position
+    var business = req.body.business
     var newJob = new Job({
         employee_id : employee,
         position_id : position,
+        business_id : business,
         type : req.body.type,
     });
     Job.checkJob(employee, position, function(err, item){
@@ -23,6 +25,7 @@ router.post('/create', function(req, res, next) {
                 }
             });
         }
+        res.json(item);
     })
     
 });
@@ -37,9 +40,9 @@ router.post('/getforemployee', function(req, res, next) {
         }
     })
 });
-router.post('/getforposition', function(req, res, next) {
+router.post('/getforbusiness', function(req, res, next) {
     var id = req.body.id
-    Job.getJobForPosition(id, function(err, item){
+    Job.getCvidForBusiness(id, function(err, item){
         if (err) {
             res.json(err);
         } else {
