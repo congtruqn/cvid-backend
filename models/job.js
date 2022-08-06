@@ -3,6 +3,7 @@ var mongoose = require("mongoose")
 var JobSchema = mongoose.Schema({
 	employee_id: String,
     position_id: String,
+    business_id: String,
     type: Number,
     status: {
         type: Number,
@@ -28,7 +29,7 @@ module.exports.getJobForEmployee = function(employee_id, callback){
     Job.find(query, callback);
 }
 
-module.exports.getJobForPosition = function(position_id, callback){
-    var query = {position_id: position_id};
+module.exports.getCvidForBusiness = function(business_id, callback){
+    var query = {business_id: business_id};
     Job.find(query, callback);
 }
