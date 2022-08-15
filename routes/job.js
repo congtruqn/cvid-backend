@@ -52,13 +52,17 @@ router.post('/getforbusiness', function(req, res, next) {
 });
 
 router.post('/pay', function(req, res, next){
-    var selected = req.body.selected;
-    Job.updatePayment(selected, function(err, item){
-        if (err){
-            res.json(err)
-        } else {
-            res.json(item)
-        }
+    var job_list = req.body.job_list;
+    job_list.forEach(item => {
+        Job.updatePayment(item, function(err, item){
+            if (err) {
+                res.json(500, 'oh noes!');
+                return
+            }
+        })
+        console.log(item)
     })
+    res.json('ok')
+    
 });
 module.exports = router;

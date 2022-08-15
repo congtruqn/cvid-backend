@@ -10,7 +10,7 @@ var JobSchema = mongoose.Schema({
         default: 0
     },
 
-    schedule: Date
+    schedule: String
 });
 
 var Job = module.exports = mongoose.model('job', JobSchema);
@@ -36,7 +36,6 @@ module.exports.getCvidForBusiness = function(business_id, callback){
     Job.find(query, callback);
 }
 
-module.exports.updatePayment = function(selected, callback){
-    var query = {_id: { $in: selected }}
-    Job.updateMany(query, {status: 1})
+module.exports.updatePayment = function(job, callback){
+    Job.update({_id: job._id}, {$set: {status: 1, schedule: job.schedule}}, callback)
 }
