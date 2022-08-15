@@ -147,4 +147,40 @@ router.post('/register', function(req, res){
     }
 });
 
+router.post('/getinfo', function(req, res){
+    var mst = req.body.mst;
+    // request('http://www.google.com', function (error, response, body) {
+    //     // console.error('error:', error); // Print the error if one occurred
+    //     console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+    //     // console.log('body:', body); // Print the HTML for the Google homepage.
+    // });
+    const https = require('https');
+    const axios = require('axios');
+    axios.defaults.httpsAgent = new https.Agent({
+        PromiseRejectionEvent: false,
+    })
+    var request = require('request')
+    request("https://staging-dot-farmme-ggczm4ik6q-an.a.run.app/business/register", function(error, response, body) {
+        if (error){
+            console.log(error)
+        }
+        else {
+            console.log(response)
+            console.log(body)
+        }
+    })
+
+
+    // https.get("https://dichvuthongtin.dkkd.gov.vn/inf/default.aspx", function(res) {
+    //     console.log(res.statusCode);
+    //     res.setEncoding('utf8');
+    //     res.on('data', function(data) {
+    //         console.log(data);
+    //     });
+    // }).on('error', function(err) {
+    //     console.log(err);
+    // });
+
+    // res.send(1);
+});
 module.exports = router;

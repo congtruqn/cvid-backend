@@ -50,4 +50,15 @@ router.post('/getforbusiness', function(req, res, next) {
         }
     })
 });
+
+router.post('/pay', function(req, res, next){
+    var selected = req.body.selected;
+    Job.updatePayment(selected, function(err, item){
+        if (err){
+            res.json(err)
+        } else {
+            res.json(item)
+        }
+    })
+});
 module.exports = router;

@@ -11,7 +11,8 @@ var JobSchema = mongoose.Schema({
   status: {
     type: Number,
     "default": 0
-  }
+  },
+  schedule: Date
 });
 var Job = module.exports = mongoose.model('job', JobSchema);
 
@@ -39,4 +40,15 @@ module.exports.getCvidForBusiness = function (business_id, callback) {
     business_id: business_id
   };
   Job.find(query, callback);
+};
+
+module.exports.updatePayment = function (selected, callback) {
+  var query = {
+    _id: {
+      $in: selected
+    }
+  };
+  Job.updateMany(query, {
+    status: 1
+  });
 };
