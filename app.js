@@ -98,6 +98,7 @@ app.use('/criteria', criteria);
 app.use('/department', department);
 app.use('/job', job);
 app.use('/resume', resume);
+
 app.use(async function (req, res, next) {
   if (!req.headers.authorization ||!req.headers.authorization.split(" ")[0] === "Bearer"){
     res.status(401).json({ auth: false, message: 'No token found.' });

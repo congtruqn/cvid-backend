@@ -7,6 +7,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "bcryptjs": "*",
     "body-parser": "~1.18.2",
     "connect-flash": "*",
@@ -29,6 +30,7 @@
     "passport": "*",
     "passport-http": "*",
     "passport-local": "*",
+    "request": "^2.88.2",
     "request-param": "^1.0.1",
     "serve-favicon": "~2.4.5",
     "uuid": "^8.3.2"

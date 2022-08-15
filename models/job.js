@@ -8,7 +8,9 @@ var JobSchema = mongoose.Schema({
     status: {
         type: Number,
         default: 0
-    }
+    },
+
+    schedule: Date
 });
 
 var Job = module.exports = mongoose.model('job', JobSchema);
@@ -32,4 +34,9 @@ module.exports.getJobForEmployee = function(employee_id, callback){
 module.exports.getCvidForBusiness = function(business_id, callback){
     var query = {business_id: business_id};
     Job.find(query, callback);
+}
+
+module.exports.updatePayment = function(selected, callback){
+    var query = {_id: { $in: selected }}
+    Job.updateMany(query, {status: 1})
 }
