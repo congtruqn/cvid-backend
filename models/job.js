@@ -9,7 +9,6 @@ var JobSchema = mongoose.Schema({
         type: Number,
         default: 0
     },
-
     schedule: String
 });
 

@@ -7,11 +7,12 @@ router.post('/create', function(req, res, next) {
     var employee = req.body.employee
     var position = req.body.position
     var business = req.body.business
+    var type = req.body.type
     var newJob = new Job({
         employee_id : employee,
         position_id : position,
         business_id : business,
-        type : req.body.type,
+        type : type,
     });
     Job.checkJob(employee, position, function(err, item){
         if (err) {
@@ -24,8 +25,10 @@ router.post('/create', function(req, res, next) {
                     res.json(job);
                 }
             });
+        } else {
+            res.json(item);
         }
-        res.json(item);
+        
     })
     
 });
