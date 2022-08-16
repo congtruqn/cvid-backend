@@ -112,6 +112,7 @@ router.post('/position/list', function(req, res){
         departments.forEach(function(department){
             department.position.forEach(function(position){
                 if (selected.includes(position._id.toString())){
+                    position.status = 0
                     position_list.push(position)
                 }
             });

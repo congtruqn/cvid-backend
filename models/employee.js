@@ -136,5 +136,5 @@ module.exports.createCV = function(id,newCV, callback){
 
 module.exports.getEmployeeByListId = function(list, callback){
 	var query = {"_id": { $in: list }};
-	Employee.find(query, callback);
+	Employee.find(query, {password: 0, type: 0, status: 0} ,callback);
 }
