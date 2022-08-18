@@ -20,11 +20,6 @@ var DepartmentSchema = mongoose.Schema({
         min_salary: Number,
         max_salary: Number,
         requirements: String,
-        contact: String,
-        phone: String,
-        email: String,
-        address: String,
-        note: String,
         status: String,
     }],
 
