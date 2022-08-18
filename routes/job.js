@@ -53,7 +53,16 @@ router.post('/getforbusiness', function(req, res, next) {
         }
     })
 });
-
+router.post('/getforposition', function(req, res, next) {
+    var id = req.body.id
+    Job.getCvidForPosition(id, function(err, item){
+        if (err) {
+            res.json(err);
+        } else {
+            res.json(item)
+        }
+    })
+});
 router.post('/pay', function(req, res, next){
     var job_list = req.body.job_list;
     job_list.forEach(item => {

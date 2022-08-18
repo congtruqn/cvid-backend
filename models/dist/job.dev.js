@@ -42,6 +42,13 @@ module.exports.getCvidForBusiness = function (business_id, callback) {
   Job.find(query, callback);
 };
 
+module.exports.getCvidForPosition = function (position_id, callback) {
+  var query = {
+    position_id: position_id
+  };
+  Job.find(query, callback);
+};
+
 module.exports.updatePayment = function (job, callback) {
   Job.update({
     _id: job._id

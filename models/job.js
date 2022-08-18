@@ -34,7 +34,10 @@ module.exports.getCvidForBusiness = function(business_id, callback){
     var query = {business_id: business_id};
     Job.find(query, callback);
 }
-
+module.exports.getCvidForPosition = function(position_id, callback){
+    var query = {position_id: position_id};
+    Job.find(query, callback);
+}
 module.exports.updatePayment = function(job, callback){
     Job.update({_id: job._id}, {$set: {status: 1, schedule: job.schedule}}, callback)
 }
