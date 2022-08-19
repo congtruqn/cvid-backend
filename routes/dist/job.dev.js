@@ -5,33 +5,45 @@ var express = require('express');
 var router = express.Router();
 
 var Job = require('../models/job');
+
+var Department = require('../models/department');
 /* GET home page. */
 
 
 router.post('/create', function (req, res, next) {
   var employee = req.body.employee;
   var position = req.body.position;
-  var business = req.body.business;
+  var business = "";
   var type = req.body.type;
-  var newJob = new Job({
-    employee_id: employee,
-    position_id: position,
-    business_id: business,
-    type: type
-  });
   Job.checkJob(employee, position, function (err, item) {
     if (err) {
       res.json(err);
     } else if (!item) {
-      Job.addJob(newJob, function (err, job) {
+      Department.getPositionById(position, function (err, department) {
         if (err) {
-          res.json(err);
+          res.json(500, err);
+        } else if (department) {
+          business = department.id;
+          var newJob = new Job({
+            employee_id: employee,
+            position_id: position,
+            business_id: business,
+            type: type
+          });
+          Job.addJob(newJob, function (err, job) {
+            if (err) {
+              res.json(err);
+            } else {
+              res.json(job);
+            }
+          });
         } else {
-          res.json(job);
+          res.json(404, 'Invalid Job');
+          return;
         }
       });
     } else {
-      res.json(item);
+      res.json(401, item);
     }
   });
 });
@@ -62,6 +74,19 @@ router.post('/getforposition', function (req, res, next) {
       res.json(err);
     } else {
       res.json(item);
+    }
+  });
+});
+router.post('/checkjob', function (req, res, next) {
+  var employee = req.body.employee;
+  var position = req.body.position;
+  Job.checkJob(employee, position, function (err, item) {
+    if (err) {
+      res.json(500, err);
+    } else if (item) {
+      res.json(item);
+    } else {
+      res.json(null);
     }
   });
 });
