@@ -12,7 +12,6 @@ var DepartmentSchema = mongoose.Schema({
         name: String,
         majors: Array,
         skills: Array,
-        amount: Number,
         description: String,
         enddate: Date,
         startdate: Date,
@@ -38,7 +37,7 @@ module.exports.getDepartment = function(id, callback){
 module.exports.getPosition = function(condition, callback){
     var query = { $or : [
                 {"position.majors": condition.major},
-                {"position.skills": condition.skill},
+                {"position.skills": condition.skill}
                 ],
                 "position.status": 1,
             };
