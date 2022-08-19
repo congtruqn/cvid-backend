@@ -104,6 +104,48 @@ router.get('/findCV/:position_id', function(req, res){
     });
 });
 
+// router.post('/findcvforposition', function(req, res){
+//     var selected = req.body.selected;
+//     var result = []
+//     selected.forEach(function(id) {
+
+//         const department = new Promise((resolve) => {
+//             Department.getPositionById(id, function(err, department){
+//                 if (err){
+//                     console.log(err)
+//                 } else {
+//                     resolve(department)
+//                 }
+//             })
+//         });
+//         var depart = ''
+//         department.then(res => {depart = res})
+//         if (depart) {
+//             depart.position.forEach(async function(position){
+//                 if(position._id == id){
+//                     var query = { $or: [
+//                         { major: {$in: position.majors}},
+//                         { skill: {$in: position.skills}}
+//                     ]};
+//                     const cv_list = new Promise((resolve) => {
+//                         User.find(query, function(err, users){
+//                             if (err){
+//                                 console.log(err)
+//                             } else {
+//                                 resolve(users)
+//                             }
+//                         })
+//                     })
+//                     var cv = '' 
+//                     cv_list.then(res => {cv = res})
+//                     result.push(cv)
+//                 }
+//             })
+//         }
+
+//     })
+//     console.log(result)
+// })
 router.post('/position/list', function(req, res){
     var selected = req.body.selected;
     Department.getPositionList(selected, function(err, departments){

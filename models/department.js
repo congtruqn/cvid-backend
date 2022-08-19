@@ -41,7 +41,6 @@ module.exports.getPosition = function(condition, callback){
                 {"position.skills": condition.skill},
                 ],
                 "position.status": 1,
-                "position.amount": { $gte: 1}
             };
     Department.find(query, callback);
 }
