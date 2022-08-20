@@ -24,7 +24,10 @@ module.exports.checkJob = function(employee, position, callback){
     var query = {employee_id: employee, position_id: position};
     Job.findOne(query, callback);
 }
-
+module.exports.deleteJob = function(employee, position, callback){
+    var query = {employee_id: employee, position_id: position, schedule : { $exists: false }};
+    Job.deleteOne(query, callback);
+}
 module.exports.getJobForEmployee = function(employee_id, callback){
     var query = {employee_id: employee_id};
     Job.find(query, callback);

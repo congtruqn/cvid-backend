@@ -88,8 +88,23 @@ router.post('/position/delete', function (req, res) {
     res.json(department);
   });
 });
+router.post('/position/stop', function (req, res) {
+  var id = req.params.position_id;
+  Department.stopRecruiting(id, function (err, department) {
+    if (err) {
+      res.json(500, err);
+    } else if (item) {
+      res.json(department);
+    } else {
+      res.json(null);
+    }
+  });
+});
 router.get('/findCV/:position_id', function (req, res) {
   var id = req.params.position_id;
+  Department.startRecruiting(id, function (err, department) {
+    if (err) throw err;
+  });
   Department.getPositionById(id, function (err, department) {
     if (err) throw err;
     department.position.forEach(function (position) {

@@ -60,6 +60,12 @@ module.exports.editPosition = function(id, position, callback){
 module.exports.deletePosition = function( id, callback){
     Department.findOneAndUpdate({"position._id": id}, {$pull: {position: {_id: id}}}, callback);
 }
+module.exports.startRecruiting = function( id, callback){
+    Department.findOneAndUpdate({"position._id": id}, {$set: {"position.$.status": 1}}, callback);
+}
+module.exports.stopRecruiting = function( id, callback){
+    Department.findOneAndUpdate({"position._id": id}, {$set: {"position.$.status": 0}}, callback);
+}
 module.exports.getDepartmentById = function(id, callback){
     Department.findById(id, callback);
 }

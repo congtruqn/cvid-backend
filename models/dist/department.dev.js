@@ -94,6 +94,26 @@ module.exports.deletePosition = function (id, callback) {
   }, callback);
 };
 
+module.exports.startRecruiting = function (id, callback) {
+  Department.findOneAndUpdate({
+    "position._id": id
+  }, {
+    $set: {
+      "position.$.status": 1
+    }
+  }, callback);
+};
+
+module.exports.stopRecruiting = function (id, callback) {
+  Department.findOneAndUpdate({
+    "position._id": id
+  }, {
+    $set: {
+      "position.$.status": 0
+    }
+  }, callback);
+};
+
 module.exports.getDepartmentById = function (id, callback) {
   Department.findById(id, callback);
 };
