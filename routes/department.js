@@ -86,11 +86,11 @@ router.post('/position/delete', function(req, res){
 });
 router.post('/position/stop', function(req, res){
 
-    var id = req.params.position_id;
+    var id = req.body.position_id;
     Department.stopRecruiting(id, function(err, department){
         if (err){
             res.json(500, err)
-        } else if (item){
+        } else if (department){
             res.json(department)
         } else {
             res.json(null)
