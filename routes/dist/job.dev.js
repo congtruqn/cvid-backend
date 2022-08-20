@@ -90,6 +90,19 @@ router.post('/checkjob', function (req, res, next) {
     }
   });
 });
+router.post('/delete', function (req, res, next) {
+  var employee = req.body.employee;
+  var position = req.body.position;
+  Job.deleteJob(employee, position, function (err, item) {
+    if (err) {
+      res.json(500, err);
+    } else if (item) {
+      res.json(item);
+    } else {
+      res.json(null);
+    }
+  });
+});
 router.post('/pay', function (req, res, next) {
   var job_list = req.body.job_list;
   job_list.forEach(function (item) {
