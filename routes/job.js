@@ -15,10 +15,12 @@ router.post('/create', function(req, res, next) {
                     res.json(500, err);
                 } else if (department){
                     job.business_id = department.id
-                    var newJob = new Job(job);
+                    
                     if (item){
+                        let newJob = job;
                         var id = item._id
                         delete newJob._id
+                        console.log(newJob)
                         Job.updateJob(id, newJob, function(err, job) {
                             if (err) {
                                 res.json(err);
@@ -27,6 +29,7 @@ router.post('/create', function(req, res, next) {
                             }
                         });
                     } else {
+                        let newJob = new Job(job)
                         Job.addJob(newJob, function(err, job) {
                             if (err) {
                                 res.json(err);
