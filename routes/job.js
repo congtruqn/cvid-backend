@@ -2,34 +2,39 @@ var express = require('express');
 var router = express.Router();
 var Job = require('../models/job');
 var Department = require('../models/department');
+var Employee = require('../models/employee')
 /* GET home page. */
 router.post('/create', function(req, res, next) {
-    var employee = req.body.employee
-    var position = req.body.position
-    var business = ""
-    var type = req.body.type
-    Job.checkJob(employee, position, function(err, item){
+    var job = req.body.job
+    Job.checkJob(job.employee_id, job.position_id, function(err, item){
         if (err) {
             res.json(err);
-        } else if (!item) {
-            Department.getPositionById(position, function(err, department){
+        } else {
+            Department.getPositionById(job.position_id, function(err, department){
                 if (err) {
                     res.json(500, err);
                 } else if (department){
-                    business = department.id
-                    var newJob = new Job({
-                        employee_id : employee,
-                        position_id : position,
-                        business_id : business,
-                        type : type,
-                    });
-                    Job.addJob(newJob, function(err, job) {
-                        if (err) {
-                            res.json(err);
-                        } else {
-                            res.json(job);
-                        }
-                    });
+                    job.business_id = department.id
+                    var newJob = new Job(job);
+                    if (item){
+                        var id = item._id
+                        delete newJob._id
+                        Job.updateJob(id, newJob, function(err, job) {
+                            if (err) {
+                                res.json(err);
+                            } else {
+                                res.json(job);
+                            }
+                        });
+                    } else {
+                        Job.addJob(newJob, function(err, job) {
+                            if (err) {
+                                res.json(err);
+                            } else {
+                                res.json(job);
+                            }
+                        });
+                    }
                 }
                 else {
                     res.json(404, 'Invalid Job')
@@ -37,10 +42,7 @@ router.post('/create', function(req, res, next) {
                 }
             })
             
-        } else {
-            res.json(401, item);
-        }
-        
+        } 
     })
     
 });
@@ -75,7 +77,34 @@ router.post('/getforposition', function(req, res, next) {
         }
     })
 });
-
+router.post('/getcvidforposition', function(req, res, next) {
+    var id = req.body.id
+    let promise = new Promise(function(resolve, reject) {
+        Job.getCvidForPosition(id, function(err, item){
+            if (err) {
+                reject(err);
+            } else {
+                resolve(item);
+            }
+        })
+    });
+    promise.then(
+        async result => {
+            var id_list = []
+            result.forEach(el => {
+                id_list.push(el.employee_id)
+            })
+            Employee.getEmployeeByListId(id_list, function(err, cv_list){
+                res.json({job_list: result, cv_list: cv_list})
+            })
+            
+        },
+        error => {
+            res.json(500, error)
+        }
+    );
+    
+});
 router.post('/checkjob', function(req, res, next) {
     var employee = req.body.employee
     var position = req.body.position

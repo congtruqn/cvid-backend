@@ -97,7 +97,7 @@ router.post('/position/stop', function(req, res){
         }
     })
 });
-router.get('/findCV/:position_id', function(req, res){
+router.get('/findcvforposition/:position_id', function(req, res){
     var id = req.params.position_id;
     Department.startRecruiting(id, function(err, department){
         if(err) throw err;

@@ -9,7 +9,13 @@ var JobSchema = mongoose.Schema({
         type: Number,
         default: 0
     },
-    schedule: String
+    rating: String,
+    review: String,
+    schedule: String,
+    confirm: {
+        type: Number,
+        default: 0
+    }
 });
 
 var Job = module.exports = mongoose.model('job', JobSchema);
@@ -33,6 +39,9 @@ module.exports.getJobForEmployee = function(employee_id, callback){
     Job.find(query, callback);
 }
 
+module.exports.updateJob = function(id, job, callback){
+    Job.findOneAndUpdate({_id: id}, job, callback)
+}
 module.exports.getCvidForBusiness = function(business_id, callback){
     var query = {business_id: business_id};
     Job.find(query, callback);
