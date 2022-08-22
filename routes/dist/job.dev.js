@@ -75,16 +75,6 @@ router.post('/getforbusiness', function (req, res, next) {
     }
   });
 });
-router.post('/getforposition', function (req, res, next) {
-  var id = req.body.id;
-  Job.getCvidForPosition(id, function (err, item) {
-    if (err) {
-      res.json(err);
-    } else {
-      res.json(item);
-    }
-  });
-});
 router.post('/getcvidforposition', function (req, res, next) {
   var id = req.body.id;
   var promise = new Promise(function (resolve, reject) {
@@ -96,28 +86,16 @@ router.post('/getcvidforposition', function (req, res, next) {
       }
     });
   });
-  promise.then(function _callee(result) {
-    var id_list;
-    return regeneratorRuntime.async(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            id_list = [];
-            result.forEach(function (el) {
-              id_list.push(el.employee_id);
-            });
-            Employee.getEmployeeByListId(id_list, function (err, cv_list) {
-              res.json({
-                job_list: result,
-                cv_list: cv_list
-              });
-            });
-
-          case 3:
-          case "end":
-            return _context.stop();
-        }
-      }
+  promise.then(function (result) {
+    var id_list = [];
+    result.forEach(function (el) {
+      id_list.push(el.employee_id);
+    });
+    Employee.getEmployeeByListId(id_list, function (err, cv_list) {
+      res.json({
+        job_list: result,
+        cv_list: cv_list
+      });
     });
   }, function (error) {
     res.json(500, error);
