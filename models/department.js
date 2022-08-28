@@ -10,11 +10,14 @@ var DepartmentSchema = mongoose.Schema({
     },
     position: [{
         name: String,
-        majors: Array,
+        levels: Array,
         skills: Array,
         description: String,
-        enddate: Date,
-        startdate: Date,
+        startdate: {
+            type: Date,
+            default: new Date()
+        },
+        amount: Number,
         work_location: String,
         min_salary: Number,
         max_salary: Number,
