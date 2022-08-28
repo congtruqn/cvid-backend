@@ -15,10 +15,12 @@ router.post('/create', function(req, res, next) {
                     res.json(500, err);
                 } else if (department){
                     job.business_id = department.id
-                    var newJob = new Job(job);
+                    
                     if (item){
+                        let newJob = job;
                         var id = item._id
                         delete newJob._id
+                        console.log(newJob)
                         Job.updateJob(id, newJob, function(err, job) {
                             if (err) {
                                 res.json(err);
@@ -27,6 +29,7 @@ router.post('/create', function(req, res, next) {
                             }
                         });
                     } else {
+                        let newJob = new Job(job)
                         Job.addJob(newJob, function(err, job) {
                             if (err) {
                                 res.json(err);
@@ -67,16 +70,7 @@ router.post('/getforbusiness', function(req, res, next) {
         }
     })
 });
-router.post('/getforposition', function(req, res, next) {
-    var id = req.body.id
-    Job.getCvidForPosition(id, function(err, item){
-        if (err) {
-            res.json(err);
-        } else {
-            res.json(item)
-        }
-    })
-});
+
 router.post('/getcvidforposition', function(req, res, next) {
     var id = req.body.id
     let promise = new Promise(function(resolve, reject) {
@@ -89,7 +83,7 @@ router.post('/getcvidforposition', function(req, res, next) {
         })
     });
     promise.then(
-        async result => {
+        result => {
             var id_list = []
             result.forEach(el => {
                 id_list.push(el.employee_id)
@@ -97,7 +91,6 @@ router.post('/getcvidforposition', function(req, res, next) {
             Employee.getEmployeeByListId(id_list, function(err, cv_list){
                 res.json({job_list: result, cv_list: cv_list})
             })
-            
         },
         error => {
             res.json(500, error)
