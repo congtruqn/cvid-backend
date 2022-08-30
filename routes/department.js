@@ -29,6 +29,13 @@ router.post('/new', function(req, res){
     }
     res.send('ok');
 });
+router.post('/delete', function(req, res){
+    var id = req.body.id
+    Department.deleteDepartment(id, function(err, department) {
+        if (err) res.json(500, err)
+        res.json(department)
+    });
+});
 router.get('/list/:id', function(req, res){
     var id = req.params.id;
     Department.getDepartment(id, function(err, department){
