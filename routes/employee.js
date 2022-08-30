@@ -183,79 +183,40 @@ router.post('/me', function(req, res){
 });
 
 router.post('/createCV', function(req, res){
-    var errors = []
     var id = req.body.id;
-    var degrees = req.body.degrees;
-    degrees = degrees.filter(function(item){
-        if (item.name != ''){
-            if (item.major == '' | item.school == '' | item.year == '' | item.code == ''){
-                errors.push({
-                    mes: "Điền đầy đủ thông tin của bằng cấp"
-                })
-            }
-            return true
-        }
-    });
-    var skills = req.body.skills
-    skills = skills.filter(function(item){
-        if (item.name != ''){
-            if (item.school == '' | item.year == ''){
-                errors.push({
-                    mes: "Điền đầy đủ thông tin của kĩ năng"
-                })
-            }
-            return true
-        }
-    });
-    var companies = req.body.companies
-    companies = companies.filter(function(companie){
-        if (companie.name != ''){
-            companie.position = companie.position.filter(function(item){
-                if (item.work != ''){
-                    if (item.from == '' | item.to == '' | item.năm == '' | item.address == ''){
-                        errors.push({
-                            mes: "Điền đầy đủ thông tin quá trình công tác"
-                        })
-                    }
-                    return true
-                }
-            });
-            if (!companie.position.length){
-                errors.push({
-                    mes: "Điền đầy đủ thông tin quá trình công tác"
-                })
-            } 
-            return true
-        }
-    });
+    var skillWorking = req.body.skillWorking
+    var skillEducation = req.body.skillEducation
+    var shortTraining = req.body.shortTraining
+    var skillEnglish = req.body.skillEnglish
+    var skillLanguage = req.body.skillLanguage
+    var skillComputer = req.body.skillComputer
+    var skillOther = req.body.skillOther
     var assessment = req.body.assessment
     var sumAssessment = assessment.reduce(function(a, b) { return parseInt(a) + parseInt(b); }, 0);
     var point = Math.round(sumAssessment * 10 / 16 ) / 10 
 
-    var newResume = {
-        degrees : degrees,
-        skills : skills,
-        companies : companies,
+    var newCV = {
+        skillWorking : skillWorking,
+        skillEducation : skillEducation,
+        shortTraining : shortTraining,
+        skillEnglish : skillEnglish, 
+        skillLanguage: skillLanguage,
+        skillComputer: skillComputer,
+        skillOther: skillOther,
         assessment : assessment,
         point : point
     };
-    if (errors.length){
-        res.json({
-            success: false,
-            message: errors[0]?errors[0].mes:''
-        })
-    } else {
-        Employee.createCV(id, newResume, function(err, resume) {
-            if (err) {
-                res.json(err);
-            } else {
-                res.json({
-                    success: true,
-                    message: "ok"
-                });
-            }
-        });
-    }
+
+    Employee.createCV(id, newCV, function(err, resume) {
+        if (err) {
+            res.json(500, err);
+        } else if (resume) {
+            res.json(resume)
+        } else {
+            res.json(404, 'Error 404')
+        }
+    });
+
     
 });
 

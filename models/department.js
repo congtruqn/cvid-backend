@@ -54,6 +54,9 @@ module.exports.getPositionById = function(id, callback){
 module.exports.createDepartment = function(newDepartment, callback){
     newDepartment.save(callback);
 }
+module.exports.deleteDepartment = function(id, callback){
+    Department.deleteOne({_id: id}, callback);
+}
 module.exports.addPosition = function(id, position, callback){
     Department.findOneAndUpdate({_id: id}, {$push: {position: position}}, callback);
 }

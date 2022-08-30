@@ -32,31 +32,13 @@ var EmployeeSchema = mongoose.Schema({
 	major: String,
 	skill: String,
 	position: String,
-	degrees: [{
-        name: String,
-		level: String,
-        year: String,
-        school: String,
-        major: String,
-		skill: String,
-        code: String,
-    }],
-    skills: [{
-            name: String,
-            school: String,
-            year: String
-    }],
-    companies: [{
-        name: String,
-        position: [{
-            name: String,
-            year: String,
-            from: String,
-            to: String,
-            work: String,
-            address: String
-        }]
-    }],
+	skillWorking : Array,
+	skillEducation : Array,
+	shortTraining : Array,
+	skillEnglish : Array, 
+	skillLanguage: Array,
+	skillComputer: Array,
+	skillOther: Array,
 	assessment: Array,
 	point: 0,
 	status: {
@@ -130,7 +112,7 @@ module.exports.comparePassword = function(candidatePassword, hash, callback){
 	});
 }
 
-module.exports.createCV = function(id,newCV, callback){
+module.exports.createCV = function(id, newCV, callback){
 	Employee.findByIdAndUpdate(id, newCV, callback);
 }
 
