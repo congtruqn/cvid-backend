@@ -40,6 +40,7 @@ var EmployeeSchema = mongoose.Schema({
 	skillComputer: Object,
 	skillOther: Array,
 	assessment: Array,
+	jobs: Object,
 	point: 0,
 	status: {
 		type: Number
