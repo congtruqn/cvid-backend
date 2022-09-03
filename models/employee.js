@@ -40,7 +40,7 @@ var EmployeeSchema = mongoose.Schema({
 	skillComputer: Object,
 	skillOther: Array,
 	assessment: Array,
-	jobs: Object,
+	job: Object,
 	point: 0,
 	status: {
 		type: Number
@@ -116,7 +116,9 @@ module.exports.comparePassword = function(candidatePassword, hash, callback){
 module.exports.createCV = function(id, newCV, callback){
 	Employee.findByIdAndUpdate(id, newCV, callback);
 }
-
+module.exports.findJob = function(id, job, callback){
+	Employee.findByIdAndUpdate(id, job, callback);
+}
 module.exports.getEmployeeByListId = function(list, callback){
 	var query = {"_id": { $in: list }};
 	Employee.find(query, {password: 0, type: 0, status: 0} ,callback);

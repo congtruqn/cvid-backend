@@ -162,7 +162,7 @@ router.post('/me', function(req, res){
     if (token) {
         jwt.verify(token, accesskey, function (err, decoded) {
             if (err) {
-                res.json({code: 401, massage: 'Token error'});
+                res.json(401, err);
             }
             else {
                 id = decoded.id;
@@ -172,7 +172,7 @@ router.post('/me', function(req, res){
                     } else if (!user) {
                         res.json({code: 404, message: 'No user found.'});
                     } else {
-                        res.json({code: 200, user: user});
+                        res.json(200, {user: user});
                     } 
                 });
             }
@@ -250,7 +250,19 @@ router.post('/findPosition', function(req, res){
 })
 
 router.post('/findJob', function(req, res){
-    var job = req.body.job
+    var id = req.body.id
+    var job = req.body.job  
+    job.datetime = new Date()
+
+    Employee.findJob(id, {job: job}, function(err, employee){
+        if (err) {
+            res.json(500, err);
+            return
+        } else if (!employee) {
+            res.json(404, 'Error 404')
+            return
+        }
+    })
     Department.getPosition(job, function(err, departments) {
         if (err) res.json(500, err)
         else {
