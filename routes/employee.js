@@ -248,6 +248,25 @@ router.post('/findPosition', function(req, res){
         res.json(position)
     });
 })
+
+router.post('/findJob', function(req, res){
+    var job = req.body.job
+    Department.getPosition(job, function(err, departments) {
+        if (err) res.json(500, err)
+        else {
+            var result = []
+            departments.forEach(department => {
+                department.position.forEach(item => {
+                    if (item.skills.includes(job.skill) && item.status == 1){
+                        result.push(item)
+                    }
+                })
+            })
+            res.json(result)
+        }
+    });
+})
+
 module.exports = router;
 
 

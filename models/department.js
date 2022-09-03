@@ -19,6 +19,8 @@ var DepartmentSchema = mongoose.Schema({
         },
         amount: Number,
         work_location: String,
+        work_industry: String,
+        work_environment: String,
         min_salary: Number,
         max_salary: Number,
         requirements: String,
@@ -37,12 +39,14 @@ module.exports.getDepartment = function(id, callback){
     var query = {id: id};
     Department.find(query, callback);
 }
-module.exports.getPosition = function(condition, callback){
-    var query = { $or : [
-                {"position.skills": condition.skill}
-                ],
-                "position.status": 1,
-            };
+module.exports.getPosition = function(job, callback){
+    var query = {"position.skills": job.skill,
+                 "position.status": 1,
+                };
+    if (job.address != '') query["position.work_location"] = job.address 
+    if (job.work_industry != '') query["position.work_industry"] = job.address 
+    if (job.work_environment != '') query["position.work_environment"] = job.work_environment 
+    if (job.type_business != '') query["type_business"] = job.type_business 
     Department.find(query, callback);
 }
 

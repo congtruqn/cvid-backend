@@ -41,6 +41,7 @@ var resume = require('./routes/resume');
 var department = require('./routes/department');
 var environment = require('./routes/environment')
 var industry = require('./routes/industry')
+var typebusiness = require('./routes/type_business');
 var job = require('./routes/job');
 global.__basedir = __dirname;
 app.set('views', path.join(__dirname, 'views'));
@@ -102,6 +103,7 @@ app.use('/job', job);
 app.use('/resume', resume);
 app.use('/environment', environment);
 app.use('/industry', industry);
+app.use('/typebusiness', typebusiness);
 app.use(async function (req, res, next) {
   if (!req.headers.authorization ||!req.headers.authorization.split(" ")[0] === "Bearer"){
     res.status(401).json({ auth: false, message: 'No token found.' });
