@@ -242,7 +242,6 @@ router.post('/list/cvid', function(req, res){
 })
 router.post('/findPosition', function(req, res){
     var condition = {
-        major: req.body.major,
         skill: req.body.skill
     }
     Department.getPosition(condition, function(err, position) {

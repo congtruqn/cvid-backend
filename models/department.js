@@ -39,7 +39,6 @@ module.exports.getDepartment = function(id, callback){
 }
 module.exports.getPosition = function(condition, callback){
     var query = { $or : [
-                {"position.majors": condition.major},
                 {"position.skills": condition.skill}
                 ],
                 "position.status": 1,
