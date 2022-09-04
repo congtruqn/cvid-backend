@@ -82,6 +82,10 @@ module.exports.getEmployeeById = function(id, callback){
 	Employee.findById(id, callback);
 }
 
+module.exports.getAllEmployee = function(callback){
+	Employee.find({}, callback);
+}
+
 module.exports.comparePassword = function(candidatePassword, hash, callback){
 	bcrypt.compare(candidatePassword, hash, function(err, isMatch) {
     	if(err) throw err;

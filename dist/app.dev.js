@@ -81,6 +81,8 @@ var typebusiness = require('./routes/type_business');
 
 var job = require('./routes/job');
 
+var admin = require('./routes/admin');
+
 global.__basedir = __dirname;
 app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs({
@@ -149,6 +151,7 @@ app.use('/resume', resume);
 app.use('/environment', environment);
 app.use('/industry', industry);
 app.use('/typebusiness', typebusiness);
+app.use('/admin', admin);
 app.use(function _callee(req, res, next) {
   return regeneratorRuntime.async(function _callee$(_context) {
     while (1) {
