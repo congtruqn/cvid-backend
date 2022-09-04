@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Admin = require('../models/admin');
 var Employee = require('../models/employee');
+var Business = require('../models/business');
 const jwt = require('jsonwebtoken');
 const accesskey = process.env.CVID_SECRET
 
@@ -10,7 +11,7 @@ var checkAdmin = (req, res, next) => {
     if (token) {
         jwt.verify(token, accesskey, function (err, decoded) {
             if (err) {
-                res.json(401, 'Failed to authenticate token.');
+                res.redirect("/admin/login")
             }
             else {
                 id = decoded.id;
@@ -18,7 +19,7 @@ var checkAdmin = (req, res, next) => {
                     if (err) {
                         res.send(500, err);
                     }else if (!admin) {
-                        res.send(404, 'No admin found.');
+                        res.redirect("/admin/login")
                     } else {
                         req.data = admin;
                         next();
@@ -28,7 +29,7 @@ var checkAdmin = (req, res, next) => {
         });
     }
     else {
-        res.json(404, 'No token provided.');
+        res.redirect("/admin/login")
     }
 }
 
@@ -38,6 +39,15 @@ router.post('/get-all-employee', checkAdmin, function(req, res, next) {
         if (err) res.json(500, err)
         else {
             res.json(200, employees)
+        }
+    })
+});
+
+router.post('/get-all-business', checkAdmin, function(req, res, next) {
+    Business.getAllBusiness(function(err, businesses){
+        if (err) res.json(500, err)
+        else {
+            res.json(200, businesses)
         }
     })
 });

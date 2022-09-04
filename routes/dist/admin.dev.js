@@ -8,6 +8,8 @@ var Admin = require('../models/admin');
 
 var Employee = require('../models/employee');
 
+var Business = require('../models/business');
+
 var jwt = require('jsonwebtoken');
 
 var accesskey = process.env.CVID_SECRET;
@@ -18,14 +20,14 @@ var checkAdmin = function checkAdmin(req, res, next) {
   if (token) {
     jwt.verify(token, accesskey, function (err, decoded) {
       if (err) {
-        res.json(401, 'Failed to authenticate token.');
+        res.redirect("/admin/login");
       } else {
         id = decoded.id;
         Admin.getAdminById(id, function (err, admin) {
           if (err) {
             res.send(500, err);
           } else if (!admin) {
-            res.send(404, 'No admin found.');
+            res.redirect("/admin/login");
           } else {
             req.data = admin;
             next();
@@ -34,7 +36,7 @@ var checkAdmin = function checkAdmin(req, res, next) {
       }
     });
   } else {
-    res.json(404, 'No token provided.');
+    res.redirect("/admin/login");
   }
 };
 /* GET home page. */
@@ -44,6 +46,13 @@ router.post('/get-all-employee', checkAdmin, function (req, res, next) {
   Employee.getAllEmployee(function (err, employees) {
     if (err) res.json(500, err);else {
       res.json(200, employees);
+    }
+  });
+});
+router.post('/get-all-business', checkAdmin, function (req, res, next) {
+  Business.getAllBusiness(function (err, businesses) {
+    if (err) res.json(500, err);else {
+      res.json(200, businesses);
     }
   });
 });
