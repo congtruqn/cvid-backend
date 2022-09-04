@@ -83,6 +83,12 @@ module.exports.getEmployeeById = function (id, callback) {
   Employee.findById(id, callback);
 };
 
+module.exports.deleteEmployeeById = function (id, callback) {
+  Employee.deleteOne({
+    _id: id
+  }, callback);
+};
+
 module.exports.getAllEmployee = function (callback) {
   Employee.find({}, callback);
 };

@@ -78,8 +78,14 @@ module.exports.getEmployeeByUsername = function(username, callback){
 	Employee.findOne(query, callback);
 }
 
+
+
 module.exports.getEmployeeById = function(id, callback){
 	Employee.findById(id, callback);
+}
+
+module.exports.deleteEmployeeById = function(id, callback){
+	Employee.deleteOne({_id: id}, callback);
 }
 
 module.exports.getAllEmployee = function(callback){

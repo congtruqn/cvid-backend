@@ -49,6 +49,13 @@ router.post('/get-all-employee', checkAdmin, function (req, res, next) {
     }
   });
 });
+router.post('/delete-employee-by-id', checkAdmin, function (req, res, next) {
+  Employee.deleteEmployeeById(req.body.id, function (err, employee) {
+    if (err) res.json(500, err);else {
+      res.json(200, employee);
+    }
+  });
+});
 router.post('/get-all-business', checkAdmin, function (req, res, next) {
   Business.getAllBusiness(function (err, businesses) {
     if (err) res.json(500, err);else {
