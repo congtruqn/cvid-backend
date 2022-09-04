@@ -68,7 +68,9 @@ module.exports.getBusinessByUsername = function(username, callback){
 module.exports.getBusinessById = function(id, callback){
 	Business.findById(id, callback);
 }
-
+module.exports.getAllBusiness = function(callback){
+	Business.find({}, callback);
+}
 module.exports.comparePassword = function(candidatePassword, hash, callback){
 	bcrypt.compare(candidatePassword, hash, function(err, isMatch) {
     	if(err) throw err;
