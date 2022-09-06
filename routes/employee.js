@@ -269,7 +269,17 @@ router.post('/findJob', function(req, res){
             var result = []
             departments.forEach(department => {
                 department.position.forEach(item => {
-                    if (item.skills.includes(job.skill) && item.status == 1){
+                    let flag = true
+                    if (job.work_industry != '' && job.work_industry != item.work_industry){
+                        flag = false
+                    }
+                    if (job.work_environment != '' && job.work_environment != item.work_environment){
+                        flag = false
+                    }
+                    if (job.address != '' && job.address != item.work_location){
+                        flag = false
+                    }
+                    if (item.skills.includes(job.skill) && item.status == 1 && flag == true){
                         result.push(item)
                     }
                 })
