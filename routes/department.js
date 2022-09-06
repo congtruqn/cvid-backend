@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Department = require('../models/department');
-var User = require('../models/employee');
+var Employee = require('../models/employee');
 
 
 router.post('/new', function(req, res){
@@ -14,19 +14,6 @@ router.post('/new', function(req, res){
     Department.createDepartment(newDepartment, function(err, department) {
         if (err) throw err;
     });
-    if (req.body.username && req.body.password){
-        var newUser = new User({
-            username: req.body.username,
-            password: req.body.password,
-            status: 1,
-            name: newDepartment._id,
-            type: 7
-        });
-        User.createUser(newUser, function(err, user) {
-            if (err) throw err;
-            
-        });
-    }
     res.send('ok');
 });
 router.post('/delete', function(req, res){
@@ -113,13 +100,25 @@ router.get('/findcvforposition/:position_id', function(req, res){
         if(err) throw err;
         department.position.forEach(function(position){
             if(position._id == id){
-                var query = { $or: [
-                    { major: {$in: position.majors}},
-                    { skill: {$in: position.skills}}
-                ]};
-                User.find(query, function(err, users){
+                var query = {
+                    "job.skill": {$in: position.skills},
+                    "job.status": 1,
+                    $or: [
+                        {"job.address": ""},
+                        {"job.address": position.work_location},
+                    ],
+                    $or: [
+                        {"job.work_industry": ""},
+                        {"job.work_industry": position.work_industry},
+                    ],
+                    $or: [
+                        {"job.work_environment": ""},
+                        {"job.work_environment": position.work_environment},
+                    ],
+                };
+                Employee.getEmployeeByQuery(query, function(err, employees){
                     if(err) throw err;
-                    res.json(users);
+                    res.json(employees);
                 });
             }
         });
