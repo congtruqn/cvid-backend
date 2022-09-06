@@ -103,10 +103,7 @@ router.get('/findcvforposition/:position_id', function(req, res){
                 var query = {
                     "job.skill": {$in: position.skills},
                     "job.status": 1,
-                    $or: [
-                        {"job.address": ""},
-                        {"job.address": position.work_location},
-                    ],
+                    "job.address": {$in: ["", position.work_location]},
                     $or: [
                         {"job.work_industry": ""},
                         {"job.work_industry": position.work_industry},
