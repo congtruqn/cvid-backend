@@ -328,7 +328,7 @@ router.post('/findJob', function (req, res) {
             flag = false;
           }
 
-          if (item.skills.includes(job.skill) && item.status == 1 && flag == true) {
+          if (item.skills.includes(job.skill) && item.status == 1 && flag == true && item.jobtitle == job.jobtitle) {
             result.push(item);
           }
         });

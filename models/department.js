@@ -43,6 +43,7 @@ module.exports.getDepartment = function(id, callback){
 module.exports.getPosition = function(job, callback){
     var query = {"position.skills": job.skill,
                  "position.status": 1,
+                 "position.jobtitle": job.jobtitle
                 };
     if (job.address != '') query["position.work_location"] = job.address 
     if (job.work_industry != '') query["position.work_industry"] = job.address 

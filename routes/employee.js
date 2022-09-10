@@ -282,7 +282,7 @@ router.post('/findJob', function(req, res){
                     if (job.address != '' && job.address != item.work_location){
                         flag = false
                     }
-                    if (item.skills.includes(job.skill) && item.status == 1 && flag == true){
+                    if (item.skills.includes(job.skill) && item.status == 1 && flag == true && item.jobtitle == job.jobtitle){
                         result.push(item)
                     }
                 })
