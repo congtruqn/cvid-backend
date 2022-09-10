@@ -77,6 +77,8 @@ var environment = require('./routes/environment');
 
 var industry = require('./routes/industry');
 
+var jobtitle = require('./routes/jobtitle');
+
 var typebusiness = require('./routes/type_business');
 
 var job = require('./routes/job');
@@ -150,6 +152,7 @@ app.use('/job', job);
 app.use('/resume', resume);
 app.use('/environment', environment);
 app.use('/industry', industry);
+app.use('/jobtitle', jobtitle);
 app.use('/typebusiness', typebusiness);
 app.use('/admin', admin);
 app.use(function _callee(req, res, next) {
