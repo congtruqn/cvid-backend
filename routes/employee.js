@@ -84,7 +84,7 @@ router.post('/register', function(req, res){
     var skill = req.body.skill;
     var startyear = req.body.startyear;
     var endyear = req.body.endyear;
-    var position = req.body.position;
+    var jobtitle = req.body.jobtitle;
     var password = req.body.password;
     // Validation
     req.checkBody('name', 'Chưa nhập Họ và tên').notEmpty();
@@ -136,7 +136,7 @@ router.post('/register', function(req, res){
                             endyear: endyear,
                             major: major,
                             skill: skill,
-                            position: position,
+                            jobtitle: jobtitle,
                             password: password,
                             status: 1
                         });
