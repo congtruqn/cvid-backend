@@ -10,6 +10,7 @@ var DepartmentSchema = mongoose.Schema({
     },
     position: [{
         name: String,
+        jobtitle: String,
         levels: Array,
         skills: Array,
         description: String,
