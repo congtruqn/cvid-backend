@@ -103,15 +103,7 @@ router.get('/findcvforposition/:position_id', function(req, res){
                 var query = {
                     "job.skill": {$in: position.skills},
                     "job.status": 1,
-                    "job.address": {$in: ["", position.work_location]},
-                    $or: [
-                        {"job.work_industry": ""},
-                        {"job.work_industry": position.work_industry},
-                    ],
-                    $or: [
-                        {"job.work_environment": ""},
-                        {"job.work_environment": position.work_environment},
-                    ],
+                    "job.jobtitle": position.jobtitle
                 };
                 Employee.getEmployeeByQuery(query, function(err, employees){
                     if(err) throw err;
