@@ -273,10 +273,13 @@ router.post('/findJob', function(req, res){
             departments.forEach(department => {
                 department.position.forEach(item => {
                     let flag = true
-                    if (job.work_industry != '' && job.work_industry != item.work_industry){
+                    if (job.work_industry != '' && job.work_industry != item.work_industry && item.work_industry != ''){
                         flag = false
                     }
-                    if (job.work_environment != '' && job.work_environment != item.work_environment){
+                    if (job.position != '' && job.position != item.name && item.name != ''){
+                        flag = false
+                    }
+                    if (job.work_environment != '' && job.work_environment != item.work_environment && item.work_environment != ''){
                         flag = false
                     }
                     if (job.address != '' && job.address != item.work_location){
