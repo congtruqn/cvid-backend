@@ -5,9 +5,7 @@ var CriteriaSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    detail: {
-        type: String,
-    }
+    detail: Array
 });
 
 var Criteria = module.exports = mongoose.model('criteria', CriteriaSchema);
