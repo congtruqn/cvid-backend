@@ -304,9 +304,6 @@ router.post('/findJob', function (req, res) {
     } else if (!employee) {
       res.json(404, 'Error 404');
       return;
-    } else if (job.status == 0) {
-      res.json([]);
-      return;
     }
   });
   Department.getPosition(job, function (err, departments) {
@@ -337,7 +334,12 @@ router.post('/findJob', function (req, res) {
           }
         });
       });
-      res.json(result);
+
+      if (job.status == 0) {
+        res.json([]);
+      } else {
+        res.json(result);
+      }
     }
   });
 });
