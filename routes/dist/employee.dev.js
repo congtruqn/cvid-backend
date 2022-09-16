@@ -241,7 +241,7 @@ router.post('/createCV', function (req, res) {
   var sumAssessment = assessment.reduce(function (a, b) {
     return parseInt(a) + parseInt(b);
   }, 0);
-  var point = Math.round(sumAssessment * 10 / 16) / 10;
+  var point = Math.round(sumAssessment * 10 / assessment.length) / 10;
   var newCV = {
     skillWorking: skillWorking,
     skillEducation: skillEducation,
