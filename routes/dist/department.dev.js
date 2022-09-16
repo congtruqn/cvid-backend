@@ -8,17 +8,33 @@ var Department = require('../models/department');
 
 var Employee = require('../models/employee');
 
+var SendMail = require('../models/send-mail');
+
+var uuid = require("uuid");
+
 router.post('/new', function (req, res) {
   var name = req.body.name;
   var id = req.body.id;
+  var email = req.body.email;
+  var key = uuid.v4();
   var newDepartment = new Department({
     name: name,
-    id: id
+    id: id,
+    email: email,
+    key: key
   });
   Department.createDepartment(newDepartment, function (err, department) {
-    if (err) throw err;
+    if (err) res.json(500, err);
+
+    if (department) {
+      var subject = 'Chia sẻ quản lý phòng ban';
+      var body = "https://staging-dot-farmme-ggczm4ik6q-an.a.run.app/business/department?key=".concat(department.key);
+      SendMail.sendMail(email, subject, body, function (err, result) {
+        if (err) res.json(500, err);
+        res.json('ok');
+      });
+    }
   });
-  res.send('ok');
 });
 router.post('/delete', function (req, res) {
   var id = req.body.id;
@@ -93,11 +109,20 @@ router.post('/position/stop', function (req, res) {
     }
   });
 });
+router.post('/position/publish', function (req, res) {
+  var id = req.body.position_id;
+  Department.startRecruiting(id, function (err, department) {
+    if (err) {
+      res.json(500, err);
+    } else if (department) {
+      res.json(department);
+    } else {
+      res.json(null);
+    }
+  });
+});
 router.get('/findcvforposition/:position_id', function (req, res) {
   var id = req.params.position_id;
-  Department.startRecruiting(id, function (err, department) {
-    if (err) throw err;
-  });
   Department.getPositionById(id, function (err, department) {
     if (err) throw err;
     department.position.forEach(function (position) {

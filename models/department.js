@@ -75,7 +75,7 @@ module.exports.deletePosition = function( id, callback){
     Department.findOneAndUpdate({"position._id": id}, {$pull: {position: {_id: id}}}, callback);
 }
 module.exports.startRecruiting = function( id, callback){
-    Department.findOneAndUpdate({"position._id": id}, {$set: {"position.$.status": 1}}, callback);
+    Department.findOneAndUpdate({"position._id": id}, {$set: {"position.$.status": 1, "position.$.startdate": new Date}}, callback);
 }
 module.exports.stopRecruiting = function( id, callback){
     Department.findOneAndUpdate({"position._id": id}, {$set: {"position.$.status": 0}}, callback);

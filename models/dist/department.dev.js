@@ -115,7 +115,8 @@ module.exports.startRecruiting = function (id, callback) {
     "position._id": id
   }, {
     $set: {
-      "position.$.status": 1
+      "position.$.status": 1,
+      "position.$.startdate": new Date()
     }
   }, callback);
 };
