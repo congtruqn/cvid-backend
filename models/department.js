@@ -3,11 +3,14 @@ var mongoose = require("mongoose")
 var DepartmentSchema = mongoose.Schema({
     id: {
         type: String,
+        required: true
     },
     name: {
         type: String,
         required: true
     },
+    email: String,
+    key: String,
     position: [{
         name: String,
         jobtitle: String,
@@ -41,6 +44,10 @@ module.exports.getallDepartment = function(callback){
 }
 module.exports.getDepartment = function(id, callback){
     var query = {id: id};
+    Department.find(query, callback);
+}
+module.exports.getDepartmentByKey = function(key, callback){
+    var query = {key: key};
     Department.find(query, callback);
 }
 module.exports.getPosition = function(job, callback){

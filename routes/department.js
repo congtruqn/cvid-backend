@@ -24,7 +24,9 @@ router.post('/new', function(req, res){
             var body = `https://staging-dot-farmme-ggczm4ik6q-an.a.run.app/business/department?key=${department.key}`
             SendMail.sendMail(email, subject, body, function(err, result){
                 if (err) res.json(500, err)
-                res.json('ok')
+                if (result){
+                    res.json(result)
+                }
             })
         }
     });
@@ -36,9 +38,17 @@ router.post('/delete', function(req, res){
         res.json(department)
     });
 });
-router.get('/list/:id', function(req, res){
-    var id = req.params.id;
+router.post('/list/get-by-id', function(req, res){
+    var id = req.body.id;
     Department.getDepartment(id, function(err, department){
+        if(err) throw err;
+        res.json(department);
+    });
+});
+
+router.post('/list/get-by-key', function(req, res){
+    var key = req.body.key;
+    Department.getDepartmentByKey(key, function(err, department){
         if(err) throw err;
         res.json(department);
     });
