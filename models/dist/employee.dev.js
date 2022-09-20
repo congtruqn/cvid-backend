@@ -34,7 +34,7 @@ var EmployeeSchema = mongoose.Schema({
   endyear: Number,
   major: String,
   skill: String,
-  position: String,
+  jobtitle: String,
   skillWorking: Array,
   skillEducation: Array,
   shortTraining: Array,
@@ -142,6 +142,14 @@ module.exports.getEmployeeByListId = function (list, callback) {
       $in: list
     }
   };
+  Employee.find(query, {
+    password: 0,
+    type: 0,
+    status: 0
+  }, callback);
+};
+
+module.exports.getEmployeeByQuery = function (query, callback) {
   Employee.find(query, {
     password: 0,
     type: 0,

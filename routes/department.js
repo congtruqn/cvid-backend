@@ -2,19 +2,34 @@ var express = require('express');
 var router = express.Router();
 var Department = require('../models/department');
 var Employee = require('../models/employee');
-
+var SendMail = require('../models/send-mail')
+var uuid = require("uuid");
 
 router.post('/new', function(req, res){
     var name = req.body.name;
     var id = req.body.id;
+    var email = req.body.email;
+    var key = uuid.v4();
     var newDepartment = new Department({
         name: name,
         id: id,
+        email: email,
+        key: key
     });
+
     Department.createDepartment(newDepartment, function(err, department) {
-        if (err) throw err;
+        if (err) res.json(500, err);
+        if (department){
+            var subject = 'Chia sẻ quản lý phòng ban'
+            var body = `https://staging-dot-farmme-ggczm4ik6q-an.a.run.app/business/department?key=${department.key}`
+            SendMail.sendMail(email, subject, body, function(err, result){
+                if (err) res.json(500, err)
+                if (result){
+                    res.json(result)
+                }
+            })
+        }
     });
-    res.send('ok');
 });
 router.post('/delete', function(req, res){
     var id = req.body.id
@@ -23,9 +38,17 @@ router.post('/delete', function(req, res){
         res.json(department)
     });
 });
-router.get('/list/:id', function(req, res){
-    var id = req.params.id;
+router.post('/list/get-by-id', function(req, res){
+    var id = req.body.id;
     Department.getDepartment(id, function(err, department){
+        if(err) throw err;
+        res.json(department);
+    });
+});
+
+router.post('/list/get-by-key', function(req, res){
+    var key = req.body.key;
+    Department.getDepartmentByKey(key, function(err, department){
         if(err) throw err;
         res.json(department);
     });
@@ -91,11 +114,24 @@ router.post('/position/stop', function(req, res){
         }
     })
 });
+
+router.post('/position/publish', function(req, res){
+    var id = req.body.position_id;
+    Department.startRecruiting(id, function(err, department){
+        if (err){
+            res.json(500, err)
+        } else if (department){
+            res.json(department)
+        } else {
+            res.json(null)
+        }
+    })
+});
+
+
+
 router.get('/findcvforposition/:position_id', function(req, res){
     var id = req.params.position_id;
-    Department.startRecruiting(id, function(err, department){
-        if(err) throw err;
-    })
     Department.getPositionById(id, function(err, department){
         if(err) throw err;
         department.position.forEach(function(position){
@@ -103,16 +139,18 @@ router.get('/findcvforposition/:position_id', function(req, res){
                 var query = {
                     "job.skill": {$in: position.skills},
                     "job.status": 1,
+                    "job.jobtitle": position.jobtitle,
                     "job.address": {$in: ["", position.work_location]},
-                    $or: [
-                        {"job.work_industry": ""},
-                        {"job.work_industry": position.work_industry},
-                    ],
-                    $or: [
-                        {"job.work_environment": ""},
-                        {"job.work_environment": position.work_environment},
-                    ],
                 };
+                if (position.work_environment != ''){
+                    query["job.work_environment"] = {$in: ["", position.work_environment]}
+                }
+                if (position.work_industry != ''){
+                    query["job.work_industry"] = {$in: ["", position.work_industry]}
+                }
+                if (position.name != ''){
+                    query["job.position"] = {$in: ["", position.name]}
+                }
                 Employee.getEmployeeByQuery(query, function(err, employees){
                     if(err) throw err;
                     res.json(employees);

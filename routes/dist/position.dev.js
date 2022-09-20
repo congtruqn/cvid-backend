@@ -4,12 +4,12 @@ var express = require('express');
 
 var router = express.Router();
 
-var TypeBusiness = require('../models/type_business');
+var Position = require('../models/position');
 
 router.get('/getall', function (req, res) {
-  TypeBusiness.getAllTypeBusiness(function (err, result) {
+  Position.getAllPosition(function (err, positions) {
     if (err) res.json(500, err);
-    res.json(result);
+    res.json(positions);
   });
 });
 module.exports = router;

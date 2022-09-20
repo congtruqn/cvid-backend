@@ -84,7 +84,7 @@ router.post('/register', function(req, res){
     var skill = req.body.skill;
     var startyear = req.body.startyear;
     var endyear = req.body.endyear;
-    var position = req.body.position;
+    var professionaltitle = req.body.professionaltitle;
     var password = req.body.password;
     // Validation
     req.checkBody('name', 'Chưa nhập Họ và tên').notEmpty();
@@ -136,7 +136,7 @@ router.post('/register', function(req, res){
                             endyear: endyear,
                             major: major,
                             skill: skill,
-                            position: position,
+                            professionaltitle: professionaltitle,
                             password: password,
                             status: 1
                         });
@@ -193,7 +193,7 @@ router.post('/createCV', function(req, res){
     var skillOther = req.body.skillOther
     var assessment = req.body.assessment
     var sumAssessment = assessment.reduce(function(a, b) { return parseInt(a) + parseInt(b); }, 0);
-    var point = Math.round(sumAssessment * 10 / 16 ) / 10 
+    var point = Math.round(sumAssessment * 10 / assessment.length ) / 10 
 
     var newCV = {
         skillWorking : skillWorking,
@@ -270,21 +270,29 @@ router.post('/findJob', function(req, res){
             departments.forEach(department => {
                 department.position.forEach(item => {
                     let flag = true
-                    if (job.work_industry != '' && job.work_industry != item.work_industry){
+                    if (job.work_industry != '' && job.work_industry != item.work_industry && item.work_industry != ''){
                         flag = false
                     }
-                    if (job.work_environment != '' && job.work_environment != item.work_environment){
+                    if (job.position != '' && job.position != item.name && item.name != ''){
+                        flag = false
+                    }
+                    if (job.work_environment != '' && job.work_environment != item.work_environment && item.work_environment != ''){
                         flag = false
                     }
                     if (job.address != '' && job.address != item.work_location){
                         flag = false
                     }
-                    if (item.skills.includes(job.skill) && item.status == 1 && flag == true){
+                    if (item.skills.includes(job.skill) && item.status == 1 && flag == true && item.jobtitle == job.jobtitle){
                         result.push(item)
                     }
                 })
             })
-            res.json(result)
+            if (job.status == 0){
+                res.json([]) 
+            } else {
+                res.json(result)
+            }
+            
         }
     });
 })

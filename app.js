@@ -41,6 +41,8 @@ var resume = require('./routes/resume');
 var department = require('./routes/department');
 var environment = require('./routes/environment')
 var industry = require('./routes/industry')
+var jobtitle = require('./routes/jobtitle')
+var position = require('./routes/position')
 var typebusiness = require('./routes/type_business');
 var job = require('./routes/job');
 var admin = require('./routes/admin');
@@ -104,7 +106,9 @@ app.use('/job', job);
 app.use('/resume', resume);
 app.use('/environment', environment);
 app.use('/industry', industry);
+app.use('/jobtitle', jobtitle);
 app.use('/typebusiness', typebusiness);
+app.use('/position', position);
 app.use('/admin', admin);
 app.use(async function (req, res, next) {
   if (!req.headers.authorization ||!req.headers.authorization.split(" ")[0] === "Bearer"){

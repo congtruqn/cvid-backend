@@ -3,13 +3,17 @@ var mongoose = require("mongoose")
 var DepartmentSchema = mongoose.Schema({
     id: {
         type: String,
+        required: true
     },
     name: {
         type: String,
         required: true
     },
+    email: String,
+    key: String,
     position: [{
         name: String,
+        jobtitle: String,
         levels: Array,
         skills: Array,
         description: String,
@@ -23,7 +27,10 @@ var DepartmentSchema = mongoose.Schema({
         work_environment: String,
         min_salary: Number,
         max_salary: Number,
+        experience: Number,
         requirements: String,
+        criteria: Array,
+        questions: Array,
         status: String,
     }],
 
@@ -39,12 +46,17 @@ module.exports.getDepartment = function(id, callback){
     var query = {id: id};
     Department.find(query, callback);
 }
+module.exports.getDepartmentByKey = function(key, callback){
+    var query = {key: key};
+    Department.find(query, callback);
+}
 module.exports.getPosition = function(job, callback){
     var query = {"position.skills": job.skill,
                  "position.status": 1,
+                 "position.jobtitle": job.jobtitle
                 };
     if (job.address != '') query["position.work_location"] = job.address 
-    if (job.work_industry != '') query["position.work_industry"] = job.address 
+    if (job.work_industry != '') query["position.work_industry"] = job.work_industry 
     if (job.work_environment != '') query["position.work_environment"] = job.work_environment 
     if (job.type_business != '') query["type_business"] = job.type_business 
     Department.find(query, callback);
@@ -70,7 +82,7 @@ module.exports.deletePosition = function( id, callback){
     Department.findOneAndUpdate({"position._id": id}, {$pull: {position: {_id: id}}}, callback);
 }
 module.exports.startRecruiting = function( id, callback){
-    Department.findOneAndUpdate({"position._id": id}, {$set: {"position.$.status": 1}}, callback);
+    Department.findOneAndUpdate({"position._id": id}, {$set: {"position.$.status": 1, "position.$.startdate": new Date}}, callback);
 }
 module.exports.stopRecruiting = function( id, callback){
     Department.findOneAndUpdate({"position._id": id}, {$set: {"position.$.status": 0}}, callback);
