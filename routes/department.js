@@ -122,48 +122,34 @@ router.get('/findcvforposition/:position_id', function(req, res){
     });
 });
 
-// router.post('/findcvforposition', function(req, res){
-//     var selected = req.body.selected;
-//     var result = []
-//     selected.forEach(function(id) {
+router.post('/findcvforposition', function(req, res){
+    var position = req.body.position;
 
-//         const department = new Promise((resolve) => {
-//             Department.getPositionById(id, function(err, department){
-//                 if (err){
-//                     console.log(err)
-//                 } else {
-//                     resolve(department)
-//                 }
-//             })
-//         });
-//         var depart = ''
-//         department.then(res => {depart = res})
-//         if (depart) {
-//             depart.position.forEach(async function(position){
-//                 if(position._id == id){
-//                     var query = { $or: [
-//                         { major: {$in: position.majors}},
-//                         { skill: {$in: position.skills}}
-//                     ]};
-//                     const cv_list = new Promise((resolve) => {
-//                         User.find(query, function(err, users){
-//                             if (err){
-//                                 console.log(err)
-//                             } else {
-//                                 resolve(users)
-//                             }
-//                         })
-//                     })
-//                     var cv = '' 
-//                     cv_list.then(res => {cv = res})
-//                     result.push(cv)
-//                 }
-//             })
-//         }
-
-//     })
-//     console.log(result)
-// })
+    var query = {
+        "job.skill": {$in: position.skills},
+        "job.status": 1,
+        "job.jobtitle": position.jobtitle
+    };
+    if (position.work_location != ""){
+        query["job.address"] = {$in: ["", position.work_location]}
+    }
+    if (position.work_industry != ""){
+        query["job.work_industry"] = {$in: ["", position.work_industry]}
+    }
+    if (position.work_location != ""){
+        query["job.work_environment"] = {$in: ["", position.work_environment]}
+    }
+    if (position.name != ""){
+        query["job.position"] = {$in: ["", position.name]}
+    }
+    if (position.levels.length != 0){
+        query["level"] = {$in: position.levels}
+    }
+    Employee.getEmployeeByQuery(query, function(err, employees){
+        if(err) throw err;
+        res.json(employees);
+    });
+});
 router.post('/position/list', function(req, res){
     var selected = req.body.selected;
     Department.getPositionList(selected, function(err, departments){
