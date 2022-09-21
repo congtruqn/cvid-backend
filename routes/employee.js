@@ -139,9 +139,7 @@ router.post('/register', function(req, res){
                         
                         Employee.createEmployee(newEmployee, function(err, companys) {
                             if (err) throw err;
-                            Major.addPosition(major, position, function(err, result){
-                                res.send('ok');
-                            })
+                            res.send('ok');
                         });
                         
 
