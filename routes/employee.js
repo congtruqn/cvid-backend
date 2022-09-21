@@ -92,12 +92,8 @@ router.post('/register', function(req, res){
     req.checkBody('username', 'Số điện thoại không hợp lệ').isLength({min: 9});
     req.checkBody('birthdate', 'Chưa nhập ngày sinh').notEmpty();
     req.checkBody('email', 'Chưa nhập email').notEmpty();
-    req.checkBody('email', 'Email không hợp lệ').isEmail();
     req.checkBody('level', 'Chưa chọn cấp bậc').notEmpty();
-    req.checkBody('school', 'Chưa chọn trường').notEmpty();
-    req.checkBody('major', 'Chưa chọn ngành nghề').notEmpty();
     req.checkBody('skill', 'Chưa chọn chuyên nghành').notEmpty();
-    req.checkBody('position', 'Chưa chọn chức danh').notEmpty();
     req.checkBody('country', 'Chưa chọn Quốc gia').notEmpty();
     req.checkBody('province', 'Chưa chọn Tỉnh/Thành Phố').notEmpty();
     req.checkBody('district', 'Chưa chọn Quận/Huyện').notEmpty();
@@ -113,7 +109,7 @@ router.post('/register', function(req, res){
         Employee.getEmployeeByUsername(username, function(err, user){
             if(err) throw err;
 			if(user){
-                res.send([{param: 'username', msg: 'CVID đã được sử dụng', value: username}]);
+                res.send([{param: 'username', msg: 'Số điện thoại đã được sử dụng', value: username}]);
             } else {
                 Employee.getEmployeeByEmail(email, function(err, user){
                     if(err) throw err;
