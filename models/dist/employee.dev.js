@@ -32,7 +32,6 @@ var EmployeeSchema = mongoose.Schema({
   school: String,
   startyear: Number,
   endyear: Number,
-  major: String,
   skill: String,
   jobtitle: String,
   skillWorking: Array,
