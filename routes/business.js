@@ -8,6 +8,9 @@ const request = require('request')
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
+const multer = require("multer");
+const upload = multer({dest: 'licenseImages/'});
+
 
 
 passport.use(new LocalStrategy(
@@ -67,7 +70,8 @@ router.post('/login', function(req, res, next) {
 		}
 	});
 });
-router.post('/register', function(req, res){
+router.post('/register', upload.single('licenseImage'), function(req, res, next){
+    console.log(req.file);
     var type = req.body.type;
     var username = req.body.username;
     var email = req.body.email;
@@ -89,9 +93,8 @@ router.post('/register', function(req, res){
     req.checkBody('username', 'mã số thuế hoặc số điện thoại có ít nhất 10 kí tự').isLength({min: 10});
     req.checkBody('province', 'Chưa chọn Tỉnh/Thành Phố').notEmpty();
     req.checkBody('district', 'Chưa chọn Quận/Huyện').notEmpty();
-    req.checkBody('majors', 'Chưa chọn nghành nghề kinh doanh').notEmpty();
+    req.checkBody('industries', 'Chưa chọn lĩnh vực kinh doanh').notEmpty();
     req.checkBody('address', 'Chưa nhập địa chỉ').notEmpty();
-    
 
     var errors = req.validationErrors();
     if (errors) {
