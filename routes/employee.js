@@ -136,13 +136,10 @@ router.post('/register', function(req, res){
                             password: password,
                             status: 1
                         });
-                        
                         Employee.createEmployee(newEmployee, function(err, companys) {
                             if (err) throw err;
                             res.send('ok');
                         });
-                        
-
                     }
                 });
             }
