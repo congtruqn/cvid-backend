@@ -29,6 +29,7 @@ router.post('/new', function (req, res) {
             }
         });
     } else {
+        newDepartment.id = undefined
         Department.editDepartment(_id, newDepartment, function (err, department) {
             if (err) res.json(500, err);
             if (newDepartment) {
