@@ -7,19 +7,23 @@ var uuid = require("uuid");
 
 router.post('/new', function (req, res) {
     var _id = req.body._id;
+    var name = req.body.name;
+    var id = req.body.id;
+    var email = req.body.email;
     var key = uuid.v4();
-    var newDepartment = new Department({
-        name: req.body.name,
-        id: req.body.id,
-        email: req.body.email,
-        key: key
-    });
+    
     if (_id == '' || _id == undefined) {
+        let newDepartment = new Department({
+            name: name,
+            id: id,
+            email: email,
+            key: key
+        });
         Department.createDepartment(newDepartment, function (err, department) {
             if (err) res.json(500, err);
-            if (department) {
+            else {
                 var subject = 'Chia sẻ quản lý phòng ban'
-                var body = `https://staging-dot-farmme-ggczm4ik6q-an.a.run.app/business/department?key=${department.key}`
+                var body = `https://staging-dot-farmme-ggczm4ik6q-an.a.run.app/business/department?key=${key}`
                 SendMail.sendMail(email, subject, body, function (err, result) {
                     if (err) res.json(500, err)
                     if (result) {
@@ -29,14 +33,18 @@ router.post('/new', function (req, res) {
             }
         });
     } else {
-        newDepartment.id = undefined
+        let newDepartment = {
+            name: name,
+            email: email,
+            key: key
+        }
         Department.editDepartment(_id, newDepartment, function (err, department) {
-            if (err) res.json(500, err);
-            if (newDepartment) {
+            if (err) res.status(500).json(err);
+            else {
                 var subject = 'Chia sẻ quản lý phòng ban'
                 var body = `https://staging-dot-farmme-ggczm4ik6q-an.a.run.app/business/department?key=${newDepartment.key}`
                 SendMail.sendMail(newDepartment.email, subject, body, function (err, result) {
-                    if (err) res.json(500, err)
+                    if (err) res.status(500).json(err)
                     if (result) {
                         res.json(result)
                     }
@@ -44,9 +52,6 @@ router.post('/new', function (req, res) {
             }
         });
     }
-
-
-
 
 });
 router.post('/delete', function (req, res) {
