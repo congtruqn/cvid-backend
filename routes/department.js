@@ -21,7 +21,7 @@ router.post('/new', function (req, res) {
         });
         Department.createDepartment(newDepartment, function (err, department) {
             if (err) res.json(500, err);
-            else {
+            else if (email){
                 var subject = 'Chia sẻ quản lý phòng ban'
                 var body = `https://staging-dot-farmme-ggczm4ik6q-an.a.run.app/business/department?key=${key}`
                 SendMail.sendMail(email, subject, body, function (err, result) {
@@ -30,6 +30,8 @@ router.post('/new', function (req, res) {
                         res.json(result)
                     }
                 })
+            } else {
+                res.status(200)
             }
         });
     } else {
@@ -40,7 +42,7 @@ router.post('/new', function (req, res) {
         }
         Department.editDepartment(_id, newDepartment, function (err, department) {
             if (err) res.status(500).json(err);
-            else {
+            else if (email){
                 var subject = 'Chia sẻ quản lý phòng ban'
                 var body = `https://staging-dot-farmme-ggczm4ik6q-an.a.run.app/business/department?key=${newDepartment.key}`
                 SendMail.sendMail(newDepartment.email, subject, body, function (err, result) {
@@ -49,6 +51,8 @@ router.post('/new', function (req, res) {
                         res.json(result)
                     }
                 })
+            } else {
+                res.status(200)
             }
         });
     }
