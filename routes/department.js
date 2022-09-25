@@ -27,7 +27,7 @@ router.post('/new', function (req, res) {
                 SendMail.sendMail(email, subject, body, function (err, result) {
                     if (err) res.json(500, err)
                     if (result) {
-                        res.json(result)
+                        res.json(department)
                     }
                 })
             } else {
@@ -45,10 +45,10 @@ router.post('/new', function (req, res) {
             else if (email){
                 var subject = 'Chia sẻ quản lý phòng ban'
                 var body = `https://staging-dot-farmme-ggczm4ik6q-an.a.run.app/business/department?key=${newDepartment.key}`
-                SendMail.sendMail(newDepartment.email, subject, body, function (err, result) {
+                SendMail.sendMail(email, subject, body, function (err, result) {
                     if (err) res.status(500).json(err)
                     if (result) {
-                        res.json(result)
+                        res.json(department)
                     }
                 })
             } else {
