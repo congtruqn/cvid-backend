@@ -94,7 +94,6 @@ router.post('/register', function(req, res){
     req.checkBody('email', 'Chưa nhập email').notEmpty();
     req.checkBody('level', 'Chưa chọn cấp bậc').notEmpty();
     req.checkBody('skill', 'Chưa chọn chuyên nghành').notEmpty();
-    req.checkBody('country', 'Chưa chọn Quốc gia').notEmpty();
     req.checkBody('province', 'Chưa chọn Tỉnh/Thành Phố').notEmpty();
     req.checkBody('district', 'Chưa chọn Quận/Huyện').notEmpty();
     req.checkBody('ward', 'Chưa chọn Phường/Xã').notEmpty();
