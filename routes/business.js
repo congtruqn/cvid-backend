@@ -8,8 +8,8 @@ const request = require('request')
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
-const multer = require("multer");
-const upload = multer({dest: 'licenseImages/'});
+// const multer = require("multer");
+// const upload = multer({dest: 'licenseImages/'});
 
 
 
@@ -70,7 +70,7 @@ router.post('/login', function(req, res, next) {
 		}
 	});
 });
-router.post('/register', upload.single('licenseImage'), function(req, res, next){
+router.post('/register', function(req, res, next){
     console.log(req.file);
     var type = req.body.type;
     var username = req.body.username;
