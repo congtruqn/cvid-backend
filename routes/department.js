@@ -31,7 +31,7 @@ router.post('/new', function (req, res) {
                     }
                 })
             } else {
-                res.status(200)
+                res.status(200).json(department)
             }
         });
     } else {
@@ -52,7 +52,7 @@ router.post('/new', function (req, res) {
                     }
                 })
             } else {
-                res.status(200)
+                res.status(200).json(department)
             }
         });
     }
