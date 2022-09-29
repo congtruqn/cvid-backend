@@ -10,8 +10,6 @@ const accesskey = process.env.CVID_SECRET
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
-
-
 passport.use(new LocalStrategy(
   function(username, password, done) {
     Employee.getEmployeeByUsername(username, function(err, users){

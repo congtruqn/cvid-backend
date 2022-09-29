@@ -189,25 +189,26 @@ router.get('/findcvforposition/:position_id', function (req, res) {
 
 router.post('/findcvforposition', function (req, res) {
     var position = req.body.position;
-
     var query = {
-        "job.skill": { $in: position.skills },
         "job.status": 1,
         "job.jobtitle": position.jobtitle
     };
+    if (position.skills.length > 0) {
+        query["job.skill"] = { $in: position.skills }
+    }
     if (position.work_location != "") {
         query["job.address"] = { $in: ["", position.work_location] }
     }
     if (position.work_industry != "") {
         query["job.work_industry"] = { $in: ["", position.work_industry] }
     }
-    if (position.work_location != "") {
+    if (position.work_environment != "") {
         query["job.work_environment"] = { $in: ["", position.work_environment] }
     }
     if (position.name != "") {
         query["job.position"] = { $in: ["", position.name] }
     }
-    if (position.levels.length != 0) {
+    if (position.levels.length > 0) {
         query["level"] = { $in: position.levels }
     }
     Employee.getEmployeeByQuery(query, function (err, employees) {
@@ -215,6 +216,7 @@ router.post('/findcvforposition', function (req, res) {
         res.json(employees);
     });
 });
+
 router.post('/position/list', function (req, res) {
     var selected = req.body.selected;
     Department.getPositionList(selected, function (err, departments) {
