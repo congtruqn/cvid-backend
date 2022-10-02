@@ -19,6 +19,7 @@ var EmployeeSchema = mongoose.Schema({
 	birthdate: {
 		type: Date
 	},
+	gender: String,
 	name: String,
 	country: String,
 	province: String,
