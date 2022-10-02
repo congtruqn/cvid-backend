@@ -93,7 +93,7 @@ router.post('/register', function (req, res) {
             Employee.getEmployeeByEmail(email, function (err, user) {
                 if (err) throw err;
                 if (user) {
-                    res.send([{ param: 'email', msg: 'Email đã được đăng kí', value: email }]);
+                    res.send([{ param: 'email', msg: 'Email đã được sử dụng', value: email }]);
                 } else {
                     var newEmployee = new Employee({
                         name: name,
@@ -116,14 +116,13 @@ router.post('/register', function (req, res) {
                         status: 1
                     });
                     Employee.createEmployee(newEmployee, function (err, companys) {
-                        if (err) throw err;
-                        res.send('ok');
+                        if (err) console.log(err);
+                        else res.send('ok');
                     });
                 }
             });
         }
     })
-
 });
 
 router.post('/me', function (req, res) {
