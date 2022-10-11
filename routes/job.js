@@ -20,7 +20,6 @@ router.post('/create', function(req, res, next) {
                         let newJob = job;
                         var id = item._id
                         delete newJob._id
-                        console.log(newJob)
                         Job.updateJob(id, newJob, function(err, job) {
                             if (err) {
                                 res.json(err);
@@ -44,7 +43,6 @@ router.post('/create', function(req, res, next) {
                     return
                 }
             })
-            
         } 
     })
     
