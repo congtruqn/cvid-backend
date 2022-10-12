@@ -18,9 +18,6 @@ module.exports.getallMajor = function(callback){
     var query = {};
     Major.find(query, callback);
 }
-// module.exports.editMajor = function(id,newMajor, callback){
-//     Major.findByIdAndUpdate(id, newMajor, callback);
-// }
 
 module.exports.addPosition = function(major_name, position, callback){
     Major.updateMany({name: major_name}, {$addToSet: { position: position } }, callback);
