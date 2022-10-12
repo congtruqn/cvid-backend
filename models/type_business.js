@@ -7,5 +7,5 @@ var TypeBusinessSchema = mongoose.Schema({
 var TypeBusiness = module.exports = mongoose.model('typebusiness', TypeBusinessSchema);
 
 module.exports.getAllTypeBusiness = function(callback){
-	TypeBusiness.find(callback);
+	TypeBusiness.find(callback).sort({ name : 1});
 }

@@ -9,5 +9,5 @@ var SchoolSchema = mongoose.Schema({
 var School = module.exports = mongoose.model('school', SchoolSchema);
 
 module.exports.getallSchool = function(callback){
-    School.find({}, callback);
+    School.find({}, callback).sort({ name : 1});
 }

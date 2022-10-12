@@ -54,6 +54,7 @@ module.exports.updatePayment = function (job, callback) {
     Job.update({ _id: job._id }, {
         $set: {
             status: 1, 
+            confirm: 0,
             schedule: job.schedule, 
             phone: job.phone,
             email: job.email,

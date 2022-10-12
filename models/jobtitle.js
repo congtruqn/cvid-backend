@@ -7,5 +7,5 @@ var JobTitleSchema = mongoose.Schema({
 var JobTitle = module.exports = mongoose.model('jobtitle', JobTitleSchema);
 
 module.exports.getAllJobTitle = function(callback){
-	JobTitle.find(callback);
+	JobTitle.find(callback).sort({ name : 1});
 }
