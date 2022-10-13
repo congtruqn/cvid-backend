@@ -57,8 +57,9 @@ module.exports.getPosition = function(job, callback){
                 };
     if (job.address != '') query["position.work_location"] = job.address 
     if (job.work_industry != '') query["position.work_industry"] = job.work_industry 
-    if (job.work_environment != '') query["position.work_environment"] = job.work_environment 
+    if (job.work_environment != []) query["position.work_environment"] = { $in: job.work_environment }
     if (job.type_business != '') query["type_business"] = job.type_business 
+    if (job.position != []) query["position.name"] = { $in: job.position }
     Department.find(query, callback);
 }
 
