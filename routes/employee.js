@@ -3,7 +3,7 @@ var router = express.Router();
 var cors = require('cors')
 var Employee = require('../models/employee');
 var Department = require('../models/department');
-var Major = require('../models/major');
+var authmodel = require('../models/auth');
 const jwt = require('jsonwebtoken');
 const accesskey = process.env.CVID_SECRET
 
@@ -198,6 +198,16 @@ router.get('/cvid/:id', function (req, res) {
         }
     });
 })
+
+router.get('/getall', authmodel.checkAdmin, function (req, res, next) {
+    Employee.getAllEmployee(function (err, employees) {
+        if (err) res.json(500, err)
+        else {
+            res.json(200, employees)
+        }
+    })
+});
+
 router.post('/list/cvid', function (req, res) {
     var selected = req.body.selected;
     Employee.getEmployeeByListId(selected, function (err, list_cvid) {

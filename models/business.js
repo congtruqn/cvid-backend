@@ -77,19 +77,7 @@ module.exports.comparePassword = function(candidatePassword, hash, callback){
     	callback(null, isMatch);
 	});
 }
-module.exports.checkLogin = function(token){
-	return new Promise((resolve,reject) =>{
-		jwt.verify(token,accesskey, function(err, decoded) {
-			console.log(err)
-			if(err){
-				resolve(false);
-			}
-			else{
-				resolve(true);
-			}
-		})
-	})
-}
+
 module.exports.getBusinessByEmail = function(email, callback){
 	var query = {email: email};
 	Business.findOne(query, callback);

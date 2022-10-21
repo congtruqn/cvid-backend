@@ -59,7 +59,7 @@ var province = require('./routes/province');
 
 var school = require('./routes/school');
 
-var registermodel = require('./models/register');
+var authmodel = require('./models/auth');
 
 var employee = require('./routes/employee');
 
@@ -177,7 +177,7 @@ app.use(function _callee(req, res, next) {
 
         case 4:
           _context.next = 6;
-          return regeneratorRuntime.awrap(registermodel.checkLogin(req.headers.authorization.split(" ")[1]));
+          return regeneratorRuntime.awrap(authmodel.checkLogin(req.headers.authorization.split(" ")[1]));
 
         case 6:
           if (_context.sent) {
