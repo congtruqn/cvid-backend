@@ -125,29 +125,17 @@ router.post('/register', function (req, res) {
     })
 });
 
-router.post('/me', function (req, res) {
-    var token = req.body.token;
-    if (token) {
-        jwt.verify(token, accesskey, function (err, decoded) {
-            if (err) {
-                res.json(401, err);
-            }
-            else {
-                id = decoded.id;
-                Employee.getEmployeeById(id, function (err, user) {
-                    if (err) {
-                        res.json({ code: 500, massage: 'Internal Server Error' })
-                    } else if (!user) {
-                        res.json({ code: 404, message: 'No user found.' });
-                    } else {
-                        res.json(200, { user: user });
-                    }
-                });
-            }
-        });
-    } else {
-        res.json({ code: 404, message: 'No token found' });
-    }
+router.get('/me', authmodel.checkLogin, function (req, res) {
+    let id = req.user;
+    Employee.getEmployeeById(id, function (err, user) {
+        if (err) {
+            res.status(500).json(err)
+        } else if (!user) {
+            res.status(404).json('No user found.');
+        } else {
+            res.status(200).json(user);
+        }
+    });
 });
 
 router.post('/createCV', function (req, res) {
