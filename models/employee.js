@@ -42,7 +42,19 @@ var EmployeeSchema = mongoose.Schema({
 	skillOther: Array,
 	assessment: Array,
 	job: Object,
-	point: 0,
+
+	createdAt: {
+		type: Date,
+		default: Date.now
+	},
+	point: {
+		type: Number,
+		default: -1
+	},
+	approved: {
+		type: Number,
+		default: 0
+	},
 	status: {
 		type: Number
 	}
