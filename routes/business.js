@@ -72,7 +72,6 @@ router.post('/login', function (req, res, next) {
     });
 });
 router.post('/register', function (req, res, next) {
-    console.log(req.file);
     var type = req.body.type;
     var username = req.body.username;
     var email = req.body.email;
@@ -83,6 +82,7 @@ router.post('/register', function (req, res, next) {
     var ward = req.body.ward;
     var address = req.body.address;
     var majors = req.body.majors;
+    var urlGPKD =req.body.urlGPKD;
     // Validation
     req.checkBody('email', 'Chưa nhập email').notEmpty();
     req.checkBody('email', 'Email không hợp lệ').isEmail();
@@ -111,8 +111,6 @@ router.post('/register', function (req, res, next) {
                 if (type == 5) {
                     newBusiness = new Business({
                         name: req.body.name,
-                        nameforeign: req.body.nameforeign,
-                        nameacronym: req.body.nameacronym,
                         username: username,
                         email: email,
                         password: password,
@@ -122,6 +120,7 @@ router.post('/register', function (req, res, next) {
                         district: district,
                         ward: ward,
                         majors: majors,
+                        urlGPKD: urlGPKD,
                         type: 5,
                         status: 1
                     });
@@ -141,7 +140,6 @@ router.post('/register', function (req, res, next) {
                         status: 0
                     });
                 }
-
                 Business.createBusiness(newBusiness, function (err, companys) {
                     if (err) throw err;
                     res.send('ok');
@@ -172,4 +170,15 @@ router.get('/getall', authmodel.checkAdmin, function (req, res, next) {
         }
     })
 });
+
+router.get('/browse-gpkd/:id', authmodel.checkAdmin, function (req, res) {
+    Business.browseGPKD(req.params.id, function (err, result) {
+        if (err) {
+            res.status(500).json(err)
+        } else {
+            res.status(200).json(result)
+        }
+    });
+})
+
 module.exports = router;

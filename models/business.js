@@ -26,8 +26,13 @@ var BusinessSchema = mongoose.Schema({
 	level: String,
 	majors: Array,
 	position: String,
+	urlGPKD: String,
 	type: {
 		type: Number
+	},
+	approved: {
+		type: Number,
+		default: 0
 	},
 	status: {
 		type: Number
@@ -90,3 +95,6 @@ module.exports.comparePassword = function(candidatePassword, hash, callback){
 	});
 }
 
+module.exports.browseGPKD = function(id, callback){
+	Employee.findByIdAndUpdate(id, {approved: 1} ,callback);
+}

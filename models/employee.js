@@ -91,8 +91,6 @@ module.exports.getEmployeeByUsername = function(username, callback){
 	Employee.findOne(query, callback);
 }
 
-
-
 module.exports.getEmployeeById = function(id, callback){
 	Employee.findById(id, callback);
 }
@@ -137,4 +135,11 @@ module.exports.getEmployeeByListId = function(list, callback){
 
 module.exports.getEmployeeByQuery = function(query, callback){
 	Employee.find(query, {password: 0, type: 0, status: 0} ,callback);
+}
+module.exports.getEmployeeByQuery = function(query, callback){
+	Employee.find(query, {password: 0, type: 0, status: 0} ,callback);
+}
+
+module.exports.browseCV = function(id, callback){
+	Employee.findByIdAndUpdate(id, {approved: 1} ,callback);
 }
