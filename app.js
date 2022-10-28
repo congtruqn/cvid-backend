@@ -12,7 +12,6 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
-const fileUpload = require('express-fileupload');
 var cors = require('cors')
 
 var app = express();
@@ -56,7 +55,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '/public')));
-app.use(fileUpload())
 // Express Session
 app.use(session({
   secret: 'secret',
@@ -110,6 +108,8 @@ app.use('/jobtitle', jobtitle);
 app.use('/typebusiness', typebusiness);
 app.use('/position', position);
 app.use('/admin', admin);
+
+app.use('/license-images', express.static('licenseImages'));
 app.use(async function (req, res, next) {
   if (!req.headers.authorization || !req.headers.authorization.split(" ")[0] === "Basic") {
     res.status(401).json({ auth: false, message: 'No token found.' });

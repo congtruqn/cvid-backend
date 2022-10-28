@@ -8,11 +8,17 @@ const accesskey = process.env.CVID_SECRET
 const request = require('request')
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+const multer = require("multer");
 
-// const multer = require("multer");
-// const upload = multer({dest: 'licenseImages/'});
-
-
+const uploadImage = multer.diskStorage({
+    destination: (req, file, callback) => {
+        callback(null, './licenseImages')
+    },
+    filename: (req, file, callback) => {
+        callback(null, Date.now() + '--' + file.originalname);
+    }
+})
+const upload = multer({ storage: uploadImage })
 
 passport.use(new LocalStrategy(
     function (username, password, done) {
@@ -71,9 +77,10 @@ router.post('/login', function (req, res, next) {
         }
     });
 });
-router.post('/register', function (req, res, next) {
+router.post('/register', upload.single('file'), function (req, res, next) {
     var type = req.body.type;
     var username = req.body.username;
+    var name = req.body.name;
     var email = req.body.email;
     var password = req.body.password;
     var country = req.body.country;
@@ -82,18 +89,17 @@ router.post('/register', function (req, res, next) {
     var ward = req.body.ward;
     var address = req.body.address;
     var majors = req.body.majors;
-    var urlGPKD =req.body.urlGPKD;
+    var urlGPKD =req.file.path;
     // Validation
     req.checkBody('email', 'Chưa nhập email').notEmpty();
     req.checkBody('email', 'Email không hợp lệ').isEmail();
     req.checkBody('password', 'Chưa nhập mật khẩu').notEmpty();
-    req.checkBody('password', 'Mật khẩu phải có ít nhất 6 ký tự').isLength({ min: 6 });
     req.checkBody('password2', 'Các mật khẩu đã nhập không khớp').equals(req.body.password);
     req.checkBody('name', 'Chưa nhập tên doanh nghiệp').notEmpty();
     req.checkBody('username', 'Chưa nhập mã số thuế hoặc số điện thoại').notEmpty();
-    req.checkBody('username', 'mã số thuế hoặc số điện thoại có ít nhất 10 kí tự').isLength({ min: 10 });
     req.checkBody('province', 'Chưa chọn Tỉnh/Thành Phố').notEmpty();
     req.checkBody('district', 'Chưa chọn Quận/Huyện').notEmpty();
+    req.checkBody('ward', 'Chưa chọn Phường/Xã').notEmpty();
     req.checkBody('industries', 'Chưa chọn lĩnh vực kinh doanh').notEmpty();
     req.checkBody('address', 'Chưa nhập địa chỉ').notEmpty();
 
@@ -140,6 +146,7 @@ router.post('/register', function (req, res, next) {
                         status: 0
                     });
                 }
+                console.log(newBusiness)
                 Business.createBusiness(newBusiness, function (err, companys) {
                     if (err) throw err;
                     res.send('ok');
