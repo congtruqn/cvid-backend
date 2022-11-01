@@ -19,6 +19,7 @@ var EmployeeSchema = mongoose.Schema({
 	birthdate: {
 		type: Date
 	},
+	image: String,
 	gender: String,
 	name: String,
 	country: String,
@@ -82,9 +83,6 @@ module.exports.editEmployee = function(id,newEmployee, callback){
 	    });
 	});
 }
-
-
-
 
 module.exports.getEmployeeByUsername = function(username, callback){
 	var query = {username: username};
