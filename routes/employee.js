@@ -71,6 +71,7 @@ router.post('/register', function (req, res) {
     var username = req.body.username;
     var birthdate = req.body.birthdate;
     var email = req.body.email;
+    var image = req.body.image;
     var gender = req.body.gender;
     var country = req.body.country;
     var province = req.body.province;
@@ -102,6 +103,7 @@ router.post('/register', function (req, res) {
                         email: email,
                         gender: gender,
                         country: country,
+                        image: image,
                         province: province,
                         district: district,
                         ward: ward,
