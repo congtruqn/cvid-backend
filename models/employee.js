@@ -10,15 +10,9 @@ var EmployeeSchema = mongoose.Schema({
 		type: String,
 		index:true
 	},
-	password: {
-		type: String
-	},
-	email: {
-		type: String
-	},
-	birthdate: {
-		type: Date
-	},
+	password:String,
+	email:String,
+	birthdate:Date,
 	image: String,
 	gender: String,
 	name: String,
@@ -54,10 +48,11 @@ var EmployeeSchema = mongoose.Schema({
 	},
 	approved: {
 		type: Number,
-		default: 0
+		default: -2
 	},
 	status: {
-		type: Number
+		type: Number,
+		default: 0,
 	}
 });
 
@@ -138,6 +133,18 @@ module.exports.getEmployeeByQuery = function(query, callback){
 	Employee.find(query, {password: 0, type: 0, status: 0} ,callback);
 }
 
-module.exports.browseCV = function(id, callback){
+module.exports.notBrowseCV = function(id, callback){
+	Employee.findByIdAndUpdate(id, {approved: -1} ,callback);
+}
+
+module.exports.browseCV1 = function(id, callback){
 	Employee.findByIdAndUpdate(id, {approved: 1} ,callback);
+}
+
+module.exports.cancelBrowse = function(id, callback){
+	Employee.findByIdAndUpdate(id, {approved: 0} ,callback);
+}
+
+module.exports.browseCV2 = function(id, callback){
+	Employee.findByIdAndUpdate(id, {approved: 2} ,callback);
 }
