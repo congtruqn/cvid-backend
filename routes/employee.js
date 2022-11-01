@@ -71,7 +71,7 @@ router.post('/register', function (req, res) {
     var username = req.body.username;
     var birthdate = req.body.birthdate;
     var email = req.body.email;
-    var image = req.body.image;
+   
     var gender = req.body.gender;
     var country = req.body.country;
     var province = req.body.province;
@@ -103,7 +103,7 @@ router.post('/register', function (req, res) {
                         email: email,
                         gender: gender,
                         country: country,
-                        image: image,
+                        
                         province: province,
                         district: district,
                         ward: ward,
@@ -150,6 +150,7 @@ router.post('/createCV', function (req, res) {
     var skillComputer = req.body.skillComputer
     var skillOther = req.body.skillOther
     var assessment = req.body.assessment
+    var image = req.body.image
     var sumAssessment = assessment.reduce(function (a, b) { return parseInt(a) + parseInt(b); }, 0);
     var point = Math.round(sumAssessment * 10 / assessment.length) / 10
 
@@ -162,6 +163,7 @@ router.post('/createCV', function (req, res) {
         skillComputer: skillComputer,
         skillOther: skillOther,
         assessment: assessment,
+        image: image,
         point: point
     };
 
