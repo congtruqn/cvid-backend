@@ -102,8 +102,7 @@ router.post('/register', function (req, res) {
                         birthdate: birthdate,
                         email: email,
                         gender: gender,
-                        country: country,
-                        
+                        country: country, 
                         province: province,
                         district: district,
                         ward: ward,
@@ -164,7 +163,8 @@ router.post('/createCV', function (req, res) {
         skillOther: skillOther,
         assessment: assessment,
         image: image,
-        point: point
+        point: point,
+        approved: 0
     };
 
     Employee.createCV(id, newCV, function (err, resume) {
@@ -218,8 +218,39 @@ router.post('/findPosition', function (req, res) {
         res.json(position)
     });
 })
-router.get('/browse-cvid/:id', authmodel.checkAdmin, function (req, res) {
-    Employee.browseCV(req.params.id, function (err, result) {
+
+router.get('/not-browse-cvid/:id', authmodel.checkAdmin, function (req, res) {
+    Employee.notBrowseCV(req.params.id, function (err, result) {
+        if (err) {
+            res.status(500).json(err)
+        } else {
+            res.status(200).json(result)
+        }
+    });
+})
+
+router.get('/browse-cvid1/:id', authmodel.checkAdmin, function (req, res) {
+    Employee.browseCV1(req.params.id, function (err, result) {
+        if (err) {
+            res.status(500).json(err)
+        } else {
+            res.status(200).json(result)
+        }
+    });
+})
+
+router.get('/browse-cvid2/:id', authmodel.checkAdmin, function (req, res) {
+    Employee.browseCV2(req.params.id, function (err, result) {
+        if (err) {
+            res.status(500).json(err)
+        } else {
+            res.status(200).json(result)
+        }
+    });
+})
+
+router.get('/cancel-browse-cvid/:id', authmodel.checkAdmin, function (req, res) {
+    Employee.cancelBrowseCV1(req.params.id, function (err, result) {
         if (err) {
             res.status(500).json(err)
         } else {

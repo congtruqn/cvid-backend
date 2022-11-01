@@ -8,17 +8,6 @@ const accesskey = process.env.CVID_SECRET
 const request = require('request')
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-const multer = require("multer");
-
-const uploadImage = multer.diskStorage({
-    destination: (req, file, callback) => {
-        callback(null, './licenseImages')
-    },
-    filename: (req, file, callback) => {
-        callback(null, Date.now() + '--' + file.originalname);
-    }
-})
-const upload = multer({ storage: uploadImage })
 
 passport.use(new LocalStrategy(
     function (username, password, done) {
@@ -77,10 +66,13 @@ router.post('/login', function (req, res, next) {
         }
     });
 });
-router.post('/register', upload.single('file'), function (req, res, next) {
+router.post('/register', function (req, res, next) {
     var type = req.body.type;
     var username = req.body.username;
+    var phone = req.body.phone;
     var name = req.body.name;
+    var manager = req.body.manager;
+    var position = req.body.position;
     var email = req.body.email;
     var password = req.body.password;
     var country = req.body.country;
@@ -89,7 +81,7 @@ router.post('/register', upload.single('file'), function (req, res, next) {
     var ward = req.body.ward;
     var address = req.body.address;
     var majors = req.body.majors;
-    var urlGPKD =req.file.path;
+    var urlGPKD =req.body.image;
     // Validation
     req.checkBody('email', 'Chưa nhập email').notEmpty();
     req.checkBody('email', 'Email không hợp lệ').isEmail();
@@ -146,7 +138,6 @@ router.post('/register', upload.single('file'), function (req, res, next) {
                         status: 0
                     });
                 }
-                console.log(newBusiness)
                 Business.createBusiness(newBusiness, function (err, companys) {
                     if (err) throw err;
                     res.send('ok');
