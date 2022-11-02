@@ -13,7 +13,10 @@ var EmployeeSchema = mongoose.Schema({
 	password:String,
 	email:String,
 	birthdate:Date,
-	image: String,
+	image: {
+		type: String,
+		default: "https://www.lewesac.co.uk/wp-content/uploads/2017/12/default-avatar.jpg"
+	},
 	gender: String,
 	name: String,
 	country: String,
