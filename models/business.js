@@ -104,7 +104,7 @@ module.exports.browseGPKD1 = function(id, callback){
 	Employee.findByIdAndUpdate(id, {approved: 1} ,callback);
 }
 
-module.exports.cancelBrowse = function(id, callback){
+module.exports.cancelBrowseGPKD = function(id, callback){
 	Employee.findByIdAndUpdate(id, {approved: 0} ,callback);
 }
 
