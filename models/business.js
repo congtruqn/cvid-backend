@@ -62,8 +62,9 @@ module.exports.editBusiness = function(id,newBusiness, callback){
 	});
 }
 
-
-
+module.exports.deleteBusiness = function(id, callback){
+	Business.findByIdAndRemove(id, callback);
+}
 
 module.exports.getBusinessByUsername = function(username, callback){
 	var query = {username: username};

@@ -238,6 +238,16 @@ router.get('/browse-cvid1/:id', authmodel.checkAdmin, function (req, res) {
     });
 })
 
+router.get('/delete/:id', authmodel.checkAdmin, function (req, res) {
+    Employee.deleteEmployeeById(req.params.id, function (err, result) {
+        if (err) {
+            res.status(500).json(err)
+        } else {
+            res.status(200).json(result)
+        }
+    });
+})
+
 router.get('/browse-cvid2/:id', authmodel.checkAdmin, function (req, res) {
     Employee.browseCV2(req.params.id, function (err, result) {
         if (err) {
