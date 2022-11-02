@@ -188,7 +188,7 @@ router.get('/browse-GPKD2/:id', authmodel.checkAdmin, function (req, res) {
     });
 })
 router.get('/cancel-browse-GPKD/:id', authmodel.checkAdmin, function (req, res) {
-    Business.cancelBrowse(req.params.id, function (err, result) {
+    Business.cancelBrowseGPKD(req.params.id, function (err, result) {
         if (err) {
             res.status(500).json(err)
         } else {
