@@ -144,10 +144,9 @@ module.exports.browseCV1 = function(id, callback){
 	Employee.findByIdAndUpdate(id, {approved: 1} ,callback);
 }
 
-module.exports.cancelBrowse = function(id, callback){
+module.exports.cancelBrowsecv = function(id, callback){
 	Employee.findByIdAndUpdate(id, {approved: 0} ,callback);
 }
-
 module.exports.browseCV2 = function(id, callback){
 	Employee.findByIdAndUpdate(id, {approved: 2} ,callback);
 }
