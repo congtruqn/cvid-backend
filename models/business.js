@@ -95,6 +95,18 @@ module.exports.comparePassword = function(candidatePassword, hash, callback){
 	});
 }
 
-module.exports.browseGPKD = function(id, callback){
+module.exports.notbrowseGPKD = function(id, callback){
+	Employee.findByIdAndUpdate(id, {approved: -1} ,callback);
+}
+
+module.exports.browseGPKD1 = function(id, callback){
 	Employee.findByIdAndUpdate(id, {approved: 1} ,callback);
+}
+
+module.exports.cancelBrowse = function(id, callback){
+	Employee.findByIdAndUpdate(id, {approved: 0} ,callback);
+}
+
+module.exports.browseGPKD2 = function(id, callback){
+	Employee.findByIdAndUpdate(id, {approved: 2} ,callback);
 }

@@ -169,8 +169,8 @@ router.get('/getall', authmodel.checkAdmin, function (req, res, next) {
     })
 });
 
-router.get('/browse-gpkd/:id', authmodel.checkAdmin, function (req, res) {
-    Business.browseGPKD(req.params.id, function (err, result) {
+router.get('/browse-GPKD1/:id', authmodel.checkAdmin, function (req, res) {
+    Business.browseGPKD1(req.params.id, function (err, result) {
         if (err) {
             res.status(500).json(err)
         } else {
@@ -178,5 +178,31 @@ router.get('/browse-gpkd/:id', authmodel.checkAdmin, function (req, res) {
         }
     });
 })
-
+router.get('/browse-GPKD2/:id', authmodel.checkAdmin, function (req, res) {
+    Business.browseGPKD2(req.params.id, function (err, result) {
+        if (err) {
+            res.status(500).json(err)
+        } else {
+            res.status(200).json(result)
+        }
+    });
+})
+router.get('/cancel-browse-GPKD/:id', authmodel.checkAdmin, function (req, res) {
+    Business.cancelBrowse(req.params.id, function (err, result) {
+        if (err) {
+            res.status(500).json(err)
+        } else {
+            res.status(200).json(result)
+        }
+    });
+})
+router.get('/not-browse-GPKD/:id', authmodel.checkAdmin, function (req, res) {
+    Business.notbrowseGPKD(req.params.id, function (err, result) {
+        if (err) {
+            res.status(500).json(err)
+        } else {
+            res.status(200).json(result)
+        }
+    });
+})
 module.exports = router;
