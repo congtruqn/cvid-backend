@@ -39,6 +39,7 @@ var EmployeeSchema = mongoose.Schema({
 	skillComputer: Object,
 	skillOther: Array,
 	assessment: Array,
+	noteCV: String,
 	job: Object,
 
 	createdAt: {
