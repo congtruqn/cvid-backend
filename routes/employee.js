@@ -259,7 +259,8 @@ router.get('/browse-cvid2/:id', authmodel.checkAdmin, function (req, res) {
 })
 
 router.get('/cancel-browse-cvid/:id', authmodel.checkAdmin, function (req, res) {
-    Employee.cancelBrowseCV(req.params.id, function (err, result) {
+    var noteCV = req.body.noteCV
+    Employee.cancelBrowseCV(req.params.id, noteCV, function (err, result) {
         if (err) {
             res.status(500).json(err)
         } else {

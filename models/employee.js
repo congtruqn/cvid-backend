@@ -136,8 +136,8 @@ module.exports.getEmployeeByQuery = function(query, callback){
 	Employee.find(query, {password: 0, type: 0, status: 0} ,callback);
 }
 
-module.exports.notBrowseCV = function(id, callback){
-	Employee.findByIdAndUpdate(id, {approved: -1} ,callback);
+module.exports.notBrowseCV = function(id, noteCV, callback){
+	Employee.findByIdAndUpdate(id, {approved: -1, noteCV: noteCV} ,callback);
 }
 
 module.exports.browseCV1 = function(id, callback){
