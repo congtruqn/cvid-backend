@@ -73,7 +73,7 @@ router.post('/list/get-by-id', function (req, res) {
     });
 });
 
-router.post('/position/getall', function (req, res) {
+router.get('/position/getall', function (req, res) {
 
     Department.getallDepartment(function (err, departments) {
         var result = []
