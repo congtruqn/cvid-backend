@@ -83,14 +83,11 @@ router.get('/position/getall', function (req, res) {
         else {
             Promise.all(departments.map(async (department, idx1) => {
                 department.position.forEach((position, idx2)=>{
-                    console.log(position)
                     position.department = department.name
-                    
                     result.push(position)
-                    console.log(result[0])
                 })
             }))
-            res.status(200).json(result[0]);
+            res.status(200).json(result);
         }
     });
 });
