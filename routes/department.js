@@ -11,7 +11,7 @@ router.post('/new', function (req, res) {
     var id = req.body.id;
     var email = req.body.email;
     var key = uuid.v4();
-    
+
     if (_id == '' || _id == undefined) {
         let newDepartment = new Department({
             name: name,
@@ -21,7 +21,7 @@ router.post('/new', function (req, res) {
         });
         Department.createDepartment(newDepartment, function (err, department) {
             if (err) res.json(500, err);
-            else if (email){
+            else if (email) {
                 var subject = 'Chia sẻ quản lý phòng ban'
                 var body = `https://staging-dot-farmme-ggczm4ik6q-an.a.run.app/business/department?key=${key}`
                 SendMail.sendMail(email, subject, body, function (err, result) {
@@ -42,7 +42,7 @@ router.post('/new', function (req, res) {
         }
         Department.editDepartment(_id, newDepartment, function (err, department) {
             if (err) res.status(500).json(err);
-            else if (email){
+            else if (email) {
                 var subject = 'Chia sẻ quản lý phòng ban'
                 var body = `https://staging-dot-farmme-ggczm4ik6q-an.a.run.app/business/department?key=${newDepartment.key}`
                 SendMail.sendMail(email, subject, body, function (err, result) {
@@ -70,6 +70,27 @@ router.post('/list/get-by-id', function (req, res) {
     Department.getDepartment(id, function (err, department) {
         if (err) throw err;
         res.json(department);
+    });
+});
+
+router.post('/position/getall', function (req, res) {
+
+    Department.getallDepartment(function (err, departments) {
+        var result = []
+        if (err) {
+            res.status(500).json(err)
+        }
+        else {
+            Promise.all(departments.map(async (department, idx1) => {
+                department.position.forEach((position, idx2)=>{
+                    result.push({
+                        ...position, 
+                        department: department.name
+                    })
+                })
+            }))
+            res.status(200).json(result);
+        }
     });
 });
 
