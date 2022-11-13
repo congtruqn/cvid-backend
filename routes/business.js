@@ -209,7 +209,7 @@ router.get('/cancel-confirm/:id', authmodel.checkAdmin, function (req, res) {
         confirmAt: new Date(),
         status: 0
     }
-    Business.confirm1(req.params.id, confirm, function (err, result) {
+    Business.cancelConfirm(req.params.id, confirm, function (err, result) {
         if (err) {
             res.status(500).json(err)
         } else {
@@ -224,7 +224,7 @@ router.get('/not-confirm/:id', authmodel.checkAdmin, function (req, res) {
         confirmAt: new Date(),
         status: -1
     }
-    Business.confirm1(req.params.id, confirm, function (err, result) {
+    Business.notConfirm(req.params.id, confirm, function (err, result) {
         if (err) {
             res.status(500).json(err)
         } else {

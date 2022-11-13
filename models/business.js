@@ -117,9 +117,17 @@ module.exports.comparePassword = function (candidatePassword, hash, callback) {
 };
 
 module.exports.confirm1 = function (id, confirm, callback) {
-  Business.findByIdAndUpdate(id, { confirm1: confirm }, callback);
+  Business.findOneAndUpdate({_id: id, "confirm1.status": 0}, { confirm1: confirm }, callback);
+};
+
+module.exports.cancelConfirm = function (id, confirm, callback) {
+  Business.findByIdAndUpdate({_id: id, "confirm1.status": 1}, { confirm1: confirm }, callback);
+};
+
+module.exports.notConfirm = function (id, confirm, callback) {
+  Business.findByIdAndUpdate({_id: id, "confirm1.status": 0}, { confirm1: confirm }, callback);
 };
 
 module.exports.confirm2 = function (id, confirm, callback) {
-  Business.findByIdAndUpdate(id, { confirm2: confirm }, callback);
+  Business.findByIdAndUpdate({_id: id, "confirm1.status": 1}, { confirm2: confirm }, callback);
 };
