@@ -218,6 +218,21 @@ router.get('/cancel-confirm/:id', authmodel.checkAdmin, function (req, res) {
     });
 })
 
+router.get('/not-confirm/:id', authmodel.checkAdmin, function (req, res) {
+    let confirm = {
+        confirmBy: req.user.name,
+        confirmAt: new Date(),
+        status: -1
+    }
+    Business.confirm1(req.params.id, confirm, function (err, result) {
+        if (err) {
+            res.status(500).json(err)
+        } else {
+            res.status(200).json(result)
+        }
+    });
+})
+
 router.get('/delete/:id', authmodel.checkAdmin, function (req, res) {
     Business.deleteBusiness(req.params.id, function (err, result) {
         if (err) {
