@@ -27,6 +27,10 @@ var BusinessSchema = mongoose.Schema({
   type: {
     type: Number,
   },
+  createAt: {
+	type: Date,
+	default: Date.now
+  },
   confirm1: {
     status: {
       type: Number,

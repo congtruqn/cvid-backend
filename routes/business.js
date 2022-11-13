@@ -55,8 +55,6 @@ router.post('/login', function (req, res, next) {
                     return res.status(401).json({ "code": 401, "massage": "Sai mật khẩu" })
                 }
             });
-
-
         }
         else {
             res.status(404).json({
@@ -127,7 +125,6 @@ router.post('/register', function (req, res, next) {
                         majors: majors,
                         urlGPKD: urlGPKD,
                         type: 5,
-                        status: 1
                     });
                 }
                 else {
