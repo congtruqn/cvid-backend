@@ -32,6 +32,29 @@ var DepartmentSchema = mongoose.Schema({
         criteria: Array,
         questions: Array,
         status: String,
+        createAt: {
+            type: Date,
+            default: Date.now
+        },
+        updateAt: {
+            type: Date,
+        },
+        confirm1: {
+            confirmBy: String,
+            confirmAt: Date,
+            status: {
+                type: Number,
+                default: 0
+            }
+        },
+        confirm2: {
+            confirmBy: String,
+            confirmAt: Date,
+            status: {
+                type: Number,
+                default: 0
+            }
+        }
     }],
 
 });
