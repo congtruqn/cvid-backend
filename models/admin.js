@@ -5,6 +5,7 @@ var bcrypt = require('bcryptjs');
 var AdminSchema = mongoose.Schema({
 	username: String,
     password: String,
+	name: String,
     status: Number,
 	type: Number
 });
@@ -23,6 +24,3 @@ module.exports.comparePassword = function(candidatePassword, hash, callback){
     	callback(null, isMatch);
 	});
 }
-// module.exports.addJob = function(job, callback){
-//     Admin.save(callback);
-// }
