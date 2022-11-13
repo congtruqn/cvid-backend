@@ -50,12 +50,9 @@ module.exports.checkAdmin = async function (req, res, next) {
     });
   } else {
     try {
-      console.log(321);
       let decode = await module.exports.checkToken(
         req.headers.authorization.split(" ")[1]
       );
-      console.log(decode);
-
       if (decode.type == 1) {
         Admin.getAdminById(decode.id, function (err, user) {
           if (err) {
