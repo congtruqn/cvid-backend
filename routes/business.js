@@ -73,6 +73,8 @@ router.post('/register', function (req, res, next) {
     var name = req.body.name;
     var manager = req.body.manager;
     var position = req.body.position;
+    var industries = req.body.industry;
+    var type_business = req.body.type_business;
     var email = req.body.email;
     var password = req.body.password;
     var country = req.body.country;
@@ -108,9 +110,14 @@ router.post('/register', function (req, res, next) {
                 var newBusiness = '';
                 if (type == 5) {
                     newBusiness = new Business({
-                        name: req.body.name,
+                        name: name,
                         username: username,
                         email: email,
+                        industries: industries,
+                        phone: phone,
+                        type_business: type_business,
+                        manager: manager,
+                        position: position,
                         password: password,
                         address: address,
                         country: country,
@@ -169,8 +176,13 @@ router.get('/getall', authmodel.checkAdmin, function (req, res, next) {
     })
 });
 
-router.get('/browse-GPKD1/:id', authmodel.checkAdmin, function (req, res) {
-    Business.browseGPKD1(req.params.id, function (err, result) {
+router.get('/confirm1/:id', authmodel.checkAdmin, function (req, res) {
+    let confirm = {
+        confirmBy: req.user.name,
+        confirmAt: new Date(),
+        status: 1
+    }
+    Business.confirm1(req.params.id, confirm, function (err, result) {
         if (err) {
             res.status(500).json(err)
         } else {
@@ -178,8 +190,14 @@ router.get('/browse-GPKD1/:id', authmodel.checkAdmin, function (req, res) {
         }
     });
 })
-router.get('/browse-GPKD2/:id', authmodel.checkAdmin, function (req, res) {
-    Business.browseGPKD2(req.params.id, function (err, result) {
+
+router.get('/confirm2/:id', authmodel.checkAdmin, function (req, res) {
+    let confirm = {
+        confirmBy: req.user.name,
+        confirmAt: new Date(),
+        status: 1
+    }
+    Business.confirm2(req.params.id, confirm, function (err, result) {
         if (err) {
             res.status(500).json(err)
         } else {
@@ -187,17 +205,14 @@ router.get('/browse-GPKD2/:id', authmodel.checkAdmin, function (req, res) {
         }
     });
 })
-router.get('/cancel-browse-GPKD/:id', authmodel.checkAdmin, function (req, res) {
-    Business.cancelBrowseGPKD(req.params.id, function (err, result) {
-        if (err) {
-            res.status(500).json(err)
-        } else {
-            res.status(200).json(result)
-        }
-    });
-})
-router.get('/not-browse-GPKD/:id', authmodel.checkAdmin, function (req, res) {
-    Business.notbrowseGPKD(req.params.id, function (err, result) {
+
+router.get('/cancel-confirm/:id', authmodel.checkAdmin, function (req, res) {
+    let confirm = {
+        confirmBy: req.user.name,
+        confirmAt: new Date(),
+        status: 0
+    }
+    Business.confirm1(req.params.id, confirm, function (err, result) {
         if (err) {
             res.status(500).json(err)
         } else {
