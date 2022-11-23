@@ -27,6 +27,14 @@ var BusinessSchema = mongoose.Schema({
   type: {
     type: Number,
   },
+  confirmPhone: {
+    type: Boolean,
+    default: false
+  },
+  confirmEmail: {
+    type: Boolean,
+    default: false
+  },
   createAt: {
 	type: Date,
 	default: Date.now
