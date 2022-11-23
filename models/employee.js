@@ -41,7 +41,14 @@ var EmployeeSchema = mongoose.Schema({
 	assessment: Array,
 	noteCV: String,
 	job: Object,
-
+	confirmEmail: {
+		type: Boolean,
+		default: false
+	},
+	confirmPhone: {
+		type: Boolean,
+		default: false
+	},
 	createdAt: {
 		type: Date,
 		default: Date.now
