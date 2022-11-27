@@ -112,10 +112,9 @@ router.post('/register', function (req, res) {
                         skill: skill,
                         professionaltitle: professionaltitle,
                         password: password,
-                        status: 1
                     });
                     Employee.createEmployee(newEmployee, function (err, companys) {
-                        if (err) console.log(err);
+                        if (err) res.status(500).json(err)
                         else res.send('ok');
                     });
                 }
@@ -220,8 +219,8 @@ router.post('/findPosition', function (req, res) {
 
 
 router.post('/confirm1', authmodel.checkAdmin, function (req, res) {
-    let {id, confirm} = req.body;
-    Employee.confirm1(id, confirm, function (err, result) {
+    let {id, confirm, note} = req.body;
+    Employee.confirm1(id, confirm, note, function (err, result) {
         if (err) {
             res.status(500).json(err)
         } else {
@@ -232,7 +231,7 @@ router.post('/confirm1', authmodel.checkAdmin, function (req, res) {
 
 router.post('/confirm2', authmodel.checkAdmin, function (req, res) {
     let {id, confirm} = req.body;
-    Employee.confirm2(id, confirm, function (err, result) {
+    Employee.confirm2(id, confirm, note, function (err, result) {
         if (err) {
             res.status(500).json(err)
         } else {
