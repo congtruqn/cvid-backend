@@ -156,10 +156,10 @@ module.exports.getEmployeeByQuery = function (query, callback) {
   Employee.find(query, { password: 0, type: 0, status: 0 }, callback);
 };
 
-module.exports.confirm1 = function (id, confirm, callback) {
-  Employee.findByIdAndUpdate(id, { confirm1: confirm }, callback);
+module.exports.confirm1 = function (id, confirm, note, callback) {
+  Employee.findByIdAndUpdate(id, { confirm1: confirm, confirmNote: note}, callback);
 };
 
-module.exports.confirm2 = function (id, confirm, callback) {
-  Employee.findByIdAndUpdate(id, { confirm2: confirm }, callback);
+module.exports.confirm2 = function (id, confirm, note, callback) {
+  Employee.findByIdAndUpdate(id, { confirm2: confirm, confirmNote: note }, callback);
 };
