@@ -173,13 +173,9 @@ router.get('/getall', authmodel.checkAdmin, function (req, res, next) {
     })
 });
 
-router.get('/confirm1/:id', authmodel.checkAdmin, function (req, res) {
-    let confirm = {
-        confirmBy: req.user.name,
-        confirmAt: new Date(),
-        status: 1
-    }
-    Business.confirm1(req.params.id, confirm, function (err, result) {
+router.post('/confirm1', authmodel.checkAdmin, function (req, res) {
+    let {id, confirm} = req.body;
+    Business.confirm1(id, confirm, function (err, result) {
         if (err) {
             res.status(500).json(err)
         } else {
@@ -188,43 +184,9 @@ router.get('/confirm1/:id', authmodel.checkAdmin, function (req, res) {
     });
 })
 
-router.get('/confirm2/:id', authmodel.checkAdmin, function (req, res) {
-    let confirm = {
-        confirmBy: req.user.name,
-        confirmAt: new Date(),
-        status: 1
-    }
-    Business.confirm2(req.params.id, confirm, function (err, result) {
-        if (err) {
-            res.status(500).json(err)
-        } else {
-            res.status(200).json(result)
-        }
-    });
-})
-
-router.get('/cancel-confirm/:id', authmodel.checkAdmin, function (req, res) {
-    let confirm = {
-        confirmBy: req.user.name,
-        confirmAt: new Date(),
-        status: 0
-    }
-    Business.cancelConfirm(req.params.id, confirm, function (err, result) {
-        if (err) {
-            res.status(500).json(err)
-        } else {
-            res.status(200).json(result)
-        }
-    });
-})
-
-router.get('/not-confirm/:id', authmodel.checkAdmin, function (req, res) {
-    let confirm = {
-        confirmBy: req.user.name,
-        confirmAt: new Date(),
-        status: -1
-    }
-    Business.notConfirm(req.params.id, confirm, function (err, result) {
+router.post('/confirm2', authmodel.checkAdmin, function (req, res) {
+    let {id, confirm} = req.body;
+    Business.confirm2(id, confirm, function (err, result) {
         if (err) {
             res.status(500).json(err)
         } else {

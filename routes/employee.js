@@ -6,7 +6,6 @@ var Department = require('../models/department');
 var authmodel = require('../models/auth');
 const jwt = require('jsonwebtoken');
 const accesskey = process.env.CVID_SECRET
-
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
@@ -218,9 +217,11 @@ router.post('/findPosition', function (req, res) {
     });
 })
 
-router.post('/not-browse-cvid/:id', authmodel.checkAdmin, function (req, res) {
-    var noteCV = req.body.noteCV
-    Employee.notBrowseCV(req.params.id, noteCV, function (err, result) {
+
+
+router.post('/confirm1', authmodel.checkAdmin, function (req, res) {
+    let {id, confirm} = req.body;
+    Employee.confirm1(id, confirm, function (err, result) {
         if (err) {
             res.status(500).json(err)
         } else {
@@ -229,8 +230,9 @@ router.post('/not-browse-cvid/:id', authmodel.checkAdmin, function (req, res) {
     });
 })
 
-router.get('/browse-cvid1/:id', authmodel.checkAdmin, function (req, res) {
-    Employee.browseCV1(req.params.id, function (err, result) {
+router.post('/confirm2', authmodel.checkAdmin, function (req, res) {
+    let {id, confirm} = req.body;
+    Employee.confirm2(id, confirm, function (err, result) {
         if (err) {
             res.status(500).json(err)
         } else {
@@ -241,26 +243,6 @@ router.get('/browse-cvid1/:id', authmodel.checkAdmin, function (req, res) {
 
 router.get('/delete/:id', authmodel.checkAdmin, function (req, res) {
     Employee.deleteEmployeeById(req.params.id, function (err, result) {
-        if (err) {
-            res.status(500).json(err)
-        } else {
-            res.status(200).json(result)
-        }
-    });
-})
-
-router.get('/browse-cvid2/:id', authmodel.checkAdmin, function (req, res) {
-    Employee.browseCV2(req.params.id, function (err, result) {
-        if (err) {
-            res.status(500).json(err)
-        } else {
-            res.status(200).json(result)
-        }
-    });
-})
-
-router.get('/cancel-browse-cvid/:id', authmodel.checkAdmin, function (req, res) {
-    Employee.cancelBrowseCV(req.params.id, function (err, result) {
         if (err) {
             res.status(500).json(err)
         } else {
