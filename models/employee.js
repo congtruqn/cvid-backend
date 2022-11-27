@@ -156,17 +156,10 @@ module.exports.getEmployeeByQuery = function (query, callback) {
   Employee.find(query, { password: 0, type: 0, status: 0 }, callback);
 };
 
-module.exports.notBrowseCV = function (id, noteCV, callback) {
-  Employee.findByIdAndUpdate(id, { approved: -1, noteCV: noteCV }, callback);
+module.exports.confirm1 = function (id, confirm, callback) {
+  Employee.findByIdAndUpdate(id, { confirm1: confirm }, callback);
 };
 
-module.exports.browseCV1 = function (id, callback) {
-  Employee.findByIdAndUpdate(id, { approved: 1 }, callback);
-};
-
-module.exports.cancelBrowseCV = function (id, callback) {
-  Employee.findByIdAndUpdate(id, { approved: 0 }, callback);
-};
-module.exports.browseCV2 = function (id, callback) {
-  Employee.findByIdAndUpdate(id, { approved: 2 }, callback);
+module.exports.confirm2 = function (id, confirm, callback) {
+  Employee.findByIdAndUpdate(id, { confirm2: confirm }, callback);
 };

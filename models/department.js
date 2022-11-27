@@ -122,3 +122,12 @@ module.exports.getPositionList = function(selected, callback){
     var query = {"position._id": { $in: selected }};
     Department.find(query, callback);
 }
+
+module.exports.confirm1 = function(id, confirm, callback){
+    Department.findOneAndUpdate({"position._id": id}, {$set: {"position.$.confirm1": confirm}}, callback);
+}
+
+module.exports.confirm2 = function(id, confirm, callback){
+    Department.findOneAndUpdate({"position._id": id}, {$set: {"position.$.confirm2": confirm}}, callback);
+}
+

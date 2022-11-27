@@ -73,6 +73,29 @@ router.post('/list/get-by-id', function (req, res) {
     });
 });
 
+
+router.post('/position/confirm1', function (req, res) {
+    let {id, confirm} = req.body;
+    Department.confirm1(id, confirm,  function (err, result) {
+        if (err) {
+            res.json(500, err)
+        } else {
+            res.json(result)
+        }
+    })
+});
+
+router.post('/position/confirm2', function (req, res) {
+    let {id, confirm} = req.body;
+    Department.confirm2(id, confirm,  function (err, result) {
+        if (err) {
+            res.json(500, err)
+        } else {
+            res.json(result)
+        }
+    })
+});
+
 router.get('/position/getall', function (req, res) {
 
     Department.getallDepartment(function (err, departments) {
@@ -173,6 +196,8 @@ router.post('/position/publish', function (req, res) {
         }
     })
 });
+
+
 
 
 
