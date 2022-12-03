@@ -91,4 +91,12 @@ router.get("/getall", authmodel.checkAdmin, async (req, res, next) => {
   }
 });
 
+router.get("/me", authmodel.checkAdmin, async (req, res, next) => {
+    if (req.user){
+      return res.status(200).json(req.user)
+    } else {
+      return res.status(500).json('Not Found')
+    }
+  });
+
 module.exports = router;
