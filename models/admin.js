@@ -47,3 +47,7 @@ module.exports.createAdmin = function (admin, callback) {
     });
   });
 };
+
+module.exports.getAllAdmin = async () => {
+  return await Admin.find({})
+};
