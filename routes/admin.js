@@ -55,7 +55,7 @@ router.post("/create", authmodel.checkAdmin, async function (req, res, next) {
     status: 1,
   });
 
-  let findAdmin = await Admin.getAdminByUsername(username, (err, result) => {
+  Admin.getAdminByUsername(username, (err, result) => {
     if (err) {
       return res.status(500).json(err.message);
     } else if (result) {
@@ -76,6 +76,19 @@ router.post("/create", authmodel.checkAdmin, async function (req, res, next) {
       });
     }
   });
+});
+
+router.get("/getall", authmodel.checkAdmin, async (req, res, next) => {
+  try {
+    let listAdmin = await Admin.getAllAdmin()
+    return res.status(200).json({
+        status: true,
+        data: listAdmin,
+        message: 'Success'
+    })
+  } catch (error) {
+    return res.status(500).json(error)
+  }
 });
 
 module.exports = router;
