@@ -76,6 +76,8 @@ router.post('/list/get-by-id', function (req, res) {
 
 router.post('/position/confirm1', function (req, res) {
     let {id, confirm} = req.body;
+    confirm.createdAt = new Date();
+    confirm.createdBy = req.user.name;
     Department.confirm1(id, confirm,  function (err, result) {
         if (err) {
             res.json(500, err)
@@ -87,6 +89,8 @@ router.post('/position/confirm1', function (req, res) {
 
 router.post('/position/confirm2', function (req, res) {
     let {id, confirm} = req.body;
+    confirm.createdAt = new Date();
+    confirm.createdBy = req.user.name;
     Department.confirm2(id, confirm,  function (err, result) {
         if (err) {
             res.json(500, err)

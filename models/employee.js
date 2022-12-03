@@ -39,7 +39,7 @@ var EmployeeSchema = mongoose.Schema({
   skillComputer: Object,
   skillOther: Array,
   assessment: Array,
-  noteCV: String,
+  confirmNote: Array,
   job: Object,
   confirmEmail: {
     type: Boolean,
