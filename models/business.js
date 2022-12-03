@@ -29,16 +29,17 @@ var BusinessSchema = mongoose.Schema({
   },
   confirmPhone: {
     type: Boolean,
-    default: false
+    default: false,
   },
   confirmEmail: {
     type: Boolean,
-    default: false
+    default: false,
   },
   createAt: {
-	type: Date,
-	default: Date.now
+    type: Date,
+    default: Date.now,
   },
+  confirmNote: Array,
   confirm1: {
     status: {
       type: Number,

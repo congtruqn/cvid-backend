@@ -220,6 +220,8 @@ router.post('/findPosition', function (req, res) {
 
 router.post('/confirm1', authmodel.checkAdmin, function (req, res) {
     let {id, confirm, note} = req.body;
+    confirm.createdAt = new Date();
+    confirm.createdBy = req.user.name;
     Employee.confirm1(id, confirm, note, function (err, result) {
         if (err) {
             res.status(500).json(err)
@@ -231,6 +233,8 @@ router.post('/confirm1', authmodel.checkAdmin, function (req, res) {
 
 router.post('/confirm2', authmodel.checkAdmin, function (req, res) {
     let {id, confirm} = req.body;
+    confirm.createdAt = new Date();
+    confirm.createdBy = req.user.name;
     Employee.confirm2(id, confirm, note, function (err, result) {
         if (err) {
             res.status(500).json(err)

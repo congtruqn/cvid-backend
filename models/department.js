@@ -39,6 +39,7 @@ var DepartmentSchema = mongoose.Schema({
         updateAt: {
             type: Date,
         },
+        confirmNote: Array,
         confirm1: {
             confirmBy: String,
             confirmAt: Date,
