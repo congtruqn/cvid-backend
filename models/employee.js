@@ -4,80 +4,79 @@ const jwt = require("jsonwebtoken");
 
 const accesskey = process.env.CVID_SECRET;
 // Employee Schema
-var EmployeeSchema = mongoose.Schema({
-  username: {
-    type: String,
-    index: true,
-  },
-  password: String,
-  email: String,
-  birthdate: Date,
-  image: {
-    type: String,
-    default:
-      "https://www.lewesac.co.uk/wp-content/uploads/2017/12/default-avatar.jpg",
-  },
-  gender: String,
-  name: String,
-  country: String,
-  province: String,
-  district: String,
-  ward: String,
-  address: String,
-  level: String,
-  school: String,
-  startyear: Date,
-  professionaltitle: String,
-  endyear: Date,
-  skill: String,
-  jobtitle: String,
-  skillWorking: Array,
-  skillEducation: Array,
-  shortTraining: Array,
-  skillEnglish: Object,
-  skillLanguage: Array,
-  skillComputer: Object,
-  skillOther: Array,
-  assessment: Array,
-  confirmNote: Array,
-  job: Object,
-  confirmEmail: {
-    type: Boolean,
-    default: false,
-  },
-  confirmPhone: {
-    type: Boolean,
-    default: false,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  point: {
-    type: Number,
-    default: -1,
-  },
-  confirm1: {
-    confirmBy: String,
-    confirmAt: Date,
+var EmployeeSchema = mongoose.Schema(
+  {
+    username: {
+      type: String,
+      index: true,
+    },
+    password: String,
+    email: String,
+    birthdate: Date,
+    image: {
+      type: String,
+      default:
+        "https://www.lewesac.co.uk/wp-content/uploads/2017/12/default-avatar.jpg",
+    },
+    gender: String,
+    name: String,
+    country: String,
+    province: String,
+    district: String,
+    ward: String,
+    address: String,
+    level: String,
+    school: String,
+    startyear: Date,
+    professionaltitle: String,
+    endyear: Date,
+    skill: String,
+    jobtitle: String,
+    skillWorking: Array,
+    skillEducation: Array,
+    shortTraining: Array,
+    skillEnglish: Object,
+    skillLanguage: Array,
+    skillComputer: Object,
+    skillOther: Array,
+    assessment: Array,
+    confirmNote: Array,
+    job: Object,
+    confirmEmail: {
+      type: Boolean,
+      default: false,
+    },
+    confirmPhone: {
+      type: Boolean,
+      default: false,
+    },
+    point: {
+      type: Number,
+      default: -1,
+    },
+    confirm1: {
+      confirmBy: String,
+      confirmAt: Date,
+      status: {
+        type: Number,
+        default: 0,
+      },
+    },
+    confirm2: {
+      confirmBy: String,
+      confirmAt: Date,
+      status: {
+        type: Number,
+        default: 0,
+      },
+    },
     status: {
       type: Number,
       default: 0,
     },
   },
-  confirm2: {
-    confirmBy: String,
-    confirmAt: Date,
-    status: {
-      type: Number,
-      default: 0,
-    },
-  },
-  status: {
-    type: Number,
-    default: 0,
-  },
-});
+  { timestamps: true }
+);
 
 var Employee = (module.exports = mongoose.model("employee", EmployeeSchema));
 
@@ -157,9 +156,17 @@ module.exports.getEmployeeByQuery = function (query, callback) {
 };
 
 module.exports.confirm1 = function (id, confirm, note, callback) {
-  Employee.findByIdAndUpdate(id, { confirm1: confirm, confirmNote: note}, callback);
+  Employee.findByIdAndUpdate(
+    id,
+    { confirm1: confirm, confirmNote: note },
+    callback
+  );
 };
 
 module.exports.confirm2 = function (id, confirm, note, callback) {
-  Employee.findByIdAndUpdate(id, { confirm2: confirm, confirmNote: note }, callback);
+  Employee.findByIdAndUpdate(
+    id,
+    { confirm2: confirm, confirmNote: note },
+    callback
+  );
 };
