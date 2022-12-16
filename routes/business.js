@@ -51,7 +51,7 @@ router.post("/register", async (req, res, next) => {
 			name: req.body.name,
 			manager: req.body.manager,
 			position: req.body.position,
-			industries: req.body.industry,
+			industries: req.body.industries,
 			type_business: req.body.type_business,
 			email: req.body.email,
 			password: req.body.password,
