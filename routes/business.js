@@ -21,7 +21,7 @@ router.post("/login", async (req, res, next) => {
 		return res.status(401).json({ code: 401, massage: "Sai mật khẩu" });
 	}
 
-	if (business.status == 0) {
+	if (business.confirmMail === false) {
 		return res.status(401).json({ code: 401, massage: "Tài khoản của bạn chưa được xác thực" });
 	}
 
