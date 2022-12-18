@@ -100,7 +100,7 @@ module.exports.deleteBusiness = function (id, callback) {
 
 module.exports.getBusinessByUsername = async username => {
 	var query = { username: username };
-	return await Business.findOne(query);
+	return await Business.findOne(query, { password: 0 });
 };
 
 module.exports.getBusinessById = function (id, callback) {
