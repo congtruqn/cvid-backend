@@ -129,7 +129,7 @@ module.exports.confirm1 = function (id, confirm, callback) {
 };
 
 module.exports.confirm2 = function (id, confirm, callback) {
-	Business.findByIdAndUpdate(id, { confirm2: confirm }, callback);
+	Business.findOneAndUpdate(id, { confirm2: confirm }, callback);
 };
 
 module.exports.verifyBusiness = async id => {
