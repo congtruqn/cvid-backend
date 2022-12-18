@@ -28,9 +28,6 @@ router.post("/login", async (req, res, next) => {
 	var token = jwt.sign(
 		{
 			id: business._id,
-			username: username,
-			status: business.status,
-			type: business.type,
 		},
 		accesskey,
 		{ expiresIn: "1d" },
@@ -132,8 +129,8 @@ router.get("/getall", authmodel.checkAdmin, function (req, res, next) {
 
 router.post("/confirm1", authmodel.checkAdmin, function (req, res) {
 	let { id, confirm } = req.body;
-	confirm.createdAt = new Date();
-	confirm.createdBy = req.user.name;
+	confirm.confirmAt = new Date();
+	confirm.confirmBy = req.user.name;
 	Business.confirm1(id, confirm, function (err, result) {
 		if (err) {
 			res.status(500).json(err);
@@ -145,8 +142,8 @@ router.post("/confirm1", authmodel.checkAdmin, function (req, res) {
 
 router.post("/confirm2", authmodel.checkAdmin, function (req, res) {
 	let { id, confirm } = req.body;
-	confirm.createdAt = new Date();
-	confirm.createdBy = req.user.name;
+	confirm.confirmAt = new Date();
+	confirm.confirmBy = req.user.name;
 	Business.confirm2(id, confirm, function (err, result) {
 		if (err) {
 			res.status(500).json(err);
