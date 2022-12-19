@@ -6,72 +6,44 @@ var Department = require("../models/department");
 var authmodel = require("../models/auth");
 const jwt = require("jsonwebtoken");
 const accesskey = process.env.CVID_SECRET;
-var passport = require("passport");
-var LocalStrategy = require("passport-local").Strategy;
+
 const { sendMail } = require("../models/send-mail");
-passport.use(
-	new LocalStrategy(function (username, password, done) {
-		Employee.getEmployeeByUsername(username, function (err, users) {
-			if (err) throw err;
-			if (!users) {
-				return done(null, false, { message: "Unknown User" });
-			}
-			Employee.comparePassword(password, users.password, function (err, isMatch) {
-				if (err) throw err;
-				if (isMatch) {
-					return done(null, users);
-				} else {
-					return done(null, false, { message: "Invalid password" });
-				}
-			});
-		});
-	}),
-);
 
-passport.serializeUser(function (users, done) {
-	done(null, users._id);
-});
-passport.deserializeUser(function (id, done) {
-	Employee.getEmployeeById(id, function (err, users) {
-		done(err, users);
-	});
-});
 router.post("/login", function (req, res, next) {
-	Employee.getEmployeeByUsername(req.body.username, function (err, users) {
-		if (users) {
-			Employee.comparePassword(req.body.password, users.password, function (err, isMatch) {
-				if (err) throw err;
-				if (isMatch) {
-					if (users.status == 0) {
-						return res.status(401).json({ code: 401, massage: "Tài khoản của bạn chưa được xác thực" });
-					}
-					var tokenss = jwt.sign(
-						{ id: users._id, username: req.body.username, status: users.status, type: users.type },
-						accesskey,
-						{
-							algorithm: "HS256",
-							expiresIn: 7760000,
-						},
-					);
-					users.password = "";
-					res.status(200).json({
-						token: tokenss,
-						userinfo: users,
-					});
-				} else {
-					return res.status(401).json({ code: 401, massage: "Sai mật khẩu" });
+	let { username, password } = req.body;
+	try {
+		let foundEmployee = Employee.getEmployeeByUsername(username);
+		if (foundEmployee) {
+			let isMatch = Employee.comparePassword(password, foundEmployee.password);
+			if (isMatch) {
+				if (foundEmployee.status == 0) {
+					return res.status(401).json({ code: 401, massage: "Tài khoản của bạn chưa được xác thực" });
 				}
-			});
+				let token = jwt.sign(
+					{
+						id: foundEmployee._id,
+					},
+					accesskey,
+					{ expiresIn: "1d" },
+				);
+				foundEmployee.password = "";
+				res.status(200).json({
+					token: token,
+					userinfo: foundEmployee,
+				});
+			} else {
+				return res.status(401).json({ code: 401, massage: "Sai mật khẩu" });
+			}
 		} else {
-			res.status(404).json({
-				code: 404,
-				massage: "Tài khoản không tồn tại",
-			});
+			return res.status(404).json({ code: 404, massage: "Tài khoản không tồn tại" });
 		}
-	});
+	} catch (error) {
+		console.log(error);
+		res.status(500).json(error.message);
+	}
 });
 
-router.post("/register", function (req, res) {
+router.post("/register", async (req, res) => {
 	let {
 		name,
 		username,
@@ -91,51 +63,50 @@ router.post("/register", function (req, res) {
 		professionaltitle,
 		password,
 	} = req.body;
-
-	Employee.getEmployeeByUsername(username, function (err, user) {
-		if (err) throw err;
-		if (user) {
-			res.send([{ param: "username", msg: "Số điện thoại đã được sử dụng", value: username }]);
-		} else {
-			Employee.getEmployeeByEmail(email, function (err, user) {
-				if (err) throw err;
-				if (user) {
-					res.send([{ param: "email", msg: "Email đã được sử dụng", value: email }]);
-				} else {
-					var newEmployee = new Employee({
-						name: name,
-						username: username,
-						birthdate: birthdate,
-						email: email,
-						gender: gender,
-						country: country,
-						province: province,
-						district: district,
-						ward: ward,
-						address: address,
-						level: level,
-						school: school,
-						startyear: startyear,
-						endyear: endyear,
-						skill: skill,
-						professionaltitle: professionaltitle,
-						password: password,
-					});
-					Employee.createEmployee(newEmployee, function (err, employee) {
-						if (err) res.status(500).json(err);
-						else {
-							sendMail(
-								email,
-								"Xác thực tài khoản",
-								`Vui lòng click vào link sau để xác thực tài khoản: ${req.headers.host}/verify/ + ${employee._id}`,
-							);
-							res.send("ok");
-						}
-					});
-				}
-			});
+	try {
+		let foundEmployee = await Employee.getEmployeeByUsername(username);
+		console.log(foundEmployee);
+		if (foundEmployee) {
+			return res.send([{ param: "username", msg: "Số điện thoại đã được sử dụng", value: username }]);
 		}
-	});
+		foundEmployee = await Employee.getEmployeeByEmail(email);
+		if (foundEmployee) {
+			return res.send([{ param: "email", msg: "Email đã được sử dụng", value: email }]);
+		}
+
+		var newEmployee = new Employee({
+			name: name,
+			username: username,
+			birthdate: birthdate,
+			email: email,
+			gender: gender,
+			country: country,
+			province: province,
+			district: district,
+			ward: ward,
+			address: address,
+			level: level,
+			school: school,
+			startyear: startyear,
+			endyear: endyear,
+			skill: skill,
+			professionaltitle: professionaltitle,
+			password: password,
+		});
+
+		let createEmployee = Employee.createEmployee(newEmployee)
+		if (createEmployee) {
+			sendMail(
+				email,
+				"Xác thực tài khoản",
+				`Vui lòng click vào link sau để xác thực tài khoản: ${req.headers.host}/employee/verify/${newEmployee._id}`,
+			);
+			return res.send("ok");
+		}
+	} catch (error) {
+		console.log(error);
+		res.status(500).json(error.message);
+	}
 });
 
 router.get("/me", authmodel.checkLogin, function (req, res) {
