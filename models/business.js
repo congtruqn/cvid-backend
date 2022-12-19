@@ -100,7 +100,7 @@ module.exports.deleteBusiness = function (id, callback) {
 
 module.exports.getBusinessByUsername = async username => {
 	var query = { username: username };
-	return await Business.findOne(query, { password: 0 });
+	return await Business.findOne(query);
 };
 
 module.exports.getBusinessById = function (id, callback) {
@@ -109,6 +109,7 @@ module.exports.getBusinessById = function (id, callback) {
 module.exports.getAllBusiness = function (callback) {
 	Business.find({}, callback);
 };
+
 module.exports.comparePassword = async (candidatePassword, hash) => {
 	try {
 		let isMatch = await bcrypt.compare(candidatePassword, hash);
