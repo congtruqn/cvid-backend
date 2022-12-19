@@ -78,13 +78,15 @@ var EmployeeSchema = mongoose.Schema(
 
 var Employee = (module.exports = mongoose.model("employee", EmployeeSchema));
 
-module.exports.createEmployee = function (newEmployee, callback) {
-	bcrypt.genSalt(10, function (err, salt) {
-		bcrypt.hash(newEmployee.password, salt, function (err, hash) {
-			newEmployee.password = hash;
-			newEmployee.save(callback);
-		});
-	});
+module.exports.createEmployee = async newEmployee => {
+	try {
+		let salt = await bcrypt.genSalt(10);
+		let hash = await bcrypt.hash(newEmployee.password, salt);
+		newEmployee.password = hash;
+		return await newEmployee.save();
+	} catch (error) {
+		console.log(error);
+	}
 };
 
 module.exports.editEmployee = function (id, newEmployee, callback) {
@@ -99,7 +101,7 @@ module.exports.editEmployee = function (id, newEmployee, callback) {
 	});
 };
 
-module.exports.getEmployeeByUsername = async (username, callback) => {
+module.exports.getEmployeeByUsername = async username => {
 	var query = { username: username };
 	return await Employee.findOne(query);
 };
@@ -116,11 +118,12 @@ module.exports.getAllEmployee = function (callback) {
 	Employee.find({}, callback);
 };
 
-module.exports.comparePassword = function (candidatePassword, hash, callback) {
-	bcrypt.compare(candidatePassword, hash, function (err, isMatch) {
-		if (err) throw err;
-		callback(null, isMatch);
-	});
+module.exports.comparePassword = async (candidatePassword, hash) => {
+	try {
+		return await bcrypt.compare(candidatePassword, hash);
+	} catch (error) {
+		return false;
+	}
 };
 
 module.exports.getEmployeeByEmail = function (email, callback) {
