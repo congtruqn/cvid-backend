@@ -15,7 +15,6 @@ router.post("/login", async (req, res, next) => {
 	if (!business) {
 		return res.status(404).json({ code: 404, massage: "Tài khoản không tồn tại" });
 	}
-
 	let checkPassword = await Business.comparePassword(password, business.password);
 	if (!checkPassword) {
 		return res.status(401).json({ code: 401, massage: "Sai mật khẩu" });
