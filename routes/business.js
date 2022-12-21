@@ -105,6 +105,22 @@ router.post("/register", async (req, res, next) => {
 	}
 });
 
+router.get("/me", authmodel.checkLogin, async (req, res) =>{
+	let id = req.user;
+	try {
+		let BusinessInfo = await Business.getBusinessById(id);
+		if (BusinessInfo) {
+			return res.status(200).send(BusinessInfo);
+		} else {
+			return res.status(404).send("Not Found");
+		}
+	} catch (error) {
+		console.log(error);
+		return res.status(500).send(error);
+	}
+	
+});
+
 router.post("/getinfo", function (req, res) {
 	var mst = req.body.mst;
 	var uri = "https://www.tratencongty.com/search/" + mst;

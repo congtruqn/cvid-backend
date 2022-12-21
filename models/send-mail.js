@@ -23,19 +23,17 @@ transporter.verify((error, success) => {
 	}
 });
 
-module.exports.sendMail = (email, subject, body) => {
-    let mailOptions = {
-        from: EMAIL_ADDRESS_FROM,
-        to: email,
-        subject: subject,
-        html: body,
-    };
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            return console.log(error);
-        }
-        console.log("Message sent: %s", info.messageId);
-    });
-}
-
- 
+module.exports.sendMail = async (email, subject, body) => {
+	let mailOptions = {
+		from: EMAIL_ADDRESS_FROM,
+		to: email,
+		subject: subject,
+		html: body,
+	};
+	try {
+		let info = await transporter.sendMail(mailOptions);
+		return info;
+	} catch (error) {
+		console.log(error);
+	}
+};

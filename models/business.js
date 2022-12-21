@@ -103,8 +103,8 @@ module.exports.getBusinessByUsername = async username => {
 	return await Business.findOne(query);
 };
 
-module.exports.getBusinessById = function (id, callback) {
-	Business.findById(id, callback);
+module.exports.getBusinessById = async id => {
+	return await Business.findById(id);
 };
 module.exports.getAllBusiness = function (callback) {
 	Business.find({}, callback);
