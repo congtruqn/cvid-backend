@@ -131,12 +131,6 @@ module.exports.getEmployeeByEmail = function (email, callback) {
 	Employee.findOne(query, callback);
 };
 
-module.exports.comparePassword = function (candidatePassword, hash, callback) {
-	bcrypt.compare(candidatePassword, hash, function (err, isMatch) {
-		if (err) throw err;
-		callback(null, isMatch);
-	});
-};
 
 module.exports.createCV = function (id, newCV, callback) {
 	Employee.findByIdAndUpdate(id, newCV, callback);
