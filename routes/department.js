@@ -18,7 +18,7 @@ router.post("/new", async (req, res) => {
 			});
 			let response = await Department.createDepartment(newDepartment);
 			var subject = "Chia sẻ quản lý phòng ban";
-			var body = `${req.headers.host}/business/department?key=${key}`;
+			var body = `${req.headers.origin}/business/department?key=${key}`;
 			await sendMail(email, subject, body);
 			res.json(response);
 		} else {
