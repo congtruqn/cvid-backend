@@ -290,4 +290,18 @@ router.post("/findJob", function (req, res) {
 	});
 });
 
+// router.get("/verify/:id", async (req, res) => {
+// 	try {
+// 		let id = req.params.id;
+// 		let isSuccess = await Business.verifyBusiness(id);
+//         if (!isSuccess) {
+//             return res.send("Xác thực thất bại");
+//         }
+// 		return res.send("Xác thực thành công");
+// 	} catch (error) {
+// 		console.log(error);
+// 		return res.status(500).send(error);
+// 	}
+// });
+
 module.exports = router;

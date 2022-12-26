@@ -137,7 +137,7 @@ module.exports.verifyBusiness = async id => {
 	try {
 		let business = await Business.findById(id);
 		if (business) {
-			business.confirmEmail = 1;
+			business.confirmEmail = true;
 			await business.save();
 			return business;
 		} else {
