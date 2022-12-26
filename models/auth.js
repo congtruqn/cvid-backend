@@ -29,6 +29,7 @@ module.exports.checkLogin = async function (req, res, next) {
       let decode = await module.exports.checkToken(
         req.headers.authorization.split(" ")[1]
       );
+      console.log(decode);
       req.user = decode.id;
       next();
     } catch (err) {

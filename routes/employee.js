@@ -9,14 +9,14 @@ const accesskey = process.env.CVID_SECRET;
 
 const { sendMail } = require("../models/send-mail");
 
-router.post("/login", function (req, res, next) {
+router.post("/login", async (req, res, next)=> {
 	let { username, password } = req.body;
 	try {
-		let foundEmployee = Employee.getEmployeeByUsername(username);
+		let foundEmployee = await Employee.getEmployeeByUsername(username);
 		if (foundEmployee) {
-			let isMatch = Employee.comparePassword(password, foundEmployee.password);
+			let isMatch = await Employee.comparePassword(password, foundEmployee.password);
 			if (isMatch) {
-				if (foundEmployee.status == 0) {
+				if (foundEmployee.confirmEmail == 0) {
 					return res.status(401).json({ code: 401, massage: "Tài khoản của bạn chưa được xác thực" });
 				}
 				let token = jwt.sign(
@@ -111,6 +111,7 @@ router.post("/register", async (req, res) => {
 
 router.get("/me", authmodel.checkLogin, function (req, res) {
 	let id = req.user;
+	console.log(id);
 	Employee.getEmployeeById(id, function (err, user) {
 		if (err) {
 			res.status(500).json(err);

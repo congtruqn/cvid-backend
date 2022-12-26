@@ -21,7 +21,9 @@ if (process.env.ENV === "local") {
 	app.set("port", port);
 	app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 }
-app.use(cors());
+app.use(cors({
+    origin: '*'
+}));
 app.use(function (req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
