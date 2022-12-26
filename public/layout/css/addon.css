@@ -1,0 +1,199 @@
+.pricing {
+	text-align: center;
+	border: 1px solid #f0f0f0;
+	color: #777;
+	font-size: 14px;
+	padding-left: 0;
+	margin-bottom: 30px;
+}
+.pricing img {
+	display: block;
+	margin: auto;
+	width: 32px;
+}
+.pricing li:first-child,
+.pricing li:last-child {
+	padding: 20px 13px;
+}
+.pricing li {
+	list-style: none;
+	padding: 7px;
+}
+.pricing li + li {
+	border-top: 1px solid #f0f0f0;
+}
+.pricing big {
+	font-size: 32px;
+}
+.pricing h3 {
+	margin-bottom: 0;
+  	font-size: 25px;
+}
+.pricing span {
+	font-size: 12px;
+	color: #999;
+	font-weight: normal;
+}
+.pricing li:nth-last-child(2) {
+	padding: 15px 13px;
+}
+.pricing button {
+	width: auto;
+	margin: auto;
+	font-size: 15px;
+	font-weight: bold;
+	border-radius: 50px;
+	color: #fff;
+	padding: 5px 24px;
+	background: #aaa;
+	opacity: 1;
+	transition: opacity .2s ease;
+  border: none;
+  outline: none;
+}
+.pricing button:hover {
+	opacity: .9;
+}
+.pricing button:active {
+	box-shadow: inset 0px 2px 2px rgba(0, 0, 0, 0.1);
+}
+/* pricing color */
+.p-green big,
+.p-green h3 {
+	color: #4c7737;
+}
+.p-green button {
+	background: #4c7737;
+}
+.p-yel big,
+.p-yel h3 {
+	color: #ffbb42;
+}
+.p-yel button {
+	background: #ffbb42;
+}
+.pricing h3 {
+	color: #e13c4c;
+}
+.pricing button {
+	background: #e13c4c;
+}
+
+/*  pupup */
+
+	.reveal-modal-bg { 
+		position: fixed; 
+		height: 100%;
+		width: 100%;
+		background: #000;
+		background: rgba(0,0,0,.8);
+		z-index: 100;
+		display: none;
+		top: 0;
+		left: 0; 
+		}
+	
+	.reveal-modal {
+		visibility: hidden;
+		top: 100px; 
+		left: 50%;
+		margin-left: -300px;
+		width: 520px;
+		background: #fff;
+		position: absolute;
+		z-index: 101;
+		padding: 30px 40px 34px;
+		-moz-box-shadow: 0 0 10px rgba(0,0,0,.4);
+		-webkit-box-shadow: 0 0 10px rgba(0,0,0,.4);
+		-box-shadow: 0 0 10px rgba(0,0,0,.4);
+		}
+		
+	.reveal-modal.small 		{ width: 200px; margin-left: -140px;}
+	.reveal-modal.medium 		{ width: 400px; margin-left: -240px;}
+	.reveal-modal.large 		{ width: 600px; margin-left: -340px;}
+	.reveal-modal.xlarge 		{ width: 800px; margin-left: -440px;}
+	
+	.reveal-modal .close-reveal-modal {
+		font-size: 22px;
+		line-height: .5;
+		position: absolute;
+		top: 8px;
+		right: 11px;
+		color: #aaa;
+		text-shadow: 0 -1px 1px rbga(0,0,0,.6);
+		font-weight: bold;
+		cursor: pointer;
+}
+#myModal p{font-size: 12px;}
+#myModal input {font-size: 12px;}
+
+/*Navition*/
+
+.custom1 {
+  display: block;
+  cursor: pointer;
+}
+
+.off-canvas > .cstm-shade {
+  width: 0;
+  height: 0;
+  position: fixed;
+  top: 101px;
+  left: 0;
+  transition: background 0.5s ease, width 0s ease 0.5s, height 0s ease 0.5s;
+}
+
+.off-canvas > input[type="checkbox"] {
+  display: none;
+}
+
+.off-canvas > input[type="checkbox"]:checked ~ .cstm-shade {
+  background: rgba(0, 0, 0, 0.75);
+  width: 100%;
+  height: 100%;
+  transition: background 0.5s ease;
+}
+
+.off-canvas > .cstm-shade > .cstm-navi {
+  background: white;
+  width: 300px;
+  height: 100%;
+  position: fixed;
+  right: -300px;
+  transition: right 0.5s ease;
+}
+
+.off-canvas > input[type="checkbox"]:checked ~ .cstm-shade > .cstm-navi {
+  right: 0;
+}
+
+.cstm-navi-content {
+  padding: 15px;
+  padding-top: 20px;
+}
+.navbar-toggle .icon-bar {
+    background-color: #888;
+}
+.navbar-toggle .icon-bar {
+    border-radius: 1px;
+    display: block;
+    height: 2px;
+    width: 22px;
+}
+.pricing a {
+    background: #e13c4c none repeat scroll 0 0;
+    cursor: pointer;
+}
+.pricing a {
+    border: medium none;
+    border-radius: 50px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: bold;
+    margin: auto;
+    opacity: 1;
+    outline: medium none;
+    padding: 5px 24px;
+    transition: opacity 0.2s ease 0s;
+    width: auto;
+}
