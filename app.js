@@ -118,7 +118,6 @@ app.use("/typebusiness", typebusiness);
 app.use("/position", position);
 app.use("/admin", admin);
 
-app.use("/licenseImages", express.static("licenseImages"));
 app.use(async function (req, res, next) {
 	if (!req.headers.authorization || !req.headers.authorization.split(" ")[0] === "Basic") {
 		res.status(401).json({ auth: false, message: "No token found." });
